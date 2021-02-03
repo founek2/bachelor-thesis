@@ -31,7 +31,7 @@
 % ODTUD DAL VSE ZMENTE
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 
-\department{Katedra \ldots (DOPLŇTE)}
+\department{Katedra softwarového inženýrství}
 \title{IoT platforma s webovým rozhraním}
 \authorGN{Martin} %(křestní) jméno (jména) autora
 \authorFN{Skalický} %příjmení autora
@@ -39,11 +39,11 @@
 \author{Martin Skalický} %jméno autora bez akademických titulů
 \supervisor{Ing. Jiří Mlejnek}
 %\acknowledgements{Doplňte, máte-li komu a za co děkovat. V~opačném případě úplně odstraňte tento příkaz.}
-\abstractCS{V~několika větách shrňte obsah a přínos této práce v~češtině. Po přečtení abstraktu by se čtenář měl mít čtenář dost informací pro rozhodnutí, zda chce Vaši práci číst.}
+\abstractCS{Ze slova IOT se v posledních letech stal buzzword, pod kterým si lze představit téměř cokoliv od chytré žárovky až po automatizovanou linku. IOT platforma označuje  platformu, ke které lze připojit chytré věci jako např. chytrou žárovku či teplotní senzor a následně data ze zařízení zobrazovat, analyzovat a vzdáleně ovládat mimo jiné ze svého telefonu. Tato práce se zabývá porovnáním aktuálních platforem na trhu pro domácnosti a následným návrhem vlastního řešení včetně implementace. Výsledná platforma bude primárně určena pro domácí kutily, kteří si vyrobý DIY zařízení. Uživatel bude s platformou interagovat pomocí Progresivní webové aplikace. Součástí práce je dokumentace pro připojení zařízení k platformě včetně několika celých řešení založených na chipu ESP8266.}
 \abstractEN{Sem doplňte ekvivalent abstraktu Vaší práce v~angličtině.}
 \placeForDeclarationOfAuthenticity{V~Praze}
 \declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
-\keywordsCS{Nahraďte seznamem klíčových slov v češtině oddělených čárkou.}
+\keywordsCS{ESP8266, PWA, MQTT}
 \keywordsEN{Nahraďte seznamem klíčových slov v angličtině oddělených čárkou.}
 % \website{http://site.example/thesis} %volitelná URL práce, objeví se v tiráži - úplně odstraňte, nemáte-li URL práce
 
@@ -53,14 +53,104 @@
 % \newacronym{FIT}{FIT}{Fakulta informa{\v c}n{\' i}ch technologi{\' i}}
 
 \begin{introduction}
-	%sem napište úvod Vaší práce
+    Tato práce se zabývá tvorbou IOT Platformy. Platforma je jedním z nejdůležitějších prvků ve světě internetu věcí (IOT). Internet věcí je označení pro síť fyzických zařízení, která jsou vybavena konektivitou tj. od chytré žárovky až po chytré vozidlo. Tyto zařízení mohou spolu komunikovat přes různé technologie od WiFi, Bluethooth, LTE až po specializované sítě optimalizované pro nízkou spotřeba, které umožňují provoz chytrých zařízení na baterii s životností až desítky let (LoRa, Sigfox).
+    
+    V domácnostech se zatím nejvíce prosazuje využití WiFi, prototže tuto síť má dnes doma téměř každý. Takovýchto chytrých zařízení lze mít v domě desítky a přirozeně se nabízí otázka možnosti tyto zařízení ?kombinovat? a automatizovat. A k tomuto účelu je právě potřeba Platforma, která zařízení bude "zastřešovat" a dá nám k dispozici jednotné uživatelské rozhraní ne jenom k zobrazování dat např. ukáže teplotu z meteostanice, ale umožní ovládat jednotlivá zařízení např. z telefonu zatažení žaluzií. Toto jsou pouze základní funkce a chytřejší řešení umožňuní automatizaci např. pokud čidlo zaznamená pohyb v domě, tak se automaticky zapne kotel pro vytápění. 
+    %představit koncepci koncovích zařízení
+    %využití - sledování vláhy, zalévání, udírna, ovládání hlasem
+    
+    % Takovýchto řešení již dnes existuje celá řada a podíváme se na výhody a nevýhody těch nejznámějších řešení jak z komerčního, tak i OpenSource světa.
+    % Následně se budeme věnovat návrhu vlastního řešení s důrazem na bezpečnost, kterou stále spousta výrobců opomíjí. Moje řešení bude mít webové rozhraní, které umožní ovládání ze všech běžných zařízení bez nutnosti vytvářet nativní aplikace.
+
+
 \end{introduction}
 
 \chapter{Cíl práce}
+    % návrh vlastní platformy, cíleno pro kutily, bezpečnost pochybná u komerčních řešení -> já chci mít velkou, moje řešení bude více decentralizované
+    Cílem této práce je porovnat výhody a nevýhody těch nejznámějších řešení jak z komerčního, tak i OpenSource světa a následně navrhnout a realizovat vlastní řešení. Tato Platforma bude koncipována primárně pro cloudové nasazení. Bude umožňovat registraci uživatelům, kteří si potom budou moci spravovat svá vlastní zařízení včetně oprávnění. Na rozdíl od komerčních řešení, která jsou založena čistě na centrální správně, tak tady bude umožněn jak centralizovaný přístup (přes platformu), tak i možnost decentralizovaného - zařízení se budou moci přihlásit k odběru události z ostatních zařízení a na základně toho reagovat. Otevře se tak možnost využít pouze nejzákladnější funkce z platformy, ale veškerou automatizaci a následné reakce implementovat pouze ve firmwaru jednotlivých zařízení. Tento přístup je pro implementaci složitější, ale zvyšuje následnou odolnost v případě výpadku Platformy.
+
+    Řešení bude cíleno primárně pro domáci kutily, kteří si budou moci připojit libovolné DIY zařízení, nebo pro specializované nasazení, které vyžaduje vysokou spolehlivost.
+
+    Vzhledem k rozsahu Bakalářské práce není cílem nahradit existující řešení, která již obsahují velké množství funkcí, ale vytvořit možnou alternativu a demonstrovat složitost vytvoření celého řešení za použití moderních technologií. 
+
+    
+
+\chapter{Existující řešení IOT Platforem}
+Tato kapitola se zabývá definici IOT Platformy a analýzi již existujících řešení. V závěru kapitoly je matice obsahující porovnání známích řešení vůči jejich funkcím.
+
+\section{Co je IOT Platforma}
+    "IOT Platforma je více vrstvá technologie, která umožňuje přímočaré zajištění, ovládání a automatizaci připojených zařízení ve světě internetu věci. Zjednodušeně propojuje Váš hardware, jakkoli rozdílný, do cloudu s možností různorodé konektivity, obsahuje bezpečností mechanizmy a široké možnosti pro zpracování dat. Pro vývojáře, IOT Platforma nabízí soubor předpřipravených funkcí, které vysoce zvyšují rychlost vývoje aplikací pro připojená zařízení a řeší škálování a kompatibilitu napříč zařízeními" [*, překlad autora] %https://www.kaaproject.org/blog/what-is-iot-platform 
+
+    
+
+\section{Bezpečnost a soukromí}
+    dasdasd
+
+\section{Cílová skupina}
+    dasdasd
+
+\section{Komerční řešení} % hotové řešení, cloud, ale drahé
+
+\section{OpenSource řešení} % flexibilní, levné, ale DIY a musí se ohýbat
+
+\section{Známé Platformy}  %rešerže jednotlivých platforem + závěrečná matice
+
+\subsection{Blynk}
+
+\subsection{Thingspeaks}
+
+\subsection{Home Assistant}
+
+\subsection{OpenHub}
+
+\subsection{Porovnání}
+
+
 
 \chapter{Analýza a návrh}
 
+\section{Analýza procesů}
+
+\section{Stanovení požadavků}
+
+\section{Návrh architektury}
+
+\section{Výběr technologií}
+
+\section{Návrh uživatelského rozhraní}
+
+
+
+
 \chapter{Realizace}
+
+\section{Server}
+
+\section{Klientská část}
+
+\section{Komunikace}
+
+\section{Knihovna pro ESP8266}
+
+\section{chytrá udírna}
+
+\subsection{Návrh zapojení}
+
+\subsection{Výroba}
+
+
+
+\chapter{Testování}
+
+\section{API test}
+
+\section{Zátěžové testování}
+
+\section{Zotavení po nenadálé události}
+
+\section{Uživatelské testování}
+
+
 
 \begin{conclusion}
 	%sem napište závěr Vaší práce
