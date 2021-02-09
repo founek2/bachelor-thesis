@@ -79,9 +79,17 @@
 Tato kapitola se zabývá definici IOT Platformy a analýzi již existujících řešení. V závěru kapitoly je matice obsahující porovnání známích řešení vůči jejich funkcím.
 
 \section{Co je IOT Platforma}
-    "IOT Platforma je více vrstvá technologie, která umožňuje přímočaré zajištění, ovládání a automatizaci připojených zařízení ve světě internetu věci. Zjednodušeně propojuje Váš hardware, jakkoli rozdílný, do cloudu s možností různorodé konektivity, obsahuje bezpečností mechanizmy a široké možnosti pro zpracování dat. Pro vývojáře, IOT Platforma nabízí soubor předpřipravených funkcí, které vysoce zvyšují rychlost vývoje aplikací pro připojená zařízení a řeší škálování a kompatibilitu napříč zařízeními" [*, překlad autora] %https://www.kaaproject.org/blog/what-is-iot-platform 
+    "IOT Platforma je více vrstvá technologie, která umožňuje přímočaré zajištění, ovládání a automatizaci připojených zařízení ve světě internetu věci. Zjednodušeně propojuje Váš hardware, jakkoli rozdílný, do cloudu s možností různorodé konektivity, obsahuje bezpečnostní mechanizmy a široké možnosti pro zpracování dat. Pro vývojáře, IOT Platforma nabízí soubor předpřipravených funkcí, které vysoce zvyšují rychlost vývoje aplikací pro připojená zařízení a řeší škálování a kompatibilitu napříč zařízeními" [*, překlad autora] %https://www.kaaproject.org/blog/what-is-iot-platform 
 
+\subsection{Definice pojmů}
+V této sekci jsou vysvětleny pojmy, které budou použity v následujících kapitolách.
     
+\begin{itemize}
+    \item \textbf{Platforma} -
+    \item \textbf{Koncové zařízení} -
+    \item \textbf{GateWay} -
+    \item \textbf{DIY} -
+\end{itemize}
 
 \section{Bezpečnost a soukromí}
     dasdasd
@@ -89,11 +97,30 @@ Tato kapitola se zabývá definici IOT Platformy a analýzi již existujících 
 \section{Cílová skupina}
     dasdasd
 
-\section{Komerční řešení} % hotové řešení, cloud, ale drahé
+\section{Kritéria hodnocení}
+    \subsection{Cena}
+    \subsection{Bezpečnost}
+    Při výběru Platformy by důležitým kritériem měla být bezpečnost. Na první pohled se to nemusí zdát být důležité, co se může stát když bude s platformou komunikovat čidlo pohybu a někdo se dokáže dostat k těmto údajům? Například pro zloděje mohou být taková data zlatý důl, protože bude přesně vědět kdy je někdo doma.
 
-\section{OpenSource řešení} % flexibilní, levné, ale DIY a musí se ohýbat
+\section{Komerční řešení} % hotové řešení, cloud, ale drahé
+%easy to use, but paid
+Na trhu dnes existuje velké množství komerčních řešení od známých výrobců, někteří jsou známí spíše výrobou harwaru jako Philips a Xiaomi, jiní se zaměřují spíše na nabídku služeb a integraci zařízení ostatních výrobců pod svojí Platformu jako Blynk nebo Google. Pro koncového zákazníka mají Komerční řešení obrovskou výhodu v jednoduchosti prvotního nasazení a následné obsluhy. Stačí zakoupit centrální jednotku a libovolná zařízení od stejného výrobce a vše krásně funguje. Problém ale nastává ve chvíli, kdy potřebují řešení škálovat či customizovat dle svých potřeb, protože si dodavatel za úpravy na ,,míru" začne účtovat obrovské částky a zákazníkovi nezbývá nic jiného než platit. Sám si potřebné změny udělat nemůže, protože nemá zdrojové kódy a migrace k jinému produktu by znamenal obrovské náklady a problémy se stávájícími integracemi, protože různá řešení mívají různá rozhraní.
+  
+%security
+Aspekt bezpečnosti u uzavřených řešení bývá diskutabilní. Pravidelné bezpečnostní audity kvůli nákladům provádím málo kdo. Výrobci samozřejmně vždy tvrdí, že bezpečnost je u nich na prvním místě, ale bohužel tento aspekt je v přímém kontrastu s jenododuchostí použití, což je pro výrobce mnohem důležitější protože pokud se řešení dobře a jednoduše ovládá, tak mnohem spíše si ho zákazníci oblíbí, než pokud bude maximálně zabezpečeno, ale uživatel bude muset provádět úkony návíc čistě kvůli bezpečnosti, která mu na první pohled nepřínáší přidanou hodnotu.
+
+%Cloud dependent
+U Platformy očekáváme možnost vzdáleného ovládání, tedy přístup odkudkoli z internetu. Málokdo má však doma veřejnou IP adresu, aby si mohl celé řešení provozovat doma tvz. self hosting. V Praxi si tedy uživatel pořidí domů GateWay, která komunikoje s chytrými zařízeními v domácnosti a současně s cloudem výrobce, přes který lze přistupovat na Platformu a ovládat všechny zařízení. Takové řešení se velmi osvědčilo díky jednoduchosti, protože neklade žádné nároky na uživatele jako např. veřejnou IP adresu. Problém však může nastat ve chvíli, kdy výrobce daného řešení po několika letech ukončí činnost a s tím přestane provozovat svojí cloudovou infrastrukturu, na které je závislá GateWay a vzdálený přístup z internetu. V lepším případě bude zachována funkčnost v lokální sití v horším přestane řešení fungovat úplně. Najednou uživatelovi zbyde doma spousta funkčního (po fyzické stránce) harwaru, který nemůže využívat.
+
+Výše jsem nastínil nejhorší možný scénář, který naštěstí v poslední době již přestává platit, protože výrobci společně vytvářejí otevřené standardy pro komunikaci, které by měli zaručit kompatibilitu zařízení napříč jednotlivými výrobci. Bohužel standardů vzniká současně více a ne všichni je plně dodržují, takže nekompatibilita ještě bude delší dobu přetrvávat i když ne v takovém měřítku jako před pár lety. Kromně rozdílných protokolů je také nekompatibilita v různých technologiích přenosu mezi nejznámější patří WiFi, Bluethooth, LoRa, Zigbee a Sigfox. 
+%podpora jiných výrobců? integrace? -> závislé na tom co výrobce se rozhodne implementovat
+
+\section{OpenSource řešení}
+% nepopulární/špatná reputace mezi lidmy, často potřeba znalosti problematiky, Free, flexibilní, customizovatelné
+
 
 \section{Známé Platformy}  %rešerže jednotlivých platforem + závěrečná matice
+Tato sekce s zabývá analýzou 4 nejznámějších Platforem a v závěru jejich vzájemným porovnáním.
 
 \subsection{Blynk}
 
@@ -141,8 +168,6 @@ Tato kapitola se zabývá definici IOT Platformy a analýzi již existujících 
 
 
 \chapter{Testování}
-
-\section{API test}
 
 \section{Zátěžové testování}
 
