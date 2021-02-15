@@ -13,7 +13,8 @@
 \documentclass[thesis=B,czech]{FITthesis}[2019/12/23]
  
 \usepackage[utf8]{inputenc} % LaTeX source encoded as UTF-8
- 
+\usepackage{adjustbox}   
+
 % \usepackage{amsmath} %advanced maths
 % \usepackage{amssymb} %additional math symbols
  
@@ -26,6 +27,8 @@
 
 \newcommand{\tg}{\mathop{\mathrm{tg}}} %cesky tangens
 \newcommand{\cotg}{\mathop{\mathrm{cotg}}} %cesky cotangens
+\newcommand\tstrut{\rule{0pt}{2.4ex}}
+\newcommand\bstrut{\rule[-1.0ex]{0pt}{0pt}}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 % ODTUD DAL VSE ZMENTE
@@ -92,15 +95,26 @@ V této sekci jsou vysvětleny pojmy, které budou použity v následujících k
 \end{itemize}
 
 \section{Bezpečnost a soukromí}
-    dasdasd
-
+Při výběru Platformy by důležitým kritériem měla být bezpečnost. Na první pohled se to nemusí zdát být důležité, co se může stát když bude s platformou komunikovat čidlo pohybu a někdo se dokáže dostat k těmto údajům? Například pro zloděje mohou být taková data zlatý důl, protože bude přesně vědět kdy je dům prázdný.
+ 
 \section{Cílová skupina}
     dasdasd
 
-\section{Kritéria hodnocení}
-    \subsection{Cena}
-    \subsection{Bezpečnost}
-    Při výběru Platformy by důležitým kritériem měla být bezpečnost. Na první pohled se to nemusí zdát být důležité, co se může stát když bude s platformou komunikovat čidlo pohybu a někdo se dokáže dostat k těmto údajům? Například pro zloděje mohou být taková data zlatý důl, protože bude přesně vědět kdy je někdo doma.
+\section{Komunikace}    % rozdíly v komunikačním mediu wifi, bluethoot, mesh řešení Z-wave a zigbee, LoRa, spotřeba, bateriový provoz, složitost instalace
+    Pro komunikaci mezi zařízeními se nejčastěmi používá bezdrátová komunikaci, kvůli jednoduchosti instalace bez nutnosti většího zásahu do stávající infrastruktury. Tento typ lze rozdělit do dvou kategorií:
+    \begin{itemize}
+        \item \textbf{Centrální} - Každé zařízení komunikuje pouze s jedním centrálním prvke, přes který jde veškerá komunikace. Mezi nejznámější technologii tohoto typu patří Wifi, kterou dnes zná každý.
+        \item \textbf{Decentrlizovanou} - V této síti komunikují zařízení přímo s ostatními bez jakéholiv prostředníka. Síť je díky tomu mnohem odolnější vůči výpadků, protože zde není tzv. "Single point of failure". Zpravidla mývá nižší datovou propustnost a je složitější pro nasazení a následnou zprávu.
+    \end{itemize}
+    Vzhledem k rozšířenosti Wifi, kterou dnes najdeme v každé domácnosti, se přirozeně nabízí využít tuto možnost i pro internet věcí. A k tomu v posledních letech opravdu došlo. Díky extrémně levnému chipu ESP8266, který se dnes v ČR dá koupit za 40 Kč, došlo k masivní penetraci trhu s chytrými zařízeními využívající právě Wifi. Bohužel tato technologie má i svá negativa a největší jsou spotřeba elektrické energie a maximální počet připojenách zařízení (desítky na jeden centrální prvek). Jednotlivá zařízení musí neustále komunikovat s velkým výkonem a kvůli je možný rozumný provoz na baterii pouze v řádu týdnů.
+
+    Proto pro účel vznikly speciální sítě, které sice na rozdíl od Wifi umožní přenos v desítka kp za sekundu (tisícina rychlosti běžné Wifi) a jsou energeticky mnohem úspornější (umožnují provoz až desítky let na baterii), mají mnohonásobně větší dosah a centrální prvek dokáže současně komunikovat s tisíci zařízeními. 
+    
+    Nejvíce rozšířenými z centrálně orientovaných jsou SigFox a LoRa. SigFox je komerční řešení, kde se platí za každé připojené zařízení. Oproti tomu síť LoRa používá otevřený standard pro komunikaci LoRaWAN. Protože se jedná o otevřený standard, tak kdokoliv může vytvořit kompatibilní zařízení. Dále krom možnosti využití komerční infrastruktury, kam lze připojit svá zařízení za poplatek, tak díky otevřenosti má každý možnost si za pár tisíc postavit vlastní GateWay a provozovat libovolná zařízení bez jakýhkoliv poplatků.
+
+    Z technologií typu mesh se nejvíce ujali Zigbee vs Z-Wave. Zigbee je otevřený standart, zatímco Z-Wave není. Spotřeba energie je u obou technologií velmi podobná ale liší v dosahu.
+
+
 
 \section{Komerční řešení} % hotové řešení, cloud, ale drahé
 %easy to use, but paid
@@ -130,15 +144,70 @@ OpenSource platformy bývají postavené na systému Pluginů, tedy obsahují ur
 Tato sekce s zabývá analýzou 4 nejznámějších Platforem a v závěru jejich vzájemným porovnáním.
 
 \subsection{Blynk}
+Blynk se označuje jako harware-agnostic IOT Platforma s white-label mobilními aplikacemi. Umožnuje navrhnovat vlastní aplikace formou DragAndDrop pro ovládání zařízení, analýzu telemetrických dat a správu nasazených produktů ve velkém měřítku. Své řešení nabízejí jak pro domácí nasazení, tak i jako enterprise řešení pro větší firmy. Mají \textbf{3 cenové tarify}:
+\begin{itemize}
+\item \textbf{Free} je omezené pouze pro osobní užití, obsahuje cloudový hosting, umožňuje připojit maximálně 5 zařízení zdarma a součástí je mobilní aplikace pro Android a iOS.
+\item \textbf{StartUp} je určeny pro komerční využití a cenou začínají na \$415/měsíc. Součástí je deployment vlastních aplikací na AppStore/Google Play, neomezený počet zařízení a uživatelů, garantované podpora
+\item \textbf{Business} začíná na \$1000/měsíc a nabízí navíc OTA aktualizace koncových zařízení (vzdáleně), webové rozhraní, datovou analýzou a dalších funkce.
+\end{itemize}
+
+Hardware-agnostic znamená, že nejsou omezeni pouze na určitý hardware a umožňují připojit v podstatě libovolné zařízení. Pro připojení maji definované rozhraní nad jednotlivými protokoli. Podporují custom TCP/IP, WebSocket, HTTP a nově i MQTT (zatím k němu nemají ale dokumentaci). Dávají k dispozici knihovný pro různé harwarové platformy, takže připojení k platformě je potom otázka dvou řádků kódu. K dispozici je velmi přehledná a detailní dokumentace.
+
+Nativní aplikace pro iOS a Android umožnuje vytvářet vlastní dashboardy pomocí již předpřipravených Widgetů, kterých je opravdu velké množství, ale jsou placené za tzv. Energii, což je měna která lze dobíjet za peníze, dále definovat vlastní widgety a upravit chování celé aplikace. Následně lze takto upravenou aplikaci vyexportovat a přímo nahrát na Google Play a AppStore pod vlastním názvem. Tento přístup nabízí elegantní možnost pro tvorbu vlastního řešení, které následně je možné nabízet jako vlastní produkt.
+
+Výhodou cloudové řešení je přístup k platformě odkudkoliv z internetu. Zároveň je potom ale funčknost odkázána na dostupnost internetového připojení a představa dat někde v cloudu se také každému nemusí líbit. Pro tento připad je možnost hostovat si vlastní Blynk server, který je dostupný jako OpenSource server napsaný v Javě. %https://github.com/blynkkk/blynk-server
 
 \subsection{Thingspeaks}
+ThingSpeak™ je služba analytické IoT platformy od MathWorks®, tvůrců MATLAB® a Simulink®. Jedná se o hardware-agnostic platformu s webovým rozhraním, která se plně zaměřuje na analýzu dat. Je ideální pro lidi se zkušeností s Matlab, protože je postavena právě na této platformě. Umožňuje v cloudu sběr dat, jejich analýzu přímo pomocí Matlab kódu, vizualizaci dat a definování reakcí. Pro různé harwarové platformy mají připravené knihovny a nativě podporují komunikace pomocí HTTP a MQTT protokolů. Řešení nabízejí podle následujících tarifů, kde omezení jsou primárně ohledně maximálního počtu zpráv, počtu kanálů do kterého posílají zařízení zprávy a minimálního časového odstupu mezi zprávami v rámci jednoho kanálu.
+\begin{itemize}
+    \item \textbf{Free} ~8 200 messages/day, počet kanálů 4, interval mezi zprávami 15s, Matlab maximální doba běhu 20s
+    \item \textbf{STANDARD} ~90 000 messages/day, počet kanálů 250, interval mezi zprávami 60s, Matlab maximální doba běhu 20s
+    \item TODO matice pro tarify jednotlivé
+\end{itemize}
 
 \subsection{Home Assistant}
+OpenSource domací automatizace, která dává lokální kontrolu a soukromí na první místo - takto se prezentuje Home Assistant. Tato platforma není tolik zaměřena na koncová zařízení jako předchozí, ale funguje jako integrátor komerčních/OpenSource řešení pod jednotné rozhraní. Obsahuje systém pro tvorbu automatizace, tedy vytváření reakcí na jednotlivé akce. Dokáže se napojit buď přímo na jednotlivá zařízení nebo na jejich GateWay a umožnit ovládání všech zařízení od různorodých výrobců, kteří často vynucují použití vlastní aplikace, pod jednotné rozhraní jak webové, tak ve formě nativní aplikace. Integrace je řešena pomocí pluginární systému, kde zpravidla jeden plugin obsahuje integraci pro jednoho výrobce/jednu GateWay. Většina pluginů vzniká přímo od komunity této platformy. V době psání této práce obsahuje 1743 pluginů.
 
-\subsection{OpenHub}
+Celá platforma je zdarma a pro její zprovoznění stačí Raspberry Pi, na SD kartu nahrát předpřipravený image a zapnout. Prvnotním nastavením Vás následně provede webové rozhraní nebo nativní aplikace, záleží na Vaší volbě. 
+
+Platforma podporuje velké množství komerčních produkté mezi nejznámější patří Ikea TRÅDFRI, Philips Hue či Google Assistant. Samozřejmně podporují i OpenSource řešení mezi nejznámější patří ESPHome, což je framework pro konfiguraci ESP chipů (ESP8266/ESP32), který řeší vrstvu komunikace a zapojení do platformy. Stačí tedy pouze dodefinovat chování na určité události a chytré zařízení je připravené.
+
+\subsection{OpenHAb}
+%projekt s dlouho historií (v1 in 2010), lepší dokumentace, trochu složitější nastavení, mohutnější ale více možnost oproti HA, systém Addonů 324 aktuálně
+OpenHab je OpenSource projekt s dlouhou historií, který vznikl již v roce 2010. Cílí na stejný segment jako Home Assistant, tedy  propojení existujících řešení pod jednotné rozhraní a jejich automatizaci. Jedná se o hardware agnostic platformu, která komunikuje přímo s koncovými zařízeními nebo příslušnou GateWay. V základu obsahuje více funkcionalit, zatímco Homa Assistant je více minimalistický. Pro rozšířování funkcnionality používá systém doplňků (aktuálně 324), které vyvájejí autoři a především komunita. Od prvopočátku projektu je zde kladen velký důraz na nativní aplikace na rozdíl od Home assistantu, který dlouhou dobu neměl oficiální aplikaci pro Android. Webové rozhraní je samozřejmostí. Velkou výhodou je možnost využití cloud instance zcela zdarma, buď jako plnohodnotnou platformu nebo pouze pro přístup z internetu k vlastní instanci.
+
+Prvotní instalace je stejně jednoduchá jako u Home Assistentu. Rozdíl přichází při přidávání jednotlivých zařízení, kde je proces trochu komplikovanější. OpenHab se snaží nabídnout pokročilejší funkcionalitu, která bohužel částečně zesložiťuje jednotlivé procesy. Na druhou stranu umožňuje větší flexibilitu.
+ 
+Dokumentace projektu je na velmi vysoké úrovni s velmi detailním popisem. Pravděpodobně díky tomu, že projekt existuje již 10 let a má silnou základnu v komunitě i přes to, že je přibližně poloviční oproti té, kterou má Home Assistant. 
 
 \subsection{Porovnání}
+% TODO závěrečné porovnání - Blynk více orientované na koncová zařízení, ThingSpeaks primárně pro analýzu dat s Matlabem, HA a openHab jsou HUBy pro domácí automatizaci 
+Jednotlivé Platforma se některými funkcemi překrývají a v jiných jsou zase jedinečné. Při výběru je důležité si stanovit na co Platformu chceme využívat a jaké funkce vyžadujeme. 
 
+Blynk primárně cílí na podnikatelský segment, a nejvíce se hodí firmám, kteří chtějí na této Platforma vysvtavět své řešení, které následně budou přeprodávat pod svojí vlastní Značkou, jak díky příme možnosti exportu aplikace na AppStore a Google Play, hromadné zprávě zařízení nebo ACL. Kvůli chybějící podpoře komerčních zařízení lze využít pro domácnost pouze s DYI zařízeními.
+
+ThingSpeaks míří primárně na zpracování dat díky svému ekosystému postaveném kolem MATLAB®. Pro veškeré zpracování, analýzi a vizualizace stačí znalost prostředí MATLAB®, který je světově známý.
+
+Home Assistant je progresivní OpenSource Platforma, která umožní integraci komerčních řešení pod jednotné rozhraní a domácí automatizaci. Příjemné uživatelské rozhraní.
+
+OpenHab projekt s dlouho historií. Funkčně se velmi podobá Home Assistantu, ale snaží se uživatelům nabídnout více funkčnosti. Uživatelské rozhraní je občas trochu složitější.
+
+
+\begin{center} % pro addony přidat poznámku 324 obsahuje 2585 věcí
+    \begin{tabular}{ |c| m{5em}| m{5em}|m{5em}|m{4em}| m{5em}| m{4em}| m{4em}| } 
+     \hline 
+     Platforma & Podpora komerčních produktů & Vlastní zařízení & Hosting & ACL & Nativní aplikace & Správa zařízení & Cena \\
+     \hline
+     Blynk & Ne & Ano & self-hosted, cloud & Pouze Enterprise & Ano & Ano &  Omezený Free plan\\
+     \hline
+     ThingSpeaks & 6 vendorů (primárně LoRa) & Ano & cloud & Ano & Pouze pro náhled na data & Ne & Omezený Free plan\\
+     \hline
+Home Assistant & pomocí Pluginů (1743) & 3rd party knihovny & self-hosted & Ano & Ano & Ne & Ano\\
+\hline
+openHab & pomocí Doplňků (324) & 3rd party knihovny & self-hosted, cloud & Ne & Ano & Ne & Ano\\
+     \hline
+    \end{tabular}
+    \end{center} 
 
 
 \chapter{Analýza a návrh}
