@@ -58,7 +58,7 @@
 \begin{introduction}
     Tato práce se zabývá tvorbou IOT Platformy. Platforma je jedním z nejdůležitějších prvků ve světě internetu věcí (IOT). Internet věcí je označení pro síť fyzických zařízení, která jsou vybavena konektivitou tj. od chytré žárovky až po chytré vozidlo. Tyto zařízení mohou spolu komunikovat přes různé technologie od WiFi, Bluethooth, LTE až po specializované sítě optimalizované pro nízkou spotřeba, které umožňují provoz chytrých zařízení na baterii s životností až desítky let (LoRa, Sigfox).
     
-    V domácnostech se zatím nejvíce prosazuje využití WiFi, prototže tuto síť má dnes doma téměř každý. Takovýchto chytrých zařízení lze mít v domě desítky a přirozeně se nabízí otázka možnosti tyto zařízení ?kombinovat? a automatizovat. A k tomuto účelu je právě potřeba Platforma, která zařízení bude "zastřešovat" a dá nám k dispozici jednotné uživatelské rozhraní ne jenom k zobrazování dat např. ukáže teplotu z meteostanice, ale umožní ovládat jednotlivá zařízení např. z telefonu zatažení žaluzií. Toto jsou pouze základní funkce a chytřejší řešení umožňuní automatizaci např. pokud čidlo zaznamená pohyb v domě, tak se automaticky zapne kotel pro vytápění. 
+    V domácnostech se zatím nejvíce prosazuje využití WiFi, prototže tuto síť má dnes doma téměř každý. Takovýchto chytrých zařízení lze mít v domě desítky a přirozeně se nabízí otázka možnosti tyto zařízení ?kombinovat? a automatizovat. A k tomuto účelu je právě potřeba Platforma, která zařízení bude "zastřešovat" a dá nám k dispozici jednotné uživatelské rozhraní ne jenom k zobrazování dat např. ukáže teplotu z meteostanice, ale umožní ovládat jednotlivá zařízení např. z telefonu zatažení žaluzií. Toto jsou pouze základní funkce a chytřejší řešení umožňuní automatizaci např. pokud čidlo zaznamená pohyb v domě, tak se automaticky zapne kotel pro vytápění. Uživateli nabízí možnost jednoduše vytvářet různé scénáří reakcí na definované údálostí.
     %představit koncepci koncovích zařízení
     %využití - sledování vláhy, zalévání, udírna, ovládání hlasem
     
@@ -96,9 +96,10 @@ V této sekci jsou vysvětleny pojmy, které budou použity v následujících k
 
 \section{Bezpečnost a soukromí}
 Při výběru Platformy by důležitým kritériem měla být bezpečnost. Na první pohled se to nemusí zdát být důležité, co se může stát když bude s platformou komunikovat čidlo pohybu a někdo se dokáže dostat k těmto údajům? Například pro zloděje mohou být taková data zlatý důl, protože bude přesně vědět kdy je dům prázdný.
+
  
 \section{Cílová skupina}
-    dasdasd
+    Internet věcí lze využít napříč všemi sférami. Od jednoduché meteostanice, která bude měřit venku teplotu, přes tvz. chytrou domácnost, kde Vám lednička pošle nákupní seznam na email podle chybějících potravin, přes využití v průmyslu pro sběr různorodých dat a jejich následnou analýzu ať pro zvýšení kvality nebo detekci poruchy, ještě před tím než k ní dojde. Tato práce se zaměřuje na využití IoT v běžné domácnost a implementací Platformy určené pro kutily a technické entusiasty, kteří chtějí mít svá data pod kontrolou a vytvářet různorodá zařízení, která si připojí k Platformě.
 
 \section{Komunikace}    % rozdíly v komunikačním mediu wifi, bluethoot, mesh řešení Z-wave a zigbee, LoRa, spotřeba, bateriový provoz, složitost instalace
     Pro komunikaci mezi zařízeními se nejčastěmi používá bezdrátová komunikaci, kvůli jednoduchosti instalace bez nutnosti většího zásahu do stávající infrastruktury. Tento typ lze rozdělit do dvou kategorií:
