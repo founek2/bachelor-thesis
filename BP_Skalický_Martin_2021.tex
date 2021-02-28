@@ -129,20 +129,20 @@ Bezpečnost je potřeba zde sledovat hned na několika úrovních. Tím nejzákl
     Internet věcí lze využít napříč všemi sférami. Od jednoduché meteostanice, která bude měřit venku teplotu, přes tvz. chytrou domácnost, kde Vám lednička pošle nákupní seznam na email podle chybějících potravin, přes využití v průmyslu pro sběr různorodých dat a jejich následnou analýzu ať pro zvýšení kvality nebo detekci poruchy, ještě před tím než k ní dojde. Tato práce se zaměřuje na využití IoT v běžné domácnost a implementací Platformy určené pro kutily a technické entusiasty, kteří chtějí mít svá data pod kontrolou a vytvářet různorodá zařízení, která si k Platformě připojí.
  
 
-\section{Procesy} % základní features z pohledu uživatele
-Tato sekce obsahuje popis 3 základních procesů, se kterými uživatel přijde do styku.
+% \section{Procesy} % základní features z pohledu uživatele
+% Tato sekce obsahuje popis 3 základních procesů, se kterými uživatel přijde do styku.
 
-\subsection{Přidání zařízení}%jak probíhá přidání zařízení
-Proces přidání nového zařízení byl měl být pro uživatele co možná nejjednoduší, protože první interakce uživatele se zařízením je právě počáteční zprovoznění, při kterém si uživatele vytváří názor, který se zpětně velmi těžko mění. První dojem by měl tedy být co možná nejvíce přívětivý.
+% \subsection{Přidání zařízení}%jak probíhá přidání zařízení
+% Proces přidání nového zařízení byl měl být pro uživatele co možná nejjednoduší, protože první interakce uživatele se zařízením je právě počáteční zprovoznění, při kterém si uživatele vytváří názor, který se zpětně velmi těžko mění. První dojem by měl tedy být co možná nejvíce přívětivý.
 
-\subsection{Interakce}% jak zobrazit data a měnit stav
-Následná interakce s jednotlivými zařízení přes Platformu musí být intuitivní a nabídnout uživateli prostředí, které nebude zbytečně komplikované a umožní mu snadné zobrazení dat formou vizualizací.
+% \subsection{Interakce}% jak zobrazit data a měnit stav
+% Následná interakce s jednotlivými zařízení přes Platformu musí být intuitivní a nabídnout uživateli prostředí, které nebude zbytečně komplikované a umožní mu snadné zobrazení dat formou vizualizací.
 
-\subsection{Automatizace}% jak definovat reakce/schémata
-Platforma by měla nabídnout uživateli možnost definování reakcí na různé akce. Od jednoduchý až po složitější skládání toků pro vizuální programování.
+% \subsection{Automatizace}% jak definovat reakce/schémata
+% Platforma by měla nabídnout uživateli možnost definování reakcí na různé akce. Od jednoduchý až po složitější skládání toků pro vizuální programování.
 
-\chapter{Existující řešení}
-\section{Komerční řešení} % hotové řešení, cloud, ale drahé
+\section{Existující řešení}
+\subsection{Komerční řešení} % hotové řešení, cloud, ale drahé
 %easy to use, but paid
 Na trhu dnes existuje velké množství komerčních řešení od známých výrobců, někteří jsou známí spíše výrobou harwaru jako Philips a Xiaomi, jiní se zaměřují spíše na nabídku služeb a integraci zařízení ostatních výrobců pod svojí Platformu jako Blynk nebo Google. Pro koncového zákazníka mají Komerční řešení obrovskou výhodu v jednoduchosti prvotního nasazení a následné obsluhy. Stačí zakoupit centrální jednotku a libovolná zařízení od stejného výrobce a vše krásně funguje. Problém ale nastává ve chvíli, kdy potřebují řešení škálovat či customizovat dle svých potřeb, protože si dodavatel za úpravy na ,,míru" začne účtovat obrovské částky a zákazníkovi nezbývá nic jiného než platit. Sám si potřebné změny udělat nemůže, protože nemá zdrojové kódy a migrace k jinému produktu by znamenal obrovské náklady a problémy se stávájícími integracemi, protože různá řešení mívají různá rozhraní.
   
@@ -155,7 +155,7 @@ U Platformy očekáváme možnost vzdáleného ovládání, tedy přístup odkud
 Výše jsem nastínil nejhorší možný scénář, který naštěstí v poslední době již přestává platit, protože výrobci společně vytvářejí otevřené standardy pro komunikaci, které by měli zaručit kompatibilitu zařízení napříč jednotlivými výrobci. Bohužel standardů vzniká současně více a ne všichni je plně dodržují, takže nekompatibilita ještě bude delší dobu přetrvávat i když ne v takovém měřítku jako před pár lety. Kromně rozdílných protokolů je také nekompatibilita v různých technologiích přenosu mezi nejznámější patří WiFi, Bluethooth, LoRa, Zigbee a Sigfox. 
 %podpora jiných výrobců? integrace? -> závislé na tom co výrobce se rozhodne implementovat
 
-\section{OpenSource řešení}
+\subsection{OpenSource řešení}
 % nepopulární/špatná reputace mezi lidmy, často potřeba znalosti problematiky, Free, flexibilní, customizovatelné
 OpenSource řešení mají mezi širší veřejností špatnou reputaci, protože na rozdíl od komerčních "PlugAndPlay" produktů většinou vyžadují určité povědomí o dané problematice. Je to způsobeno tím, že se snaží pokrýt celou doménu stejně jako komerční řešení, ale oproti nim se zlomkem vývojářů a financí. Následkem toho není prvotní nastavení pro laika zcela přímočaré a může se střetnout s problémy. Avšak překonání prvotních nesnázích přináší spoustu pozitiv. 
 
@@ -166,10 +166,10 @@ Pokud máme dostatečné technické znalosti, tak si můžeme prohlédlou přím
 OpenSource platformy bývají postavené na systému Pluginů, tedy obsahují určitou základní sadu funkcí a dále lze funkčnost rozšiřovat pomocí instalace Pluginů. Ty mohou vytvářet přímo autoři nebo kdokoli jiný dle potřeb. Díky tomu jsou velmi robustní a podporují širokou škálu zařízení od různých výrobců napříč technologiemi a pokud ne, tak s trochou znalostí v programování si může každý dopsat plugin dle potřeb pro podporu daného zařízení.
  
 
-\section{Známé Platformy}  %rešerže jednotlivých platforem + závěrečná matice
+\subsection{Známé Platformy}  %rešerže jednotlivých platforem + závěrečná matice
 Tato sekce s zabývá analýzou 4 nejznámějších Platforem a v závěru jejich vzájemným porovnáním.
 
-\subsection{Blynk}
+\paragraph{Blynk}
 Blynk se označuje jako harware-agnostic IOT Platforma s white-label mobilními aplikacemi. Umožnuje navrhnovat vlastní aplikace formou DragAndDrop pro ovládání zařízení, analýzu telemetrických dat a správu nasazených produktů ve velkém měřítku. Své řešení nabízejí jak pro domácí nasazení, tak i jako enterprise řešení pro větší firmy. Mají \textbf{3 cenové tarify}:
 \begin{itemize}
 \item \textbf{Free} je omezené pouze pro osobní užití, obsahuje cloudový hosting, umožňuje připojit maximálně 5 zařízení zdarma a součástí je mobilní aplikace pro Android a iOS.
@@ -183,7 +183,7 @@ Nativní aplikace pro iOS a Android umožnuje vytvářet vlastní dashboardy pom
 
 Výhodou cloudové řešení je přístup k platformě odkudkoliv z internetu. Zároveň je potom ale funčknost odkázána na dostupnost internetového připojení a představa dat někde v cloudu se také každému nemusí líbit. Pro tento připad je možnost hostovat si vlastní Blynk server, který je dostupný jako OpenSource server napsaný v Javě. %https://github.com/blynkkk/blynk-server
 
-\subsection{Thingspeaks}
+\paragraph{Thingspeaks}
 ThingSpeak™ je služba analytické IoT platformy od MathWorks®, tvůrců MATLAB® a Simulink®. Jedná se o hardware-agnostic platformu s webovým rozhraním, která se plně zaměřuje na analýzu dat. Je ideální pro lidi se zkušeností s Matlab, protože je postavena právě na této platformě. Umožňuje v cloudu sběr dat, jejich analýzu přímo pomocí Matlab kódu, vizualizaci dat a definování reakcí. Pro různé harwarové platformy mají připravené knihovny a nativě podporují komunikace pomocí HTTP a MQTT protokolů. Řešení nabízejí podle následujících tarifů, kde omezení jsou primárně ohledně maximálního počtu zpráv, počtu kanálů do kterého posílají zařízení zprávy a minimálního časového odstupu mezi zprávami v rámci jednoho kanálu.
 \begin{itemize}
     \item \textbf{Free} ~8 200 messages/day, počet kanálů 4, interval mezi zprávami 15s, Matlab maximální doba běhu 20s
@@ -191,21 +191,21 @@ ThingSpeak™ je služba analytické IoT platformy od MathWorks®, tvůrců MATL
     \item TODO matice pro tarify jednotlivé
 \end{itemize}
 
-\subsection{Home Assistant}
+\paragraph{Home Assistant}
 OpenSource domací automatizace, která dává lokální kontrolu a soukromí na první místo - takto se prezentuje Home Assistant. Tato platforma není tolik zaměřena na koncová zařízení jako předchozí, ale funguje jako integrátor komerčních/OpenSource řešení pod jednotné rozhraní. Obsahuje systém pro tvorbu automatizace, tedy vytváření reakcí na jednotlivé akce. Dokáže se napojit buď přímo na jednotlivá zařízení nebo na jejich GateWay a umožnit ovládání všech zařízení od různorodých výrobců, kteří často vynucují použití vlastní aplikace, pod jednotné rozhraní jak webové, tak ve formě nativní aplikace. Integrace je řešena pomocí pluginární systému, kde zpravidla jeden plugin obsahuje integraci pro jednoho výrobce/jednu GateWay. Většina pluginů vzniká přímo od komunity této platformy. V době psání této práce obsahuje 1743 pluginů.
 
 Celá platforma je zdarma a pro její zprovoznění stačí Raspberry Pi, na SD kartu nahrát předpřipravený image a zapnout. Prvnotním nastavením Vás následně provede webové rozhraní nebo nativní aplikace, záleží na Vaší volbě. 
 
 Platforma podporuje velké množství komerčních produkté mezi nejznámější patří Ikea TRÅDFRI, Philips Hue či Google Assistant. Samozřejmně podporují i OpenSource řešení mezi nejznámější patří ESPHome, což je framework pro konfiguraci ESP chipů (ESP8266/ESP32), který řeší vrstvu komunikace a zapojení do platformy. Stačí tedy pouze dodefinovat chování na určité události a chytré zařízení je připravené.
 
-\subsection{OpenHAb}
+\paragraph{OpenHAb}
 %projekt s dlouho historií (v1 in 2010), lepší dokumentace, trochu složitější nastavení, mohutnější ale více možnost oproti HA, systém Addonů 324 aktuálně
 OpenHab je OpenSource projekt s dlouhou historií, který vznikl již v roce 2010. Cílí na stejný segment jako Home Assistant, tedy  propojení existujících řešení pod jednotné rozhraní a jejich automatizaci. Jedná se o hardware agnostic platformu, která komunikuje přímo s koncovými zařízeními nebo příslušnou GateWay. V základu obsahuje více funkcionalit, zatímco Homa Assistant je více minimalistický. Pro rozšířování funkcnionality používá systém doplňků (aktuálně 324), které vyvájejí autoři a především komunita. Od prvopočátku projektu je zde kladen velký důraz na nativní aplikace na rozdíl od Home assistantu, který dlouhou dobu neměl oficiální aplikaci pro Android. Webové rozhraní je samozřejmostí. Velkou výhodou je možnost využití cloud instance zcela zdarma, buď jako plnohodnotnou platformu nebo pouze pro přístup z internetu k vlastní instanci.
 
 Prvotní instalace je stejně jednoduchá jako u Home Assistentu. Rozdíl přichází při přidávání jednotlivých zařízení, kde je proces trochu komplikovanější. OpenHab se snaží nabídnout pokročilejší funkcionalitu, která bohužel částečně zesložiťuje jednotlivé procesy. Na druhou stranu umožňuje větší flexibilitu.
  
 Dokumentace projektu je na velmi vysoké úrovni s velmi detailním popisem. Pravděpodobně díky tomu, že projekt existuje již 10 let a má silnou základnu v komunitě i přes to, že je přibližně poloviční oproti té, kterou má Home Assistant. 
-
+ 
 \subsection{Porovnání}
 % TODO závěrečné porovnání - Blynk více orientované na koncová zařízení, ThingSpeaks primárně pro analýzu dat s Matlabem, HA a openHab jsou HUBy pro domácí automatizaci 
 Jednotlivé Platforma se některými funkcemi překrývají a v jiných jsou zase jedinečné. Při výběru je důležité si stanovit na co Platformu chceme využívat a jaké funkce vyžadujeme. 
@@ -236,15 +236,53 @@ openHab & pomocí Doplňků (324) & 3rd party knihovny & self-hosted, cloud & Ne
     \end{center} 
 
 \subsection{Závěrečný verdikt??}
-Považuji se za OpenSource nadšence, takže důvěrou tíhnu k této straně. Blynk je první platforma, se kterou jsem se střetl ve světě IoT asi před 2 roky a bohužel prvním dojem pro mě byl poměrně zmatečný. Mnohé se od té doby změnilo, ale nepřímá podpora MQTT protokolu a především nutnost platit řešení mě od této Platformi odrazuje. Thingspeaks je hezké řešení, které splňuje většinu mých představ, ale úzká integrace s MatLab a nutnost jeho znalosti pro zpracování dat, je pro mne překážkou ať už z hlediska, že MatLab nepoužívám, tak více z pohledu ceny MatLab prostředí. Jak jsem již uvedl, tak jsem OpenSource zastánce. HomeAssistant je velmi progresivní a zajímáva platforma, která splňuje mojí představu v téměř všech ohledech, ale ohledně %% WHY NOT? -- MQTT nemůžu protože to nemám vysvětlené...
-
-OpenHAB řešení mě velmi zaujalo a především možnost hostingu cloudového řešení, zcela zdarma. Bohužel chybějící ACL je pro mne nepřekonatelnou překážkou, protože chci platformu využívat pro více uživatelů a tedy definovat jednotlivá oprávnění.
+Blynk je první platforma, se kterou jsem se střetl ve světě IoT asi před 2 roky a bohužel prvním dojem pro mě byl poměrně zmatečný. Mnohé se od té doby změnilo, ale nepřímá podpora MQTT protokolu a především nutnost platit řešení mě od této Platformi odrazuje. Thingspeaks je hezké řešení, které splňuje většinu mých představ, ale úzká integrace s MatLab a nutnost jeho znalosti pro zpracování dat, je pro mne překážkou ať už z hlediska, že MatLab nepoužívám, tak více z pohledu ceny MatLab prostředí. Jak jsem již uvedl, tak jsem OpenSource zastánce. HomeAssistant je velmi progresivní a zajímáva platforma, která je ale primárně určena pro nasazení v lokální síti, zatímco já bych chtěl primárně Platformu provozovat jako řešení, kde se stačí zaregistrovat a každý kutil může rovnou přidávat vlastní zařízení. OpenHAB řešení mě velmi zaujalo a především možnost hostingu cloudového řešení, zcela zdarma. Bohužel chybějící ACL je pro mne nepřekonatelnou překážkou, protože chci platformu využívat pro více uživatelů a tedy definovat jednotlivá oprávnění. Proto jsem se rozhodl vytvořit si vlastní řešení, které mi dá prostor realizovat vše dle svých představ s velkým důrazem na bezpečnost.
 
 \chapter{Návrh}
 
 \section{Návrh architektury}
 
 \section{Výběr technologií}
+
+\subsection{Komunikační protokol}   %https://ieeexplore.ieee.org/abstract/document/8079928
+Komunikační protokolů je velké množství a přímo závisí na výběru přenosného média. Při použití specializovaných sítí jako LoRa nebo Sigmee, nemáme moc velkou flexibilitu ve výběru. Zařízení podporující tyto specializované sítě jsou také poměrně drahá, ale umožňují běh na baterii. Zatímco využití WiFi sítě nám dává obrovskou flexibilitu ve výběru protokolů a zařízení podporující připojení k Wifi nebyli nikdo více cenově dostupné jako dnes. Primárně z peněžních nároků a možnosti využití stávající WiFi infrastruktury v domácnosti jsem se rozhodl pro WiFi jako bezdrátové médium. Současně díky přímé podpoře IP protokolu nebudu muset vytvářet bridge mezi serverem a sítí se zařízenímí jako např. při použití Bluethooth či LoRa.
+
+%https://www.educba.com/mqtt-vs-websocket/
+Z protokolů pro komunikaci je dnes neojoblíběnější HTTP, který ale nativně nepodporuje obousměrnou komunikaci, kdy zařízení může poslat zprávu serveru a stejně tak server zprávu zařízení, kterou pro ovládání zařízení budu potřebovat. Z obousměrných protokolů se ve světě webových aplikací nejvíce využívá WebSocket, který lze velmi snadno kombinovat s HTTP. Jedná se o protokol postavený nad TCP, který naváže spojení a obě strany mohou posílat zprávy. Je to jednoduché řešení, ale přímo pro IOT vznikl otevřený síťový protokol MQTT jehož specifikaci vydává OASIS[??]. Využívá asynchroní pattern publish-subsribe a byl speciálně navržen pro potřeby běhu na jednoduchých embeded zařízení s minimálním datovým tokem.
+
+MQTT se vyvýjí již od roku 1999 a momentálně nejpoužívanější verzí je 3.1 pro kterou vznikla specifikace v roce 2010. Protokol primárně běží nad TCP/IP, ale lze využít v jakékoliv síti kde je zaručeno správné pořadí dat, beztrátovost a obousměrnost komunikace. Protokol definuje 2 typy entit: "message broker" a klient. MQTT broker je server, který přijímá všechny zprávy od připojených klientů a přeposílá je správným příjemncům (klientům). MQTT klient je jakékoliv zařízení (od embeded až po server), které komunikuje s brokerem přes síť.
+
+Posílaná data jsou zde hierarchicky rozdělena do tzv. topiců (česky téme). Topic je textový řetězec o maximální délce 65536 Bytů s oddělovačem "/" - ukázka "/house/bedroom/light". Pokud klient chce odeslat (publish) data, tak pošle zprávu brokeru s daty a topicem do kterého zpráva patří. Broker potom zprávu odešle všem klientům, kteří jsou přihlášení k odběru (subscrib) z daného topicu. O odběr se klient musí přihlásit a buď přímo specifikuje plný název topicu nebo částečný s použitím wildcard. Broker dále podporuje 3 třídy QoS (Quality of service), kterou lze specifikovat pro každou zprávu jednotlivě v závisloti na její důležitosti a jsou seřazeny vzestupně dle náročnosti na systém (overhead):
+\begin{itemize}
+    \item \textbf{Maximálně jednou} - zpráva je odeslána pouze jednou a klient ani broker nijak napotvrzují její přjetí
+    \item \textbf{Alespoň jednou} - zpráva je odeslaná několikanásobně, dokud není potvrzené její přijetí
+    \item \textbf{Právě jednou} - odesílatel a příjemnce navazují dvoucestný hand-shake, aby bylo zaručeno přijmutí zprávě právě jednou
+\end{itemize}
+% TODO přeložit wildcard, overhead + pěkný obrázek client - broker - client pub/sub s komunikací
+
+
+\subsection{Backend}    %https://nodejs.org/en/docs/
+%spousta jazyků, pro koncepsi asynchroních messages MQTT a Websocket se hodí NodeJS
+Vzhledem k povaze MQTT, který je koncepčně založený na asynchroních zprávách jsem si zvolil technologii NodeJS, která je postavené na asynchroní event-driven architektuře. NodeJS je prostředí pro běh JavaScriptu na straně serveru, kterému se v posledních letech dostává velké pozornosti kvůli jeho oblíbenosti mezi vývojáři, je extrémně přívětivý k začínajícím programátorům a má pozvolnou křivkou učení. Díky své architektuře nabízí velice elegantní přístup pro zpracování akcí, kde se musí dlouho čekat na výsledek jako primárně u síťové komunikace. V tradičním jazyce jako Java se taková akce musí řešit pracným vyvtvořením nového vlákna, které čeká na výsledek a následným zpracováním. V NodeJS je programátor od této problematiky odstíněn a může se tak plně věnovat tvorbě aplikační logiky aniž by měl znalosti a zkušenosti s více vláknovým programováním.
+ 
+%https://vegibit.com/what-is-nodejs/
+%modeulscount.com - down currently 
+\paragraph{NodeJS} má pravděpodobně aktuálně největší a nejaktivější komunitu ze všech jazyků. Pro správu knihoven používá balíčkovací systém npm (jsou i jiné alternativy) ze kterého se stal největší ekosystém na světě, který je zastřešený neziskovou společností "npm, Inc." provozující centrální repozitář se všemi dostupnými moduly pro NodeJS. Díky sve centralizaci je velmi jednoduchý na používání, ale v posledních letech kdy se NodeJS zpopularizoval a nyní se obecně JavaScript řadí mezí nejoblíbenější jazyky, se ukázala centralizace jako poměrně nešťastné řešení, kvůli vysokým nákladům na provoz infrastruktury. Pro představu velikosti ekosystému: npm v roce 2020 obsahoval 1 200 000 modulů a druhý největší systém RubyGems "pouhých" 350 000. Všechny moduly jsou k dispozici zcela zdarma a díky takto aktivní komunitě lidí, kteří dávají k dispozici své knihovny ostatním, je vysoce pravděpodobné, že pokud chceme řešit nějaký problém, tak na něj již existuje knihovna.
+
+%https://expressjs.com/
+\paragraph{ExpressJS} je velmi minimalistický webový framework (první verze v roce 2010), který je do dnes velmi oblíbený a v mnohém ovlivnil vývoj většiny frameworků. Jeho největší výhoda je vysoká flexibilita. Nabízí pouze základní definici způsobu pracování s HTTP požadavky a možnost registrovat tzv. middleware - software, který rozšiřuje funkcionalitu. Veškerá funkcionalita je dodávána pomocí middlewarů, které jsou k dispozici jako moduly. Vývojář si tedy může výsledný server poskládat přesně dle svých představ, kterých existují desítky vytvořených přímo od autorů a další stovky od komunity,
+
+
+\subsection{Frontend}
+% React + Redux
+Prvním světoznámím průkopníkem ve světě JavaScriptu pro tvorbu uživatelského rozhraní byla jQuery, která existuje do dnes, ale spíše se již považuje za přežitek doby. Dnes máme velké množství Frameworků a knihoven pro tvorbu frontendu, ať pro tvorbu na straně serveru nebo přímo na straně uživatele v JavaScriptu. Trend dnešní doby je přesouvat generování rozhraní na stranu uživatele, jak kvůli snížení výkonostních nároků na server, tak spíše kvůli lepší odezvě a uživatelskému zážitků. Mezi nejznámější JavaScriptové frameworky patří bezpochyby Angular, Vue.js, Svelte a nesmíme zapomenout na React, který je sice knihovna, ale řadí se na stejnou úroveň. Já jsem si zvolil jako hlavní prostředek React, právě proto že se jedná o knihovnu. Framework se vyznačuje tím, že vynucuje určité problémy řešit jistým způsobem bez možnosti volby. Má to své výhody a nevýhody a do větších týmu bych rozhodně volil raději Framework. Tento projekt ale budu vytvářet primárně sám a mám velice rád flexibilitu a možnost volby. V začátcích to bývá časově náročnější, ale vidím v tom obrovskou možnost osobního růstu, protože při každé volbě musím hodnoti výhody/nevýhody a nakonec retrospektivně vidím následky svých rozhodnutí. Mimo to je React vytvářet společností Facebook a používán největšími technologickými světa, takže je jistá jeho dlouhodobá podpora a od roku 2013, kdy byla vydána první verze je hojně odzkoušený a ověřený.
+
+%https://reactjs.org/tutorial/tutorial.html#what-is-react
+\paragraph{React} je deklarativní, efektivní a flexibilní JavaScriptová knihovna pro tvorbu uživatelského rozhraní. Kód dělí do malých ižolovaných částí nazvaných "komponenta", které se skládání do sebe a mohou tvořit komplexní uživatelská rozhraní. Pro vysoký výkon využívá techniku virtuálního DOM - nejprve si vytvoří virtuální strom podoby rozhraní v paměti, který následně porovná s aktuální podobou vykreslenou v prohlížeči a zmanipuluje pouze ty části které se od posledního vykreslení změnily. Díky tomu je velice efektivní a dokáže vykreslovat komplexní stránky s obrovským množstvím dat.
+
+%https://redux.js.org/introduction/getting-started
+\paragraph{Redux} je knihovna pro state management. Ve větších aplikací je potřeba mít úložiště pro tzv. state (reprezentace momentálního stavu aplikace). Čím větší aplikace je, tím více dat je potřeba uchovávat a proto je nutno využít nějaké systematické řešení. React dlouho žádné takové nenabízel a bylo nutno využívat jiné knihovny jako např. Flux nebo Redux. V nejnovějších verzí již takové řešení nabízí, ale já přeferuji mít větší izolaci mezi vizuálnímí komponenty a statem, navíc Redux je odzkoušený časem a nabízí mnohem komplexnější řešení. 
+
 
 \section{Návrh uživatelského rozhraní}
 
