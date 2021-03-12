@@ -3,15 +3,15 @@
 % arara: pdflatex
 
 % options:
-% thesis=B bachelor's thesis
+% thesis=B bachelor's thesis 
 % thesis=M master's thesis
-% czech thesis in Czech language
+% czech thesis in Czech language 
 % slovak thesis in Slovak language
 % english thesis in English language
-% hidelinks remove colour boxes around hyperlinks
+% hidelinks remove colour boxes around hyperlinks 
  
 \documentclass[thesis=B,czech]{FITthesis}[2019/12/23]
- 
+  
 \usepackage[utf8]{inputenc} % LaTeX source encoded as UTF-8
 \usepackage{adjustbox}   
 
@@ -19,6 +19,7 @@
 % \usepackage{amssymb} %additional math symbols
  
 \usepackage{dirtree} %directory tree visualisation
+\usepackage{hyperref} 
    
 % % list of acronyms
 % \usepackage[acronym,nonumberlist,toc,numberedsection=autolabel]{glossaries}
@@ -247,12 +248,131 @@ Blynk je první platforma, se kterou jsem se střetl ve světě IoT asi před dv
 
 \section{Analýza procesů}
 
+\subsection{Přidání zařízení}
+
+\subsection{Sběr dat}
+
+\subsection{Ovládání}
+
+\subsection{Automatizace}
+
+
+
 \section{Analýza požadavků}
 
+\subsection{Funkční požadavky}
+
+\paragraph{F1 Registrace uživatelů}
+- systém bude umožnovat libovolnému uživateli registraci. Každému registrovanému uživateli bude zřízen na server účet, který bude uchovávat jeho registrační údaje - jméno, přijmení, uživatelské jméno, heslo, email. Součástí registračního formuláře bude zaškrtávátko \uv{Automaticky přihlásit}, které bude ve výchozím stavu aktivní. Pokud ho uživatel nezruší, tak po úspěšné registraci bude uživatel automaticky přihlášen do systému.
+
+\paragraph{F2 Obnovení zapomenutého hesla}
+- součástí přihlašovacího formuláře bude odkaz na stránku pro obnovení zapomenutého hesla, kde bude uživatel dotázán na emailovou adresu, kterou použil při registraci. Po zadání, pokud daná emailová adresa je součástí některého uživatelské účtu, bude na ni odeslán email s odkazem pro obnovu hesla. Na tomto odkazu bude uživatel vyzván k zadání nového hesla.
+
+\paragraph{F3 Přidání zařízení}
+- přihlášenému uživateli se ve správě zařízení objeví možnost přidat ke svému účtu nové zařízení, pokud bude systémem detekované. Pro přidání bude uživatel vyzván k zadání umístění daného zařízení.
+
+\paragraph{F4 Oprávnění na úrovni zařízení}
+- na úrovni zařízení půjde nastavovat oprávnění pro jednotlivé uživatele. Toto oprávnění se bude skládat z těchto 3 úrovní:
+\begin{itemize}
+    \item \textbf{Read} - uživatel bude moci si pouze zobrazit veškeré údaje o zařízení
+    \item \textbf{Control} - stejné oprávnění jako \uv{read} + navíc zařízení může ovládat
+    \item \textbf{Write} - uživatel může editovat veškeré informace o zařízení (včetně oprávnění)
+\end{itemize}
+
+\paragraph{F6 Typy prvků}
+- systém bude podporovat následující typy prvků a umožňí uživateli v rozhraní příslušné interakce.
+\begin{itemize}
+    \item \textbf{Senzor} - základní prvek, odesílá hodnoty do systému
+    \item \textbf{Přepínač} - může se nacházet ve stavu zapnut/vypnut. Uživatel bude moci poslat příkaz ke změně stavu.
+    \item \textbf{RGB světlo} - tento prvek má 3 vlastnosti: zapnuto/vypnuto, jas, barva. Uživatel může měnit všechny.
+\end{itemize}
+
+\paragraph{F5 Vizualizace dat}
+- rozhraní umožní sledování dat ze všech typů prvků v reálném čase. Dále umožní vizualizaci historických naměřených údajů ze senzory, jejíchž výstup je číselná hodnota. Vizualizace bude realizována v podobě grafu vývoje hodnoty za určitý čas.
+
+\paragraph{F7 Editace zařízení}
+- jednotlivá zařízení bude možno přejmenovat a změnit jejich umístění.
+
+\paragraph{F8 Notifikace}
+- uživatel si bude moci nastavit Push notifikace pro jednotlivé prvky, které ho upozorní na změnu stavu. U senzorů si bude moci nastavit hranici, notifikace se pak odešle pokud ji hodnota překročí resp. sníží pod ni.
+
+\paragraph{F8 Validace}
+- veškerá formulářová pole budou interaktivně validována na straně uživatele v rozhraní a následně znovu na straně serveru. Interaktivní validací jsou myšleny tyto scénáře při průchodu formuláře:
+\begin{itemize}
+    \item Zadání hodnoty a vykliknutí z pole - bude provedena validace a v případě nevalidního vstupu, bude uživatel upozorněn.
+    \item Editace hodnoty v poli - validace bude provedena po každé změně (stisknutí klávesy), uživatel bude opět upozorněn v případě nevalidní hodnoty.
+\end{itemize}
+
+
+\subsection{Nefunkční požadavky}
+
+\paragraph{N1 Systém spustinelný na Linux systému}
+- systém bude možno provozovat na Linuxovém serveru (Debian) a také na platformě Raspberry Pi (Raspbian).
+
+\paragraph{N2 Responzivní webové rozhraní}
+- aplikace bude nabízet responzivní uživatelské rozhraní přizpůsobené pro zobrazení na mobilních zařízeních i stolních počítačích. Uživatelské rozhraní bude kompatibilní s prohlížeči Mozilla Firefox verze 80, Chrome verze 80 a Safari na iOS. Dále bude implementovat tzv. PWA (Progresivní webová aplikace) - bude využívat cache pro statické soubory, pro rychlé načítání a na zařízení Android půjde v aplikaci chrome přidat na plochu a následně vypadat jako nativní aplikace.
+
+\paragraph{N3 Rozhraní realizováno jako SPA}
+- SPA (Single page application) je webová aplikace, která utilizuje JavaScript, aby při interakci v rámci aplikace se nemusela celá stránka načítat, ale pouze chytře překresluje potřebné části. Výsledkem je mnohem přijemnější uživatelský zážitek, než při nutnosti překleslovat celou stránku po kliknutí na odkaz.
+
+\paragraph{N4 Koncová zařízení na platformě ESP8266}
+- pro jednotlivá zařízení bude použit čip ESP8266 od firmy Espressif jako mikrokontroler, který bude komunikovat po sítí prostřednictvím Wifi sítě.
+
+\paragraph{N5 Výkonnostní požadavky}
+- systém bude stabilní a zvládne obsluhovat stovku zařízení, kde každé bude odesílat změnu stavu s periodicitou 30 vteřin. Při tomto dlouhodobém zatížení nebude docházet k pádům systému ani k výraznému zpoždění komunikace (RESTful požadavky pod 500 ms).
+
+\paragraph{N6 Konfigurace systému} %env promněné
+- veškerá konfigurace (týkající se externích služeb/komunikace) jako jméno a heslo do databáze, číslo portu pro komunikaci atd. bude konfigurovatelné pomocí promněných prostředí (env variables). Detailní popis promněných bude obsažen v instalační příručce.
+
+
+
 \section{Popis domény}
+TODO text
+Popis jednotlivých enntit:
+\begin{itemize}
+    \item \textbf{User (Uživatel)} - osoba interagující se systémem
+    \item \textbf{Device (Zařízení)} - fyzické zařízení komunikující se systémem, umožňující ovládání Věcí a odesílání dat
+    \item \textbf{Thing (Věc)} - např. světlo, meteostanice nebo zásuvka
+    \item \textbf{Property (Vlastnost)} - určitá vlastnost Věci (např. pro zásuvku je \uv{vypínač} - vypnuto/zapnuto, pro meteostanici \uv{teplota} - naměřená hodnota)
+    \item \textbf{Location (Umístění)} - umístění dané zařízení, specifikována budova a pokoj
+    \item \textbf{State (Stav)} - v jakém aktuálním stavu se určitá Věc nachází
+\end{itemize}
+
 
 \section{Analýza případů užití}
+Tato kapitola popisuje identifikované případy užití, ve kterých figurují následující aktéři:
+\begin{itemize}
+    \item User - aktér představující autentizovaného uživatele webového rozhraní.
+    \item User ROLE\_ADMIN - aktér představující autentizovaného uživatele s právý kompletní správy systému.
+\end{itemize}
 
+\subsection{UC1 - Registrace uživatele}
+Neautentizovaný uživatel vyplní registrační formulář obsahující jméno, přijmení, uživatelské jméno, heslo a email. Validace dat bude prováděna dle [F8]. Při zpracování požadavku na serveru bude zajištěna unikátnost uživatelského jména a emailu napříč databází. Uživatel bude informován o úspěchu/neúspěchu akce. Po úspěšném vytvoření bude automaticky přihlášen, pokud nezrušil ve formuláři zaškrtávátku \uv{Automaticky přihlásit}, a bude mu odeslán uvítací email na zadanoou emailovou adresu.
+
+\subsection{UC2 - Přidání nového zařízení}
+\label{UC:UC2}
+Uživatel ve správě zařízení bude mít sekci \uv{Přidat zařízení}, kde se zobrazí všechna nově detekovaná zařízení, která ještě nemá přidaná. Následně při kliknutí na tlačítko přidat se zobrazí jednoduchý formulář pro zadání umístění a názvu zařízení - bude předvyplněn název, který ohlásilo zařízení. Uživatel formulář potvrdí, systém následně vytvoří dané zařízení, přidá uživateli k němu oprávnění a ná stránce \uv{Ovládání} už bude uživatel moci sledovat aktuální stav Věcí a případně je i ovládat (pokud to umožňují).
+
+\subsection{UC3 - Zobrazení teploty}
+Na stránce \uv{Ovládání} bude zobrazeny jednolivé místnosti ve formě Widgetu, ve kterém budou aktuální údaje ze senzorů v dané místnosti. Při rozkliknutí místnosti budou zobrazeny všechny senzory a Věci. Po kliknutí na senzor bude uživateli zobrazena informace o stáří aktuální hodnoty a zobrazen graf vizualizující průběh hodnoty v čase za posledních 24 h.
+
+\subsection{UC4 - Rosvícení světla}
+Na stránce \uv{Ovládání} po rozkliknutí místnosti obsahující Věc pro ovládání světla \uv{přepínač} bude zobrazen prvek umožnující uživateli jeho změnit stav. Po kliknutí bude odeslán požadavek pro změnu stavu na server, který ho odešle danému zařízení. Po potvrzení od zařízení, že ke změně opravdu došlo bude ze serveru odeslána tato informace webové aplikaci.
+
+\subsection{UC5 - Editace zařízení}
+Uživatel na stránce \uv{Správa zařízení} bude mít zobrazena všechna zařízení, ke kterým má oprávnění pro editaci. Rozhraní umožní pomocí formuláře editaci názvu zařízení, umístění a změnu oprávnění pro jednotlivé uživatele. Dále může zařízení smazat.
+
+\subsection{UC6 - Správa uživatelů}
+Uživatel s rolí \uv{admin} může přistoupit na stránku \uv{Správa uživatelů}, kde se mu zobrazí seznam všech registrovaných uživatelů. Jednotlivé uživatele může smazat a pomocí formuláře editovat jejich osobní údaje včetně hesla.
+
+\subsection{UC7 - Device discovery}
+Zařízení pokud není ještě není spárované s Platformou, tak při zapnutí odešle status=\uv{init}, následně začne ohlašovat, které Věci má a jejich Vlastnosti. Po jejich odeslání pošle status=\uv{ready} a příslušnému uživateli, ke kterému se zařízení hlásí se zobrazí v rozhraní viz. \hyperref[UC:UC2]{UC2}. Po jeho přidání uživatelem Platforma odešle zařízení API klíč, které si ho uloží a přihlásí se pomocí toho klíče.
+
+\subsection{UC8 - Změna stavu Vlastnosti}
+Při požadavku na změnu stavu \uv{Vlastnosti} odešle Platforma požadavek na dané zařízení, které provede změnu a odešlě potvrzovací zprávu, že ke změně úspěšně došlo. V případě nevalidního požadavku, zařízení žádné potvrzení neposílá.
+
+
+\section{Vybrané technologie}
 
 \subsection{Komunikační protokol}   %https://ieeexplore.ieee.org/abstract/document/8079928
 Komunikační protokolů je velké množství a přímo závisí na výběru přenosného média. Při použití specializovaných sítí jako LoRa nebo Zigbee, nemáme moc velkou flexibilitu ve výběru. Zařízení podporující tyto specializované sítě jsou také poměrně drahá, ale umožňují běh na baterii. Zatímco využití WiFi sítě nám dává obrovskou flexibilitu ve výběru protokolů a zařízení podporující připojení k Wifi nebyli nikdo více cenově dostupné jako dnes. Primárně z finančních nároků a možnosti využití stávající WiFi infrastruktury v domácnosti jsem se rozhodl pro WiFi jako bezdrátové médium. Současně díky přímé podpoře IP protokolu nebudu muset vytvářet bridge mezi serverem a sítí se zařízenímí jako např. při použití Bluethooth či LoRa.
