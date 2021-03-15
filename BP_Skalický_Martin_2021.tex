@@ -85,7 +85,7 @@ Vzhledem k rozsahu Bakalářské práce není cílem nahradit existující řeš
 
 
 \chapter{Analýza}
-Tato kapitola se zabývá definici IOT Platformy a analýzi již existujících řešení. V závěru kapitoly je matice obsahující porovnání známích řešení vůči jejich funkcím.
+Tato kapitola se zabývá definici IOT Platformy a analýzy již existujících řešení. V závěru kapitoly je matice obsahující porovnání známých řešení vůči jejich funkcím.
 
 \section{Definice IOT Platformy}
 "IOT Platforma je více vrstvá technologie, která umožňuje přímočaré zajištění, ovládání a automatizaci připojených zařízení ve světě internetu věci. Zjednodušeně propojuje Váš hardware, jakkoli rozdílný, do cloudu s možností různorodé konektivity, obsahuje bezpečnostní mechanizmy a široké možnosti pro zpracování dat. Pro vývojáře, IOT Platforma nabízí soubor předpřipravených funkcí, které vysoce zvyšují rychlost vývoje aplikací pro připojená zařízení a řeší škálování a kompatibilitu napříč zařízeními" [*, překlad autora] %https://www.kaaproject.org/blog/what-is-iot-platform 
@@ -103,33 +103,34 @@ V této sekci jsou vysvětleny pojmy, které budou použity v následujících k
 \section{Vlastnosti??}
 
 \subsection{Komunikace}    % rozdíly v komunikačním mediu wifi, bluethoot, mesh řešení Z-wave a zigbee, LoRa, spotřeba, bateriový provoz, složitost instalace
-Pro komunikaci mezi zařízeními se nejčastěmi používá bezdrátová komunikaci, kvůli jednoduchosti instalace bez nutnosti většího zásahu do stávající infrastruktury. Tento typ lze rozdělit do dvou kategorií:
+Pro komunikaci mezi zařízeními se nejčastěmi používá bezdrátová komunikace, kvůli jednoduchosti instalace bez nutnosti většího zásahu do stávající infrastruktury. Tento typ lze rozdělit do dvou kategorií:
 \begin{itemize}
     \item \textbf{Centralizované} - Každé zařízení komunikuje pouze s jedním centrálním prvkem, přes který jde veškerá komunikace. Mezi nejznámější technologii tohoto typu patří Wifi.
-    \item \textbf{Decentrlizovanou} - V této síti komunikují zařízení přímo s ostatními bez jakéholiv prostředníka. Pokud zařízení nemohou komunikovat napřímo, tak využívají ostatní pro předání zprávy. Síť je díky tomu mnohem odolnější vůči výpadků, protože zde není tzv. "Single point of failure". Zpravidla mývá nižší datovou propustnost a je složitější pro nasazení a následnou zprávu. Velkou výhodou je snadnější rozšiřitelnost pokrytí, protože každé přidané zařízení rozšiřuje signál a tímto způsobem lze zařízení řetězit.
+    \item \textbf{Decentrlizovanou} - V této síti komunikují zařízení přímo s ostatními bez jakéholiv prostředníka. Pokud zařízení nemohou komunikovat napřímo, tak využívají ostatní pro předání zprávy. Síť je díky tomu mnohem odolnější vůči výpadků, protože zde není tzv. "Single point of failure". Zpravidla mívá nižší datovou propustnost a je složitější pro nasazení a následnou správu. Velkou výhodou je snadnější rozšiřitelnost pokrytí, protože každé přidané zařízení rozšiřuje signál a tímto způsobem lze zařízení řetězit.
 \end{itemize}
-Vzhledem k rozšířenosti Wifi, kterou dnes najdeme v každé domácnosti, se přirozeně nabízí využít tuto možnost i pro internet věcí. A k tomu v posledních letech opravdu došlo. Díky extrémně levnému chipu ESP8266, který se dnes v ČR dá koupit za 40 Kč, došlo k masivní penetraci trhu s chytrými zařízeními využívající právě Wifi. Bohužel tato technologie má i svá negativa a největší je spotřeba elektrické energie a limit maximálního početu připojenách zařízení na jeden centrální prvek (řádově desítky). Vysoká spotřeba je dána nutností časté komunikace jen kvůli udržení aktivního spojení a proto je možné provozovat zařízení na baterie pouze v jednotkách dní až týdnů.
+Vzhledem k rozšířenosti Wifi, kterou dnes najdeme v každé domácnosti, se přirozeně nabízí využít tuto možnost i pro internet věcí. A k tomu v posledních letech opravdu došlo. Díky extrémně levnému chipu ESP8266, který se dnes v ČR dá koupit za 40 Kč, došlo k masivní penetraci trhu s chytrými zařízeními využívající právě Wifi. Bohužel tato technologie má i svá negativa a největší je spotřeba elektrické energie a limit maximálního početu připojených zařízení na jeden centrální prvek (řádově desítky). Vysoká spotřeba je dána nutností časté komunikace jen kvůli udržení aktivního spojení a proto je možné provozovat zařízení na baterie pouze v jednotkách dní až týdnů.
 
-Pro bateriová provoz vznikly speciální sítě, které sice na rozdíl od Wifi umožní přenos v desítka kp za sekundu (tisícina rychlosti běžné Wifi), ale jsou energeticky mnohem úspornější (umožnují provoz až desítky let na malou baterii), mají mnohonásobně větší dosah a umožňují propojení mnohem většího počtu zařízení (stovky).
+Pro bateriový provoz vznikly speciální sítě, které sice na rozdíl od Wifi umožní přenos v desítka kp za sekundu (tisícina rychlosti běžné Wifi), ale jsou energeticky mnohem úspornější (umožnují provoz až desítky let na malou baterii), mají mnohonásobně větší dosah a umožňují propojení mnohem většího počtu zařízení (stovky).
 
+% TODO - odkud je toto tvrzení převzato
 Nejvíce rozšířenými z centrálně orientovaných sítí jsou SigFox a LoRa. SigFox je komerční řešení, kde se platí za každé připojené zařízení. Oproti tomu síť LoRa používá otevřený standard pro komunikaci LoRaWAN. Protože se jedná o otevřený standard, tak kdokoliv může vytvořit a provozovat kompatibilní zařízení. Samozřejmně také lze využití komerční infrastrukturu, kam lze připojit svá zařízení za poplatek, ale díky otevřenosti má každý možnost si za pár tisíc postavit vlastní GateWay a provozovat libovolná zařízení bez jakýhkoliv poplatků a prostředníků.
 
 %https://thesmartcave.com/z-wave-vs-zigbee-home-automation/
-Z decentralizovaných sítí se nejvíce ujali Zigbee a Z-Wave. Zigbee je otevřený standard, který dokáže pracovat, jak v pásmu 2.4GHz, tak i 900 MHz. Nemá omezení na maximální počet zařízení zřetězených za sebou a dokáže vytvořit síť skládající se až ze 65 tisíc zařízení. Z-Wawe je naopak uzavřený standard, který funguje pouze v pásmu 800-900 MHz. Limituje maxímální počet přeposlání zprávy na 4 a podporuje síť o velikosti až 256 zařízení. Obě sítě jsou energeticky velmi úsporné a umožňují běh zařízení na obyčejnou knoflíkovou baterii po dobu až několika let.
+Z decentralizovaných sítí se nejvíce ujaly Zigbee a Z-Wave. Zigbee je otevřený standard, který dokáže pracovat, jak v pásmu 2.4GHz, tak i 900 MHz. Nemá omezení na maximální počet zařízení zřetězených za sebou a dokáže vytvořit síť skládající se až ze 65 tisíc zařízení. Z-Wawe je naopak uzavřený standard, který funguje pouze v pásmu 800-900 MHz. Limituje maximální počet přeposlání zprávy na 4 a podporuje síť o velikosti až 256 zařízení. Obě sítě jsou energeticky velmi úsporné a umožňují běh zařízení na obyčejnou knoflíkovou baterii po dobu až několika let.
 
 \subsection{Automatizace}
 %https://www.iot-now.com/2020/06/10/98753-iot-home-automation-future-holds/
-Automatizace je ve světě IoT pravděpodobně nejdůležitějším tématem a každá IOT Platforma by ji měla umožňovat, protože dává možnost využít zařízení úplně novým způsobem. Principiálně se jedná o možnost definování reakcí na jednotlivé akce. Akce můžemý být změna teploty, otevření okna nebo detekce pohybu a reakce změna stavu zařízení - zhasnutí světla nebo zapnutí televize. V podstatě jediným limitem je zde lidská představivost. Modelový scénář:
+Automatizace je ve světě IoT pravděpodobně nejdůležitějším tématem a každá IOT Platforma by ji měla umožňovat, protože dává možnost využít zařízení úplně novým způsobem. Principiálně se jedná o možnost definování reakcí na jednotlivé události. Událost můžemý být změna teploty, otevření okna nebo detekce pohybu a reakce změna stavu zařízení - zhasnutí světla nebo zapnutí televize. V podstatě jediným limitem je zde lidská představivost. Modelový scénář:
 
 Představme si moderní dům, ve kterém jsou všechny věci, které nás napadnou, chytré, což s dnešními technologickými možnostmi není sci-fi, ale naopak možná realita. Majitel domu, říkejme mu Joe, přichází večer unavený domů a odemyká dveře. Vejde do vnitř a světlo na chodbě a v kuchyni již svítí. Jde přímo do kuchyně, protože po dlouhém dni v práci má hlad a usedá s jídlem ke stolu. Nemá rád ticho, tak řekne: ,,Alexo, zapni hudbu" a ze Sterea se spustí Beethoven, protože Alexa ví, že je to Joeův oblíbený skladatel klasické hudby. Joe cítí jak se po místnosti rozprostřívá příjemné teplo ze zapnuté klimatizace. Po příjemné večeři odchází do druhého patra do koupelny, samozřejmně se nemusí starat o zapnuté Stereo ani světla, protože se vše samo vypne, jakmile odejde. Ve sprše pustí vodu, která má automaticky teplotu nastavenou specificky dle Joeovi preference 36 °C i přes to, že 20 min předním se sprchovala jeho přítelkyně, která si libuje v teplejší vodě. Po sprše jde do ložnice a ulehá do postele zatímco se kontroluje, jestli jsou všechny dveře zamčené, okna zavřená a zapíná se alarm pro případný pohyb ve spodním patře. A jak mohlo být vše uzpůsobené Joeovím preferencím a vše zapnuté ještě před jeho vstupem do domu? Protože zvonek u dveří má kameru s rozpoznáváním obličeje - Joea tedy poznal a vše nastavil.
 
 Takto tedy může vypadat automatizace v domácnosti, která zpříjemní život a odprostí Vás od spousty všedních věcí. Vše nastavené dle osobních preferencí a to nejen určité rodiny ale na úrovni jednotlivců v domácnosti.
 
 
-\subsection{Bezpečnost a soukromí}  % TODO rozvést
+\subsection{Bezpečnost a soukromí}
 Při výběru Platformy by důležitým kritériem měla být bezpečnost. Na první pohled se to nemusí zdát být důležité, co se může stát když bude s platformou komunikovat čidlo pohybu a někdo se dokáže dostat k těmto údajům? Například pro zloděje mohou být taková data zlatý důl, protože bude přesně vědět kdy je dům prázdný.
 
-Bezpečnost je potřeba zde sledovat hned na několika faktorech. Prvním je komunikační médium. Pokud zařízení komunikují bezdrátově, tak by komunikace měla být šifrovaná, aby se nedala jednoduše odposlechnout. Druhým faktorem je bezpečnost samotné platformy. Pokud bude platforma dostupná pouze na interní síťi v domácnosti, tak bezpečnost na první pohled ohrožená není, pokud se ale zamyslíme nad tím, kolik dnes doma máme chytrých zařízení, tedy takových která dokáží komunikovat přes internet, tak zjistíme že jich ve velké množství, protože dnes už takovou chytrou televizi má doma téměř každý a je otázka na kolik věříme výrobcům těchto zařízení, že kladou důraz na jejich bezpečnost. Stačí aby nějaký vir napadl naší televizi či jiné zařízení a případný útočník má plný přístup k platformě pouze získáním přístupu do interní sítě. Proto by platforma měla využívat alespoň systém pro identifikaci, ideálně i autentifikaci a to nejen v případě, že je přístupná z internetu ale i z vnitřní sítě.
+Bezpečnost je potřeba zde sledovat hned na několika faktorech. Prvním je komunikační médium. Pokud zařízení komunikují bezdrátově, tak by komunikace měla být šifrovaná, aby se nedala jednoduše odposlechnout. Druhým faktorem je bezpečnost samotné platformy. Pokud bude platforma dostupná pouze na interní síťi v domácnosti, tak bezpečnost na první pohled ohrožená není, pokud se ale zamyslíme nad tím, kolik dnes doma máme chytrých zařízení, tedy takových, která dokáží komunikovat přes internet, tak zjistíme že jich je velké množství, protože dnes už takovou chytrou televizi má doma téměř každý a je otázka na kolik věříme výrobcům těchto zařízení, že kladou důraz na jejich bezpečnost. Stačí aby nějaký vir napadl naší televizi či jiné zařízení a případný útočník má plný přístup k platformě pouze získáním přístupu do interní sítě. Proto by platforma měla využívat alespoň systém pro identifikaci, ideálně i autentifikaci a to nejen v případě, že je přístupná z internetu ale i z vnitřní sítě.
 
 \subsection{Cílová skupina}
 Internet věcí lze využít napříč všemi sférami. Od jednoduché meteostanice, která bude měřit venku teplotu, přes tvz. chytrou domácnost, kde Vám lednička pošle nákupní seznam na email podle chybějících potravin, přes využití v průmyslu pro sběr různorodých dat a jejich následnou analýzu ať pro zvýšení kvality nebo detekci poruchy, ještě před tím než k ní dojde. Tato práce se zaměřuje na využití IoT v běžné domácnost a implementací Platformy určené pro kutily a technické entusiasty, kteří chtějí mít svá data pod kontrolou a vytvářet různorodá zařízení, která si k Platformě připojí.
@@ -153,7 +154,7 @@ Internet věcí lze využít napříč všemi sférami. Od jednoduché meteostan
 Na trhu dnes existuje velké množství komerčních řešení od známých výrobců. Někteří jsou známí spíše výrobou harwaru jako Philips a Xiaomi, jiní se zaměřují spíše na nabídku služeb a integraci zařízení ostatních výrobců pod svojí Platformu jako Amazon nebo Google. Pro koncového zákazníka mají Komerční řešení obrovskou výhodu v jednoduchosti nasazení a následné obsluhy. Stačí zakoupit centrální jednotku, libovolná zařízení od stejného výrobce a vše krásně funguje. Avšak problém nastává ve chvíli, kdy potřebují řešení škálovat či customizovat dle svých potřeb, protože si dodavatel za úpravy na \uv{míru} začne účtovat obrovské částky a zákazníkovi nezbývá nic jiného než platit. Sám si potřebné změny udělat nemůže, protože nemá zdrojové kódy a migrace k jinému produktu by znamenal obrovské náklady a problémy se stávájícími integracemi, protože různá řešení mívají různá rozhraní.
 
 %security
-Aspekt bezpečnosti u uzavřených řešení bývá diskutabilní. Pravidelné bezpečnostní audity kvůli nákladům provádím málo kdo. Výrobci samozřejmně vždy tvrdí, že bezpečnost je u nich na prvním místě, ale bohužel tento aspekt je v přímém kontrastu s jenododuchostí použití, což je pro výrobce mnohem důležitější protože pokud se řešení dobře a jednoduše ovládá, tak mnohem spíše si ho zákazníci oblíbí, než pokud bude maximálně zabezpečeno, ale uživatel bude muset provádět úkony návíc čistě kvůli bezpečnosti, která mu na první pohled nepřínáší přidanou hodnotu.
+Aspekt bezpečnosti u uzavřených řešení bývá diskutabilní. Pravidelné bezpečnostní audity kvůli vysokým nákladům provádí málo kdo. Výrobci samozřejmně vždy tvrdí, že bezpečnost je u nich na prvním místě, ale bohužel tento aspekt je v přímém kontrastu s jenododuchostí použití, což je pro výrobce mnohem důležitější protože pokud se řešení dobře a jednoduše ovládá, tak mnohem spíše si ho zákazníci oblíbí, než pokud bude maximálně zabezpečeno, ale uživatel bude muset provádět úkony návíc čistě kvůli bezpečnosti, která mu na první pohled nepřínáší přidanou hodnotu.
 
 %Cloud dependent
 Od Platformy očekáváme možnost vzdáleného ovládání, tedy přístup odkudkoli z internetu. Málokdo má však doma veřejnou IP adresu, aby si mohl celé řešení provozovat doma \uv{self-hosted}. V Praxi si tedy uživatel pořidí domů GateWay, která komunikoje s chytrými zařízeními v domácnosti a současně s cloudem výrobce, přes který lze přistupovat na Platformu a ovládat všechny zařízení. Takové řešení se velmi osvědčilo díky jednoduchosti, protože neklade žádné nároky na uživatele jako např. veřejnou IP adresu. Problém však může nastat ve chvíli, kdy výrobce daného řešení po několika letech ukončí činnost a s tím přestane provozovat svojí cloudovou infrastrukturu, na které je závislá GateWay a vzdálený přístup z internetu. V lepším případě bude zachována funkčnost v lokální sití, v horším přestane řešení fungovat úplně. Najednou uživatelovi zbyde doma spousta funkčního (po fyzické stránce) harwaru, který nemůže využívat.
@@ -165,14 +166,14 @@ Výše jsem nastínil nejhorší možný scénář, který naštěstí v posledn
 % nepopulární/špatná reputace mezi lidmy, často potřeba znalosti problematiky, Free, flexibilní, customizovatelné
 OpenSource řešení mají mezi širší veřejností špatnou reputaci, protože na rozdíl od komerčních \uv{Plug\&Play} produktů většinou vyžadují určité povědomí o dané problematice. Je to způsobeno tím, že se snaží pokrýt celou doménu stejně jako komerční řešení, ale oproti nim se zlomkem vývojářů a financí. Následkem toho není prvotní nastavení pro laika zcela přímočaré a může se střetnout s problémy. Avšak překonání prvotních nesnázích přináší následně spoustu pozitiv.
 
-Jedním z nejatraktivnějších lákadeů je samozřejmně cena. OpenSource řešení jsou zpravidla zcela zdarma, případně nabícejí placenou podporu. Mě osobně na OpenSource nejvíce zaujala komunita. Pokud se projekt dostane do určité známosti, tak kolem něho začně vznikat komunita lidí, primárně technologických nadšenců ale i lidí z IT praxe, kteří mezi sebou komunikují a spolupracují na vylepšení daného řešení, ať už přímo (napsání části funkcionality) nebo nepřímo (komunikace s vývojáři). Potom i obyčejný uživatel, který chce řešení využít, tak při objevení potíží, může požádat komunitu o pomoc a protože to jsou nadšení lidé, jsou velmi ochotní.
+Jedním z nejatraktivnějších lákadel je samozřejmně cena. OpenSource řešení jsou zpravidla zcela zdarma, případně nabízejí placenou podporu. Mě osobně na OpenSource nejvíce zaujala komunita. Pokud se projekt dostane do určité známosti, tak kolem něho začně vznikat komunita lidí, primárně technologických nadšenců ale i lidí z IT praxe, kteří mezi sebou komunikují a spolupracují na vylepšení daného řešení, ať už přímo (napsání části funkcionality) nebo nepřímo (komunikace s vývojáři). Potom i obyčejný uživatel, který chce řešení využít, tak při objevení potíží, může požádat komunitu o pomoc a protože to jsou nadšení lidé, jsou velmi ochotní.
 
 Pokud máme dostatečné technické znalosti, tak si můžeme prohlédlou přímo zdrojové kódy a sami si zhodnotit kvalitu i bezpečnost. U větších projektů to však již není tak úplně možné při desítkách tisíc rádků kódu, ale existují lidé, kteří tomu opravdu věnují čas a mohou tak objevit zranitelnosti. Dále OpenSource projekty bývají mnohem více sdílné ohledně architektury kterou využívají a je možno se v dokumentaci dočíst, jak vlastně řešení funguje interně, na rozdíl od komerčních, kde je to tzv. \uv{BlackBox}.
 
 OpenSource platformy bývají postavené na systému Pluginů, tedy obsahují určitou základní sadu funkcí a dále lze funkčnost rozšiřovat pomocí instalace Pluginů. Ty mohou vytvářet přímo autoři nebo kdokoli jiný dle potřeb. Díky tomu jsou velmi robustní a podporují širokou škálu zařízení od různých výrobců napříč technologiemi a pokud ne, tak s trochou znalostí v programování si může každý dopsat plugin dle potřeb pro podporu daného zařízení.
 
 
-\subsection{Známé Platformy}  %rešerže jednotlivých platforem + závěrečná matice
+\subsection{Známé Platformy}  % TODO uvést zdroj, ze kterého plyne že jsou nejoblínější nebo přeformulovat
 Tato sekce s zabývá analýzou 4 nejznámějších Platforem a v závěru jejich vzájemným porovnáním.
 
 \paragraph{Blynk}
@@ -183,7 +184,7 @@ Blynk se označuje jako harware-agnostic IOT Platforma s white-label mobilními 
     \item \textbf{Business} začíná na \$1000/měsíc a nabízí navíc OTA aktualizace koncových zařízení (vzdáleně), webové rozhraní, datovou analýzou a dalších funkce.
 \end{itemize}
 
-Hardware-agnostic znamená, že nejsou omezeni pouze na určitý hardware a umožňují připojit v podstatě libovolné zařízení. Pro připojení maji definované rozhraní nad jednotlivými protokoli. Podporují custom TCP/IP, WebSocket, HTTP a nově i MQTT (zatím k němu nemají ale dokumentaci). Dávají k dispozici knihovný pro různé harwarové platformy, takže připojení k platformě je potom otázka dvou řádků kódu. K dispozici je velmi přehledná a detailní dokumentace.
+Hardware-agnostic znamená, že nejsou omezeni pouze na určitý hardware a umožňují připojit v podstatě libovolné zařízení. Pro připojení maji definované rozhraní nad jednotlivými protokoly. Podporují custom TCP/IP, WebSocket, HTTP a nově i MQTT (zatím k němu nemají ale dokumentaci). Dávají k dispozici knihovný pro různé harwarové platformy, takže připojení k platformě je potom otázka dvou řádků kódu. K dispozici je velmi přehledná a detailní dokumentace.
 
 Nativní aplikace pro iOS a Android umožnuje vytvářet vlastní dashboardy pomocí již předpřipravených Widgetů, kterých je opravdu velké množství, ale jsou placené za tzv. Energii, což je měna která lze dobíjet za peníze, dále definovat vlastní widgety a upravit chování celé aplikace. Následně lze takto upravenou aplikaci vyexportovat a přímo nahrát na Google Play a AppStore pod vlastním názvem. Tento přístup nabízí elegantní možnost pro tvorbu vlastního řešení, které následně je možné nabízet jako vlastní produkt.
 
@@ -216,7 +217,7 @@ Dokumentace projektu je na velmi vysoké úrovni s velmi detailním popisem. Pra
 % TODO závěrečné porovnání - Blynk více orientované na koncová zařízení, ThingSpeaks primárně pro analýzu dat s Matlabem, HA a openHab jsou HUBy pro domácí automatizaci 
 Jednotlivé Platforma se některými funkcemi překrývají a v jiných jsou zase jedinečné. Při výběru je důležité si stanovit na co Platformu chceme využívat a jaké funkce vyžadujeme.
 
-Blynk primárně cílí na podnikatelský segment, a nejvíce se hodí firmám, kteří chtějí na této Platforma vysvtavět své řešení, které následně budou přeprodávat pod svojí vlastní značkou. To díky příme možnosti exportu aplikace na AppStore a Google Play, hromadné zprávě zařízení a ACL. Kvůli chybějící podpoře komerčních zařízení lze využít pro domácnost pouze s DYI zařízeními.
+Blynk primárně cílí na podnikatelský segment, a nejvíce se hodí firmám, kteří chtějí na této Platforma vysvtavět své řešení, které následně budou přeprodávat pod svojí vlastní značkou. To díky příme možnosti exportu aplikace na AppStore a Google Play, hromadné zprávě zařízení a ACL (seznam oprávnění vázaný k zařízení, který specifikuje kdo k němu může přistupovat a jaké operace provádět). Kvůli chybějící podpoře komerčních zařízení lze využít pro domácnost pouze s DYI zařízeními.
 
 ThingSpeaks míří primárně na zpracování dat díky svému ekosystému postaveném kolem MATLAB®. Pro veškeré zpracování, analýzi a vizualizace stačí znalost prostředí MATLAB®, který je světově známý a velmi oblíbený mezi akademiky.
 
@@ -426,11 +427,13 @@ Prvním světoznámím průkopníkem ve světě JavaScriptu pro tvorbu uživatel
 
 \chapter{Realizace}
 
-\section{Server}
+\section{Backend}
 
-\section{Klientská část}
+\subsection{Validace}
 
-\section{Komunikace}
+\subsection{MQTT schéma}
+
+\section{Frontend}
 
 \section{Knihovna pro ESP8266}
 
