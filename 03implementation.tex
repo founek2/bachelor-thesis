@@ -1,19 +1,207 @@
 \chapter{Realizace}
 
+
 \section{Backend}
 % Popsat rozdělení na 2 BE servery, API rozhraní, komunikace webSocket -> ukázat sexy diagram, Agenda (recoverable jobs)
+Servrová část je rozdělena na dva separátní procesy:
+\begin{itemize}
+    \item Backend - dává k dispozici RESTful rozhraní (ExpressJS) pro kompletní ovládání Platformy, dále vykonává naplánová akce jako odesílání emailů (AgendaJS)
+    \item Backend-mqtt - interaguje se zařízeními přes MQTT broker a odesílá real-time změny na frontend (Socket.IO)
+\end{itemize}
+Společné části kódu jako definice mognoose schémat apod. jsou umístěny do balíčku \uv{common}
+
+\subsection{Souborová struktura}
+\dirtree{%
+    .1 packages.
+    .2 backend\DTcomment{Obsluha RESTful rozhraní a úkolů}.
+    .3 src.
+    .4 api\DTcomment{zdrojové kódy pro jednotlivé endpointy}.
+    .5 device.
+    .5 discovery.
+    .5 user.
+    .4 constants.
+    .4 jobs\DTcomment{definice úkolů pro AgendaJS}.
+    .4 loaders\DTcomment{rozdělený startovací proces do modulů}.
+    .4 middleware\DTcomment{definice vlastních middleware}.
+    .4 services\DTcomment{zdrojové kódy služeb}.
+    .4 subscribers\DTcomment{definice akcí na asynchroní události}.
+    .2 backend-mqtt\DTcomment{Oblsuha MQTT a Socket.IO}.
+    .3 src.
+    .4 api.
+    .5 auth\DTcomment{endpoint pro RabbitMQ autentifikaci}.
+    .5 actions\DTcomment{endpoint pro interní komunikaci s Backend}.
+    .4 services\DTcomment{zdrojové kódy služeb}.
+    .5 firebase\DTcomment{odesílání notifikací}.
+    .5 mqtt\DTcomment{napojení na MQTT broker a obsluhu zařízení}.
+    .5 websocket\DTcomment{real-time komunikace pomocí Socket.IO}.
+    .4 subscribers\DTcomment{definice akcí na asynchroní události}.
+    .2 common\DTcomment{Obsahuje sdílené části kódu}.
+    .3 src.
+    .4 config\DTcomment{konfigurace načtená z promněných prostředí}.
+    .4 models\DTcomment{definice mongoose schémat a typů}.
+    .4 utils.
+}
+
+
+\subsection{Proces Backend}
+
+\subsection{Proces Backend-mqtt}
 
 \subsection{Bezpečnost}
-% JWT, helmet, NoSql injection, HTTPS (nginx proxy), rabbitMQ jako broker + custom authBackend
+% helmet - popis útoků které brání, rate limmiter, mongo sanitizer ->  JWT token - výhody rychlosti a místa oproti ukládání cookie/session -> nginx jako proxy - separace konfigurace, snažší pro správu sys adminem -> rabbitMQ a custom backend (+cache pro vyšší výkon)
+Platforma zpracovává uživatelská data a proto je nutné tyto data chránit (s ohledem na soukromý uživatelů a i z pohledu zákona). Následující text pojednává o implementovaných bezpečnostních mechanizmech.
+
+% TODO OWASP citace https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html
+RESTful rozhraní je přímo dostupné z internetu a proto je velice důleží ho správně zabezpečit proti zneužití. Proti velkému množství útoků se lze bránit správným nastavením HTTP hlaviček. Toto sice nechrání před přímými útoky, protože útočník může hlavičky ignorovat, ale chrání uživatele tak, že informují jejich prohlížeč o povoleném chování stránky např. odkud je bezpečné stahovat kód. Tímto způsobem lze primárně předejít útokům typu \itshape{Cross-site scripting} (vložení/podstrčení cizího JavaScript kódu do stránky) a jiným druhům \itshape{Cross-site infections} (vkládání html, stylů a jiných objektů) a \itshape{Clickjacking} (překrývání klikacích prvků jinými s úmyslem propagace kliknutí na prvek, který chce útočník). Pro nastavní hlaviček jsem využil middleware \uv{helmet}, který je doporučený projektem OWASP (Open Web Application Project), který se přímo zabývá bezpečností webových aplikací. Pro ochranu přihlášení před útokem typu \itshape{Brute-force} (hrubou silou) jsem použil middleware \uv{express-rate-limit}. Prozatím se základním nastavení s omezením počtu pokusů na jednu ip adresu za určitý časový úsek a data si udržuje v paměti. V případě pootřeby je ale velmi snadno rozšiřitelný o využití databáze (např. Redi) a komplexnější omezení (např. limit pokusů pro kombinaci uživatelského jméno a ip adresy).
+
+Pravděpodobně nejznámější typ útoku je \itshape{SQL Injection}. Díky využití NoSQL databáze systém přímo touto zranitelnosti netrpí přímo, ale jejím ekvivalentem v podobě \itshape{NoSQL Injection}. Princip tohoto útoku je velmi jednoduchý. Zranitelnost vychází ze všech uživatelských vstupů, která se používají pro vytváření dotazů do databáze. Při sestavování těchto dotazů lze chytře využít možnost daného dialektu databázového jazyka a kompletně modofikovat jeho význam. Způsob ochrany spočívá v odstranění/nahrzení všech potencionálně zneužitelných znaků v uživatelstkém vstupu. Konkrétně jsem využil middleware \uv{express-mongo-sanitize}, který odstraní ze všech potencionálně zneužitelných míst všechny znaky \uv{\$} a \uv{.}, které lze v případě MongoDB využít právě pro \itshape{NoSQL Injection}.
+
+Do systému mohou přistupovat klienti pod různými uživatelskými účty, která mají různá oprávnění vázaná k určitým zařízením. Proto je nutné zamezit přístup pouze k takovým zdrojům serveru, ke kterým má daný přihlášený uživatal přístup. Jak vlastně server pozná kdo inicioval daný požadavek? V případě nestavového protokolu HTTP, musí iniciátor přiloži ke každému požadavku nějaký token, kterým prokáže svojí totožnost. K tomuto účelu se nejčastěni využívaly dlouhé náhodné unikátní identifikátory, které byly uloženy v databázi u daného uživatele. Toto řešení ale vyžadovalo dotaz do databáze při každém požadavku pro ověření identity, což zbytečně zvyšuje zátěž na server. Proto se vytvořil standart využívající asymetrickou kryptografii JWT (JSON Web Token, RFC 7519), který umožňuje při přihlášení klientovi odeslat řetězec obsahující informace (např. id, jméno, příjmení, úrověň oprávnění) a asymetrická kryptografie zaručuje, že nelze tyto informace modifikovat bez poškození integrity. Díky tomu odpadá nutnost pokaždé se dotazovat do databáze, protože stačí ověřit integritu tokenu. Tento postup má samozřejmně, ale i své negativní vlastnoti, kterými se zde však nebudeme zabývat.
+
+%https://news.netcraft.com/archives/category/web-server-survey/
+Věřím, že využití HTTPS (HTTP spolu se šifrováním SSL nebo TLS) je dnes samozřejmností v případě, že se na stránce zadávají jakékoli údaje. NodeJS přímo podporuje šifrované HTTP, ale správa certifikátu i nastavení není úplně přímočaré. Proto jsem NodeJS použil jako HTTP server s představeným proxy serverem Nginx, který s klienty již komunikuje pomocí zabezpečeného spojení. Nginx je široce podporován různými nástroji pro správu webů mimo jiné nástrojem \uv{Certbot}, který umožňuje automatické získání bezplatného certifikátu nutného pro provoz HTTPS. Lze velmi snadno konfigurovat a nabízí pokročilé funkce jako \itshape{load balancing}.
+
+Veškerá komunikace mezi koncovými zařízeními a Platformou probíhá přes protokol MQTT a proto zabezpečení tohoto kanál je nezbytné. Není žádoucí aby třetí strana mohla posílat požadavky pro změnu stavu zařízením, i odposlouchávání zpráv je bezpečnostní riziko (z odposlechu pohybovích čidel lze zjistit zda je někdo doma, zlatý důl pro zloděje). Šifrování MQTT dokáže zajistit využití protokolu nižší vrstvy TLS (označováno jako mqtts nebo mqtt over tls). Toto řešení zamezí odposlechnutí komunikace mezi Brokerem a zařízením. Většina existujících řešení pro domácnost další bezpečností prvky neimplementují a následkem toho sice nelze odposlechnout komunikace, ale lze se jednoduše přihlást k Brokeru k odběru všech zpráv. Já však považuji toto řešení jako nedostatečné a proto implementuji systém pro autentizaci (ověření identity) i autorizaci (kontrola oprávnění pro přístup k danému zdroji). MQTT specifikace umožňuje přihlášení pomocí uživ. jména a hesla nebo certifikátu. Vzhledem k omezenému výpočetnímu výkoun ESP8266 jsem nucen využít kombinaci jména a hesla, protože rozumný výpočet asymetrických šifer je za hranicí jeho možností. Jako MQTT Broker využívám RabbitMQ, který podporuje definici vlastního backendu pro kontrolu oprávnění přes RESTful rozhraní. Toto řešení mi umožňuje kontrolovat přihlášení jednotlivých zařízení a i následně jednotlivé požadavky k publikaci a odběru zpráv. Součástí dat, které předává RabbitMQ autentizačnímu serveru je i název tématu do kterého chce zařízení zapisovat nebo z něho číst a můžu, tak přesně specifikovat jestli to danému zařízení umožní či nikoliv.
 
 \subsection{Validace}
+\label{BE:Validace}
 % Vlastní framework, interaktivní validac na FE -> best UX, descriptory
+Webové aplikace se stávají stále více komplexní se složitější datovou strukturou. Z pohledu systému je pro nás důležité validovat veškerá data, která přijdou od třetí strany před tím, než s nimi začneme pracovat, protože se nemůžeme pouze spoléhat, že nám je někdo poslal ve správném formátu, v horším případě útočník bude záměrně posílat chybná data s nějakým postraním úmyslem. Z pohledu uživatele, je pro něj důležité, aby formulář byl intuitivní a na případné chybně zadané hodnoty byl ihned upozorněn - z vlastní zkušenosti vím, že není nic horšího než vyplnit dlouhý formulář, který se zdá naprosto validní, stisknout tlačítko odeslat a následně vidět nic neříkající hlášku \uv{Nevalidní formulář} bez jakýhkoli upřesňujícíh informací.
+
+%http://sumitshresthatech.blogspot.com/2012/03/field-and-field-descriptor-pattern.html
+Využití stejného programovaícho jazyka jak na backendu, tak frontendu mi umožňuje využít stejný způsob validace dat na obou stranách, který poskytne uživateli okamžitou odezvu bez nutnosti duplikace validační logiky. Implementoval jsem si proto vlastní framework, který je založen na vzoru \uv{Field and Descriptor Field}. Podle tohoto vzoru vstupují do systému dva separátní vstupy. Field obsahuje reálnou hodnotu pole a Deskriptor popisuje správný formát hodnoty pole. Systém při validaci určitého hodnoty si nejprve načte příslušný deskriptor a následně aplikuje validační logiku dle konfigurace v deskriptoru.
+
+Pomocí deskriptorů se definují struktury dat celých formulářů. Každý RESTful endpoint konzumuje v tělě požadavku formulář, který je předem systémem zvalidován (pomocí middlewaru). Výstupem validace je seznam všech polí, která nejsou validní a chybové hlášky obsahující přesný popis proč validace selhala.
+
+\subsubsection{Field Deskriptor}
+Deskriptor se definuje pro každé formulářové pole, společně tvořící deskriptor pro celý jeden formulář. Datovou struktura reprezentující formulář lze libovolně zanořovat a struktura odpovídá 1:1 struktuře držící samotná formulářová data. Ukázka deskriptoru pro formulář obsahující jedno pole:
+
+\begin{verbatim}
+{
+    FORM_NAME: {
+        userName: {
+            // sebereflektivní cesta k deskriptoru
+            deepPath: "FORM_NAME.userName",        
+            label: "Název který se zobrazí u pole v UI",
+            // pokud vrátí false, tak required bude ingorováno
+            when: (formData) => formData.selected === "user", 
+            // povinost vyplnění pole 
+            required: true/false,
+            // seznam validací, kterými se má validovat hodnota
+            validations: [
+                validationFactory('isString', {min: 3, max: 10})
+            ],   
+        }
+    }
+}
+\end{verbatim}
+
 
 \subsection{MQTT schéma}
 % popis Homie komunikace + vlastní modifikace, ukázka na diagramu
+První prototyp jsem založil na vlastní struktuře témat na MQTT protokolu, na kterém zařízení ohlašovali v jakém stavu se nachází a naslouchaly pro případně požadavky na změnu. Uživatel při vytváření zařízení musel nadefinovat veškeré jeho vlastnosti pomocí poměrně rozshálích formulářů, následně se vygeneroval api klíč a ten musel zadat do zařízení pro jeho úspěšné přihlášení k platformě. Toto řešení se ukázalo jako nešťastné, protože uživatel pro přidání zařízení musel mít rozsáhlé znalosti dané problematiky a tento proces byl velice časově náročný. Proto jsem se rozhodl, že místo toho aby uživatel definoval ručně každé zařízení, tak zavedu automatickou detekci (auto discovery) nových zařízení, které budou sama propagovat Platformě jaké věci a vlastnosti podporují.
+
+Po mnohých experimentech jsem nakonec své řešení založil na konvenci \uv{Homie} specifikující strukturu MQTT témat pro automatickou detekci, konfiguraci a používání zařízení. Tento základ jsem obohotil o výmněnu párovacího klíče a z důvodu, že konvence počítá s globálním unikátním identifikátorem pro každé zařízení, tak jsem přidal navíc unikátní  prefix pro MQTT téma, které označuji jako \uv{realm} - tento prefix je unikátní pro každého uživatele a všechny jeho zařízení komunikují v tomto realmu. Toto mi umožňilo omezit unikátnost identifikátoru z globálního na úroveň uživatele. Moje řešení neimplementuje kompletní konveci, ale pouze její čast s částečnými modifikacemi.
+
+Základem \uv{Homie} konvence je, že každé zařízení obsahuje uzly (věci) a ty mají vlasnosti. Přiklad - zařízení auto má uzel motor, které má vlastnosti teplotu a tlak. Každé zařízení komunikuje v tématu obsahující nějaký prefix a v další úrovní id daného zařízení - ukázka \uv{homie/esp-1919/}. Homie specifiku základní atributy, které začínají symbolem \uv{\$}, mezi nejduležitější patří:
+\begin{itemize}
+    \item \$name - člověkem čitelný název.
+    \item \$state - v jakém stavu se dané zařízení nachází (init, ready, disconnected).
+    \item \$nodes - seznam uzlů, které zařízení obsahuje oddělené čárkou.
+    \item \$properties - seznam vlastností, které daný uzel podporuje oddělené čárkou
+    \item \$datatype - datový typ hodnoty hodnoty určité vlastnosti (string, float, boolean).
+    \item \$unit - jednotka hodnoty určité vlastnosti.
+    \item \$settable - informace zda lze hodnotu vlastnosti nastavit (true, false).
+\end{itemize}
+
+
+\begin{verbatim}
+prefix/deviceId/$name   -> Název zařízení
+prefix/deviceId/$nodes  -> seznam nodeId
+prefix/deviceId/nodeId/$name    -> Název uzlu
+prefix/deviceId/nodeId/$type    ->
+prefix/deviceId/nodeId/$properties
+    -> seznam propertyId
+prefix/deviceId/nodeId/propertyId -> Aktuální hodnota
+prefix/deviceId/nodeId/propertyId/$name -> Název
+prefix/deviceId/nodeId/propertyId/$datatype -> Datový typ
+prefix/deviceId/nodeId/propertyId/$unit -> Jednotka hodnoty
+prefix/deviceId/nodeId/propertyId/$settable
+    -> Lze/nelze nastavit vlastnost
+prefix/deviceId/nodeId/propertyId/set
+    -> Zařízení naslouchá pro změny pokud je settable
+\end{verbatim}
+
+\subsubsection{Upravená specifikace}
+Rozdíl v mém řešení oproti \uv{Homie} konvenci primárně spočívá v použítí dvou rozdílným prefixů témat v závislosti jestli zařízení již bylo spárováno (uživatel si dané zařízení přidal) či nikoliv. Při prvním připojení se zařízení ohlásí v prefixu \uv{prefix/} následovaný identifikátorem zařízení stejně jako v případě homie konvence. Toto téma je veřejně přístupné pro všechny zařízení, která se k MQTT brokeru přihlásí uživatelským jménem shodujícím se s identifikátorem zařízení narozdíl od druhého prefixu \uv{v2/{real}}, který je přístupný pouze zařízení, který s přihlásí pomocí platného api klíče s přístupem do daného realmu. Následně zařízení začne oznamovat svůj status, název a všechny své schopnosti (věci a vlastnosti). Ukázka komunikace pro automatickou detekty zařízení umožňující zapnutí/vypnutí světla, měření teploty s identifikátorem \uv{light} a hlásící se k uživateli s uživ. jménem \uv{pepa}:
+
+\begin{verbatim}
+prefix/light/$status   -> init
+prefix/light/$name   -> Světlo
+prefix/light/$nodes  -> sensor,switch
+prefix/light/$realm  -> pepa
+prefix/light/sensor/$name    -> Senzor
+prefix/light/sensor/$type    -> sensor
+prefix/light/sensor/$properties -> temperature
+prefix/light/sensor/temperature/$name -> Teplota
+prefix/light/sensor/temperature/$datatype -> float
+prefix/light/sensor/temperature/$unit -> °C
+prefix/light/switch/$name   -> Lustr
+prefix/light/switch/$type   -> switch
+prefix/light/$status    -> ready
+\end{verbatim}
+
+Pokud se detekované zařízení nachází ve stavu \uv{ready}, tak je zobrazeno příslušnému uživateli pro přidání. Pokud si ho uživatel přidá, tak Platforma odešle api klíč danému zařízení, který jeho přijetí potvrdí, klíč si uloží a následně se přepne do prefixu témat \uv{v2/{realm}/}. Pokračování ukázky:
+
+\begin{verbatim}
+prefix/light/$apiKey/set
+    -> XXXXXXXXXXXXXXXX (odesláno Platformou)
+
+prefix/light/$status    -> paired
+prefix/light/$status    -> disconnected
+v2/pepa/light/$status   -> ready
+
+v2/pepa/light/sensor/temperature   -> 20.05
+v2/pepa/light/switch/power         -> on
+\end{verbatim}
 
 \section{Frontend}
 % Popis PWA, SPA, struktura složek, webSocket, no cookie (local storage)
+
+\subsection{Souborová struktura}
+\dirtree{%
+    .1 packages.
+    .2 framework-ui.
+    .3 src.
+    .4 Components.
+    .4 callbacks.
+    .4 constants.
+    .4 localization.
+    .4 logger.
+    .4 privileges.
+    .4 redux.
+    .4 utils.
+    .4 validations.
+    .2 frontend.
+    .3 public.
+    .3 src.
+    .4 Pages.
+    .4 api.
+    .4 components.
+    .4 containers.
+    .4 firebase.
+    .4 store.
+    .4 webSocket.
+}
+
+\subsection{Validace}
+Obecný princip fungování validací je popsán v sekci \hyperref[BE:Validace]{Backend}. Na Frontendu se validace používají pro upozornění uživatele na případně chybně zadanou hodnotu. Samootná formulářová data jsou spravována knihovnou redux, stejně jako celý state aplikace. Jejich struktura je shodná s deskriptory formuláře - deepPath se využívá pro získání příslušné hodnoty.
+
+V Reactu je napsaná komponenta \itshape{FielConnector}, které se předá typ formulářového pole (text, email, select atd.) a deepPath, podle které si nalezne příslušný deskriptor z něhož získá potřebné atributy pro vykreslení formulářového políčka label a name. Následně se provolávají validace v následujících případech:
+\begin{itemize}
+    \item uživatel poprvé zadává hodnotu a vyklikne (událost \uv{onBlur});
+    \item uživatel edituje již zadanou hodnotu, potom se validace spouští po každé změně (událost \uv{onChange}).
+\end{itemize}
 
 \section{Knihovna pro ESP8266}
 % Platformio, C++, pubsubclient, OTA
