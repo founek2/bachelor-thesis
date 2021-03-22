@@ -11,6 +11,7 @@ Servrová část je rozdělena na dva separátní procesy:
 Společné části kódu jako definice mognoose schémat apod. jsou umístěny do balíčku \uv{common}
 
 \subsection{Souborová struktura}
+%https://dev.to/santypk4/bulletproof-node-js-project-architecture-4epf
 \dirtree{%
     .1 packages.
     .2 backend\DTcomment{Obsluha RESTful rozhraní a úkolů}.
@@ -24,7 +25,7 @@ Společné části kódu jako definice mognoose schémat apod. jsou umístěny d
     .4 loaders\DTcomment{rozdělený startovací proces do modulů}.
     .4 middleware\DTcomment{definice vlastních middleware}.
     .4 services\DTcomment{zdrojové kódy služeb}.
-    .4 subscribers\DTcomment{definice akcí na asynchroní události}.
+    .4 subscribers\DTcomment{obsluha akcí na asynchroní události}.
     .2 backend-mqtt\DTcomment{Oblsuha MQTT a Socket.IO}.
     .3 src.
     .4 api.
