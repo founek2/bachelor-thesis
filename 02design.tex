@@ -2,68 +2,72 @@
 \chapter{Analýza a návrh}
 Tato kapitola se zabývá analýzou problémů v oblasti IOT Platformy a návrhem architektury řešení.
 
-\section{Analýza procesů}
-Analýza procesů pomáhá pochopit, zlepšit a třídy procesy v dané doméně. U jednotlivých procesů jsou popsány jejich vstupy, výstupy a jednotlivé kroky.
-
-\subsection{Interakce se zařízeními}
-Mějměm zařízení světlo, které se nachází ve dvou stavech vypnuto/zapnuto. Uživatel s takovým zařízením potřebuji interagovat, aby ho dokázal přepnout do jiného stavu. Toho může docílit pomocí ovládáním hlasem nebo pomocí aplikace (fyzický vypínač vynecháme). V obou případech musí Platforma zajistit přepnutí zařízení do požadovaného stavu odesláním příslušného požadavku. Pro složitější zařízení (s více stavy) platí naprosto stejný postup.
-
-\subsection{Vizualizace data}
-Chytrá zařízení mohou generovat velké množství dat z různých typů senzorů (teplota, tlak, množství CO2 v ovzduší) a tyto data je potřeba uchovávat. Průběh jednotlivých údajů v čase lze následně využít např. pro optimalizaci vytápění kvůli úspoře nákladů. Systémové rozhraní by mělo také data vizualizovat a nabídnout uživateli na ně náhled, aby si mohl vytvářet vlastní analýzy.
-
-\subsection{Zabezpečení}
-Mezi chytrá zařízení dnes patří mimo jiné pohybová čidla, zámky dveří, senzory neoprávněného vniknutí a detektory požáru. Jedná se o zabezpečovací prvky u kterých je potřeba zajistit vysokou spolehlivost a v případě přístupových prvků jako zámky na dvěří také vysokou bezpečnos. Platforma v případě detekování neočekávaného pohybu nebo násilného vniknutí upozorní na tuto skutečnost uživatele.
-
-
-\subsection{Automatizace}
-Platforma umožňuje definovat různé scénaře v reakci na různé události (např. změna teploty, detekce pohybu). Tímto způsobem lze automatizovat všední akce, nemuset na ně myslet a plně se tak můžeme věnovat věcem, které vyžadují naší pozornost. Napříkald při přichodu domů bude automaticky detekována naše přítomnost, zapnuto topení a celé domácnost nastavena dle osobních preferencí. Trávník je automaticky zavlažován při nedostatku vláhy a všechna světla vypnuta, jakmile odešel poslední člen domácnosti spát.
+\section{Popis domény} % nativní podpora pro switch, sensor, generic - jednolivé popsat, abych se mohl na ně odkázat v UC
+Tato kapitola obsahuje popis jednotlivých entit/pojmů se kterými Platforma pracuje.
+\begin{itemize}
+    \item \textbf{Uživatel} - fyzická osoba, která interaguje se systémem přímo pomocí pomocí uživatelského rozhraní nebo skrze připojená zařízení.
+    \item \textbf{Zařízení (Device)} - fyzické zařízení, které komunikuje s Platformou, dále se dělí na Věci
+    \item \textbf{Věc (Thing)} - logické uskupení Vlastností, např. meteostanice
+    \item \textbf{Vlastnost (Property)} - určitá veličina, jejíž hodnota se odesílá na Platformu (např. teplota), která případně umožňuje být Platformou změněna (nastavena)
+    \item \textbf{Umístění} - kde je dané zařízení umístěno, specifikující budovu a místnost, např. doma/kuchyň
+    \item \textbf{Stav (State) Věci} - v jakém aktuálním stavu se určitá Věc nachází, skládá se ze stavů příslušných Vlastností
+\end{itemize}
 
 
+\section{Analýza případů užití}
+Tato kapitola popisuje identifikované případy užití, ve kterých figurují následující aktéři:
+\begin{itemize}
+    \item User - aktér představující autentizovaného uživatele webového rozhraní.
+    \item User ROLE\_ADMIN - aktér představující autentizovaného uživatele s právý kompletní správy systému.
+    \item Zařízení - aktér představující koncové zařízení komunikující s Platformou
+\end{itemize}
 
-\section{Analýza požadavků} %https://moodle-vyuka.cvut.cz/pluginfile.php/388192/mod_resource/content/3/02.prednaska.pdf 
-Tato sekce se zabývá vymezetím hranic systému pomocí sběru funkčních a nefunkčních požadavů. Funkční definují funkce systému, které systém musí implementovat. Nefunkční určují omezení kladená na systém a mají zásadní dopad na návrh architektury.
+\subsection{UC1 - Registrace uživatele}
+Neautentizovaný uživatel vyplní registrační formulář obsahující jméno, přijmení, uživatelské jméno, heslo a email. Validace dat bude prováděna dle [F8]. Při zpracování požadavku na serveru bude zajištěna unikátnost uživatelského jména a emailu napříč databází. Uživatel bude informován o úspěchu/neúspěchu akce. Po úspěšném vytvoření bude automaticky přihlášen, pokud nezrušil ve formuláři zaškrtávátku \uv{Automaticky přihlásit}, a bude mu odeslán uvítací email na zadanoou emailovou adresu.
 
-\subsection{Funkční požadavky}
-
-\paragraph{F1 Registrace uživatelů}
-- systém bude umožnovat libovolnému uživateli registraci. Každému registrovanému uživateli bude zřízen na server účet, který bude uchovávat jeho registrační údaje - jméno, přijmení, uživatelské jméno, heslo, email. Součástí registračního formuláře bude zaškrtávátko \uv{Automaticky přihlásit}, které bude ve výchozím stavu aktivní. Pokud ho uživatel nezruší, tak po úspěšné registraci bude uživatel automaticky přihlášen do systému.
-
-\paragraph{F2 Obnovení zapomenutého hesla}
+\subsection{UC2 - Obnovení hesla}
 - součástí přihlašovacího formuláře bude odkaz na stránku pro obnovení zapomenutého hesla, kde bude uživatel dotázán na emailovou adresu, kterou použil při registraci. Po zadání, pokud daná emailová adresa je součástí některého uživatelské účtu, bude na ni odeslán email s odkazem pro obnovu hesla. Na tomto odkazu bude uživatel vyzván k zadání nového hesla.
 
-\paragraph{F3 Přidání zařízení}
-- přihlášenému uživateli se ve správě zařízení objeví možnost přidat ke svému účtu nové zařízení, pokud bude systémem detekované. Pro přidání bude uživatel vyzván k zadání umístění daného zařízení.
+\subsection{UC3 - Objevení a spárování nového zařízení}
+Zařízení pokud není ještě není spárované s Platformou, tak po zapnutí vyzve uživatele k zadání svéhu uživatelského jména na Platformě. Toto zadání bude umožněno vytvořením Wifi přístupového bodu, na kterém poběží kaptivní portál - po připojení telefonem/počitačem se automaticky zobrazí webová stránka s formulářem pro zadání údajů. Následně se zařízení připojí k Platformě, ohlásí jaké má Věci a popíše jejich Vlastnosti, a bude ji informovat, kterému uživateli (podle zadaného uživ. jména) má zobrazit možnost přidání nového zařízení. Pokud si uživatel dané zařízení přidá (viz. UC3), tak následně Platforma odešle zařízení API klíč, které si ho uloží a přihlásí se pomocí toho klíče k Platformě (nyní je spárované).
 
-\paragraph{F4 Oprávnění na úrovni zařízení}
-- na úrovni zařízení půjde nastavovat oprávnění pro jednotlivé uživatele. Toto oprávnění se bude skládat z těchto 3 úrovní:
+\subsection{UC4 Popis věcí}
+Zařízení při ohlašování definice věcí a jejich vlastností musí oznámit mimo jiné typ věci. Platforma bude podporovat mimo generického (generic) typu další 3 typy věcí, pro které budou předdefinované vlastnosti a speciální zobrazení v uživatelském rozhraním:
 \begin{itemize}
-    \item \textbf{Read} - uživatel bude moci si pouze zobrazit veškeré údaje o zařízení
-    \item \textbf{Control} - stejné oprávnění jako \uv{read} + navíc zařízení může ovládat
-    \item \textbf{Write} - uživatel může editovat veškeré informace o zařízení (včetně oprávnění)
+    \item Switch - přepínač s vlastností \uv{power}, která se nachází ve stavu on/off. V rozhraní bude Věc reprezentována dvou stavovým přepínačem, který při kliknutí odešle změnu stavu na druhý než je aktuálně.
+    \item Activator - spínač s vlastností \uv{activate}, který má pouze jeden stav. V rozhraní bude Věc reprezentována tlačítkem, které na stisk odešlě aktivaci zařízení
+    \item Sensor - senzor s jednou vlastnosti, jejíž definice záleží na zařízení. Jediné omezené je, že stav musí být číselná hodnota. V rozhraní bude zobrazena aktuální hodnota vlastnosti.
+    \item Generic - obecný typ u kterého zařízení popíše strukturu a datové typy příslušných vlastností. V uživatelském rozhraní bude Věc reprezentována jako Widget, který po kliknutí zobrazí Dialogové okno umožňující zobrazení a ovládání všech vlastností dle konfigurace.
 \end{itemize}
 
-\paragraph{F6 Typy prvků}
-- systém bude podporovat následující typy prvků a umožňí uživateli v rozhraní příslušné interakce.
+
+\subsection{UC5 - Přidání nového zařízení}
+Uživatel ve správě zařízení bude mít sekci \uv{Přidat zařízení}, kde se zobrazí všechna nově detekovaná zařízení, která ještě nemá přidaná. Následně při kliknutí na tlačítko přidat se zobrazí jednoduchý formulář pro zadání umístění a názvu zařízení - bude předvyplněn název, který ohlásilo zařízení. Uživatel formulář potvrdí, systém následně vytvoří dané zařízení, přidá uživateli k němu oprávnění a ná stránce \uv{Ovládání} už bude uživatel moci sledovat aktuální stav Věcí a případně je i ovládat (pokud to umožňují).
+
+
+\subsection{UC6 - Správa zařízení}
+Uživatel na stránce \uv{Správa zařízení} bude tyto dvě sekce:
 \begin{itemize}
-    \item \textbf{Senzor} - základní prvek, odesílá hodnoty do systému
-    \item \textbf{Přepínač} - může se nacházet ve stavu zapnut/vypnut. Uživatel bude moci poslat příkaz ke změně stavu.
-    \item \textbf{RGB světlo} - tento prvek má 3 vlastnosti: zapnuto/vypnuto, jas, barva. Uživatel může měnit všechny.
+    \item \uv{Přidat zařízení} - zde se zobrazí všechna nově detekovaná zařízení, která ještě nemá přidaná. Následně při kliknutí na tlačítko přidat se zobrazí jednoduchý formulář pro zadání umístění a názvu zařízení - bude předvyplněn název, který ohlásilo zařízení. Uživatel formulář potvrdí, systém následně vytvoří dané zařízení, přidá uživateli k němu oprávnění a ná stránce \uv{Ovládání} už bude uživatel moci sledovat aktuální stav Věcí a případně je i ovládat (pokud to umožňují).
+    \item  \uv{Správa} - zde budou zobrazena všechna zařízení, ke kterým má oprávnění pro editaci. Rozhraní umožní pro každé zařízení jeho smazání a pomocí formuláře editaci názvu, umístění a změnu oprávnění pro jednotlivé uživatele. Tyto oprávnění budou rozděleny na tyto tři úrovně:
+          \begin{itemize}
+              \item \textbf{Read} - uživatel bude moci si pouze zobrazit veškeré údaje o zařízení
+              \item \textbf{Control} - stejné oprávnění jako \uv{read} + navíc zařízení může ovládat
+              \item \textbf{Write} - uživatel může editovat veškeré informace o zařízení (včetně oprávnění)
+          \end{itemize}
 \end{itemize}
 
-\paragraph{F5 Vizualizace dat}
-- rozhraní umožní sledování dat ze všech typů prvků v reálném čase. Dále umožní vizualizaci historických naměřených údajů ze senzory, jejíchž výstup je číselná hodnota. Vizualizace bude realizována v podobě grafu vývoje hodnoty za určitý čas.
+\subsection{UC7 - Správa uživatelů}
+Uživatel s rolí \uv{admin} může přistoupit na stránku \uv{Správa uživatelů}, kde se mu zobrazí seznam všech registrovaných uživatelů. Jednotlivé uživatele může smazat a pomocí formuláře editovat všechny jejich osobní údaje včetně hesla.
 
-\paragraph{F7 Editace zařízení}
-- jednotlivá zařízení bude možno přejmenovat a změnit jejich umístění.
+\subsection{UC8 - Notifikace}
+Rozhraní umožní uživateli nastavit pravidla libovolnou Věc, při kterých se odešlě Web Push notifikace. Pro nastavení bude zobrazený formulář umožňující výběr z vlastností dané věci, po vybrání se zobrazí výběr akce, při jejímž splnění chce uživatel obdržet notifikaci (překročení hodnoty / vždy / hodnota bude rovna) a případné pole pro zadání limitní hodnoty. Dále půjde zobrazit rozšířené nastavení pro konkrétní notifikační pravidlo umožňující nastavení času a konkrétních dní v týdnu, kdy bude pravidlo platné (ve výchozím stavu bude platné pořád).
 
-\paragraph{F8 Notifikace}
-- uživatel si bude moci nastavit Push notifikace pro jednotlivé prvky, které ho upozorní na změnu stavu. U senzorů si bude moci nastavit hranici, notifikace se pak odešle pokud ji hodnota překročí resp. sníží pod ni.
-
-\paragraph{F8 Validace}
-- veškerá formulářová pole budou interaktivně validována na straně uživatele v rozhraní a následně znovu na straně serveru. Interaktivní validací jsou myšleny tyto scénáře při průchodu formuláře:
+\subsection{UC9 - Validace}
+Uživatel při vyplňování veškerých formulářů v uživatelském rozhraní obdrží interaktivní vazbu v případě zadání nevalidních údajů. Interaktivní vazbou jsou myšleny následující scénáře při průchodu formuláře:
 \begin{itemize}
-    \item Zadání hodnoty a vykliknutí z pole - bude provedena validace a v případě nevalidního vstupu, bude uživatel upozorněn.
-    \item Editace hodnoty v poli - validace bude provedena po každé změně (stisknutí klávesy), uživatel bude opět upozorněn v případě nevalidní hodnoty.
+    \item Zadání nové hodnoty a vykliknutí z pole - bude provedena validace a v případě nevalidního vstupu, bude uživatel vizuálně  upozorněn.
+    \item Editace již zadané hodnoty v poli - validace bude provedena po každé změně (stisknutí klávesy), uživatel bude opět vizuálně upozorněn v případě nevalidního vstupu.
 \end{itemize}
 
 
@@ -86,54 +90,6 @@ Tato sekce se zabývá vymezetím hranic systému pomocí sběru funkčních a n
 
 \paragraph{N6 Konfigurace systému} %env promněné
 - veškerá konfigurace (týkající se externích služeb/komunikace) jako jméno a heslo do databáze, číslo portu pro komunikaci atd. bude konfigurovatelné pomocí promněných prostředí (env variables). Detailní popis promněných bude obsažen v instalační příručce.
-
-
-
-\section{Popis domény}
-TODO text
-Popis jednotlivých enntit:
-\begin{itemize}
-    \item \textbf{User (Uživatel)} - osoba interagující se systémem
-    \item \textbf{Device (Zařízení)} - fyzické zařízení komunikující se systémem, umožňující ovládání Věcí a odesílání dat
-    \item \textbf{Thing (Věc)} - např. světlo, meteostanice nebo zásuvka
-    \item \textbf{Property (Vlastnost)} - určitá vlastnost Věci (např. pro zásuvku je \uv{vypínač} - vypnuto/zapnuto, pro meteostanici \uv{teplota} - naměřená hodnota)
-    \item \textbf{Location (Umístění)} - umístění dané zařízení, specifikována budova a pokoj
-    \item \textbf{State (Stav)} - v jakém aktuálním stavu se určitá Věc nachází
-\end{itemize}
-
-
-\section{Analýza případů užití}
-Tato kapitola popisuje identifikované případy užití, ve kterých figurují následující aktéři:
-\begin{itemize}
-    \item User - aktér představující autentizovaného uživatele webového rozhraní.
-    \item User ROLE\_ADMIN - aktér představující autentizovaného uživatele s právý kompletní správy systému.
-\end{itemize}
-
-\subsection{UC1 - Registrace uživatele}
-Neautentizovaný uživatel vyplní registrační formulář obsahující jméno, přijmení, uživatelské jméno, heslo a email. Validace dat bude prováděna dle [F8]. Při zpracování požadavku na serveru bude zajištěna unikátnost uživatelského jména a emailu napříč databází. Uživatel bude informován o úspěchu/neúspěchu akce. Po úspěšném vytvoření bude automaticky přihlášen, pokud nezrušil ve formuláři zaškrtávátku \uv{Automaticky přihlásit}, a bude mu odeslán uvítací email na zadanoou emailovou adresu.
-
-\subsection{UC2 - Přidání nového zařízení}
-\label{UC:UC2}
-Uživatel ve správě zařízení bude mít sekci \uv{Přidat zařízení}, kde se zobrazí všechna nově detekovaná zařízení, která ještě nemá přidaná. Následně při kliknutí na tlačítko přidat se zobrazí jednoduchý formulář pro zadání umístění a názvu zařízení - bude předvyplněn název, který ohlásilo zařízení. Uživatel formulář potvrdí, systém následně vytvoří dané zařízení, přidá uživateli k němu oprávnění a ná stránce \uv{Ovládání} už bude uživatel moci sledovat aktuální stav Věcí a případně je i ovládat (pokud to umožňují).
-
-\subsection{UC3 - Zobrazení teploty}
-Na stránce \uv{Ovládání} bude zobrazeny jednolivé místnosti ve formě Widgetu, ve kterém budou aktuální údaje ze senzorů v dané místnosti. Při rozkliknutí místnosti budou zobrazeny všechny senzory a Věci. Po kliknutí na senzor bude uživateli zobrazena informace o stáří aktuální hodnoty a zobrazen graf vizualizující průběh hodnoty v čase za posledních 24 h.
-
-\subsection{UC4 - Rosvícení světla}
-Na stránce \uv{Ovládání} po rozkliknutí místnosti obsahující Věc pro ovládání světla \uv{přepínač} bude zobrazen prvek umožnující uživateli jeho změnit stav. Po kliknutí bude odeslán požadavek pro změnu stavu na server, který ho odešle danému zařízení. Po potvrzení od zařízení, že ke změně opravdu došlo bude ze serveru odeslána tato informace webové aplikaci.
-
-\subsection{UC5 - Editace zařízení}
-Uživatel na stránce \uv{Správa zařízení} bude mít zobrazena všechna zařízení, ke kterým má oprávnění pro editaci. Rozhraní umožní pomocí formuláře editaci názvu zařízení, umístění a změnu oprávnění pro jednotlivé uživatele. Dále může zařízení smazat.
-
-\subsection{UC6 - Správa uživatelů}
-Uživatel s rolí \uv{admin} může přistoupit na stránku \uv{Správa uživatelů}, kde se mu zobrazí seznam všech registrovaných uživatelů. Jednotlivé uživatele může smazat a pomocí formuláře editovat jejich osobní údaje včetně hesla.
-
-\subsection{UC7 - Device discovery}
-Zařízení pokud není ještě není spárované s Platformou, tak při zapnutí odešle status=\uv{init}, následně začne ohlašovat, které Věci má a jejich Vlastnosti. Po jejich odeslání pošle status=\uv{ready} a příslušnému uživateli, ke kterému se zařízení hlásí se zobrazí v rozhraní viz. \hyperref[UC:UC2]{UC2}. Po jeho přidání uživatelem Platforma odešle zařízení API klíč, které si ho uloží a přihlásí se pomocí toho klíče.
-
-\subsection{UC8 - Změna stavu Vlastnosti}
-Při požadavku na změnu stavu \uv{Vlastnosti} odešle Platforma požadavek na dané zařízení, které provede změnu a odešlě potvrzovací zprávu, že ke změně úspěšně došlo. V případě nevalidního požadavku, zařízení žádné potvrzení neposílá.
-
 
 \section{Vybrané technologie}
 
