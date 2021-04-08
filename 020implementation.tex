@@ -333,7 +333,16 @@ Knihovna implementuje následující funkce:
 \end{itemize}
 
 \section{chytrá udírna} % ukážka deklarace vlastností
+Pro ukázku vytvoření zařízení jsem si vybral
+Pro demonstraci vytvoření celého zařízení a následné zapojení do Platformy jsem si vybral
 
-\subsection{Návrh zapojení} % zapojení HW
+Pro ukázku vytvoření zařízení jsem si zvolil jedno, které jsem vytvořil pro svého otce a mělo velmi pozitivní přínos jak po stránce úspory času, tak i chuťových buněk. Dal jsem si za cíl vyřešit zvdálené monitorování teploty udírny v průběhu uzení, protože u udíren se používá klasický ručičkový teploměr, který se musí každách 15 minut kontrolovat kvůli správnému udržení teploty v rozmezí přibližně deseti stupňů. Naše udírna je umístěna v rohu velké zahrady a v zimním období je velice nepříjemné neustále kontrolovat teplotu v celém průběhu uzení, které trvá i deset hodin.
+
+Proto jsem se rozhodl vytvořit zařízení, které bude měřit teplotu, kterou zobrazí na displeji a současně ji bude odesílat do Platformy pro možnost sledování z pohodlí domova. Tímto se celý proces uzení zpříjemní a s nastavenými notifikacemi nebude potřeba ani teplotu aktivně sledovat, protože Platforma sama upozorňí na problematickou teplotu.
+
+\subsection{Zapojení} % zapojení HW
+Jako hlavní řídící desku s čipem ESP8266 jsem zvolil \textit{Wemos D1 mini} se kterou mám dobré osobní zkušenosti, ale vyhovovala by jakákoli jiné s dostatkem vyvedených pinů. Pro monitorování teploty použiji senzor DS18B20 (maximální teplota 110 °C pro uzení plně dostačuje), který využívá digitální komunikaci a umožňuje sdílení datového kabelu s více senzory, vhodné pro jednoduché přidádí dalších senzoru v případě potřeby pro monitoring různých segmentů udírny. Pro zobrazení informací použiji displej \uv{2.2" 240x320 SPI TFT - ILI9341}, který je i dotykový (do budoucna počítám s možností jeho využítí pro další funkce).
+% TODO diagram zapojení 
+
 
 \subsection{Výroba} % fotky 

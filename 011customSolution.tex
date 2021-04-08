@@ -1,5 +1,11 @@
 \section{Vlastní řešení}
-% TODO koncepce
+
+\subsection{Koncepce}
+Mím cílem je vytvoření otevřené IoT Platformy, která bude určeta pro nejrůznější kutily s elektronikou a technické nadšence. K dispozici bude zdarma veřejná instance sloužící primárně pro uživatele, kteří si chtějí Platformu jednoduše a rychle vyzkoušet a nebo chtějí provozovat pouze pár zařízení. Pro ty kteří chtějí mít plnou kontrolu nad svými daty a být nezávislý na připojení k internetu, bude k dispozici možnost hostingu celého řešení na vlastním hardwaru. K Platformě půjde připojit různorodá zařízení a bude vytvořeno schéma pomocí kterého zařízení popíší Platformě vlastní schopnosti a dovednosti. Na základě těchto informací se následně dá uživateli k dispozici webové rozhraní ke sledování a ovládání jeho zařízení.
+
+Na bezpečnost bude kladený vysoký důraz. Primárně bude založená na uživatelských účtech, které budou mít oprávnění pouze ke svým zařízením, případně těm ke kterým dostali oprávnění od jiných uživatelů. Každý uživatel bude mít k dispozici vlastní \uv{realm} (prostředí), v rámci kterého budou jeho zařízení komunikovat. Uživatel si bude moci snadno přihlásit k odběru této komunikace a tak sledovat všechny zprávy posílané mezí zařízeními a Platformou.
+
+
 
 \subsection{Popis domény} % nativní podpora pro switch, sensor, generic - jednolivé popsat, abych se mohl na ně odkázat v UC
 \begin{figure}[htbp]
