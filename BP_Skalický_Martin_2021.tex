@@ -7,8 +7,8 @@
 % thesis=M master's thesis
 % czech thesis in Czech language 
 % slovak thesis in Slovak language
-% english thesis in English language
-% hidelinks remove colour boxes around hyperlinks 
+% english thesis in English language 
+% hidelinks remove colour boxes around hyperlinks  
  
 \documentclass[thesis=B,czech]{FITthesis}[2019/12/23]
   
@@ -16,13 +16,14 @@
 \usepackage{adjustbox}   
 \usepackage{listings}
 \usepackage{dirtree} 
-
+\usepackage{graphicx}
+      
 % \usepackage{amsmath} %advanced maths
 % \usepackage{amssymb} %additional math symbols
  
 \usepackage{dirtree} %directory tree visualisation
-\usepackage{hyperref} 
-   
+\usepackage{hyperref}   
+    
 % % list of acronyms
 % \usepackage[acronym,nonumberlist,toc,numberedsection=autolabel]{glossaries}
 % \iflanguage{czech}{\renewcommand*{\acronymname}{Seznam pou{\v z}it{\' y}ch zkratek}}{}
@@ -86,15 +87,11 @@ Vzhledem k rozsahu Bakalářské práce není cílem nahradit existující řeš
 
 
 
-\input{01analysis.tex}
+\input{010analysis.tex}
 
+\input{020implementation.tex}
 
-\input{02design.tex}
-
-
-\input{03implementation.tex}
-
-\input{04testing.tex}
+\input{030testing.tex}
 
 
 
