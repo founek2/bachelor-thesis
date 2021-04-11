@@ -1,7 +1,20 @@
 \chapter{Testování}
+Tato kapitola se zabývá testováním implemetovaného řešení nasazeného v produkčním prostředí. V první fázi je otestována stabilita řešení při velké zátěži a ve druhé uživatelská přívětivost procesu přidání zařízení a samotného webového rozhraní. Produkční prostředí běží na virtuálním serveru se systémem Debian (linux), přidělenými hardwarovými prostředky: CPU (5 vláken Ryzen 3600), 9~GB RAM, HDD (7200 otáček). Použitá verze NodeJS 12.22.1, MongoDB 4.2.13 a RabbitMQ 3.8.14.
 
 \section{Zátěžové testování}
+Simulovat zátěž reálnými zařízeními lze pouze v jednotkách kusů, což s dnešním výkoným hardwarem není absolutně žádný problém obsloužit. Protože potřebuji ověřit jak se systém bude chovat pod opravdovou zátěží - desítky paralelních požadavků a stovky připojených zařízení - napsal jsem automatizovaný test, kterému pouze řeknu počet uživatelů a počet zařízení, které mezi uživatele má rozprostřít a o vše ostatní se test postará sám (pomocí HTTP požadavků stejně jako by uživatel interagoval přes webové rozhraní).
 
-\section{Zotavení po nenadálé události}
+Nejprve test vytvoří příslušný počet uživatelů, následně virtuální zařízení (komunikující přes MQTT protokol stejně jako reálná), pro jednotlivé uživatele získá objevená zařízení, všechna je uživatelům přidá a následně zařízení žačnou odesílát data ze senzorů a jiných vlastností simulující reálný provoz - data jsou odesíláná v náhodném rozmezí 2 - 10 vteřin, aby se provoz rozložil v čase. Test probíhal v následující konfiguraci:
+\begin{itemize}
+    \item Počet uživatelů 15
+    \item Počet zařízení 200
+    \item Konfigurace zařízení - 2 senzory (teplota, vlhkost) a přepínač, data ze všech tří vlastností jsou odesíláná paralelně
+    \item počet paralelních požadavků 10
+\end{itemize}
+Pro sledování prostředků byl využit \uv{Free monitoring od MongoDB}, který vykresluje do grafu zátěž cpu, dobu zpracování DB dotazů, zátěž disků a dalších metriky s periodou 1s.
+
+% popsat které části jsou náročné na DB maybe? Kolik DB query bylo během testu, čím jsem monitoroval prostředky, query max time, cpu usage
+
+% \section{Zotavení po nenadálé události}
 
 \section{Uživatelské testování}
