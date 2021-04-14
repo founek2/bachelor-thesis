@@ -9,9 +9,10 @@ Na bezpečnost bude kladený vysoký důraz. Primárně bude založená na uživ
 \subsection{Popis domény} % nativní podpora pro switch, sensor, generic - jednolivé popsat, abych se mohl na ně odkázat v UC
 Tato kapitola obsahuje popis jednotlivých entit/pojmů se kterými Platforma pracuje.
 \begin{figure}[htbp]
+    \label{domain-model}
     \centering
     \includegraphics[width=\textwidth]{img/domain.pdf}
-    \caption{Doména}
+    \caption{Doménový model}
 \end{figure}
 \begin{itemize}
     \item \textbf{Uživatel (User)} - fyzická osoba, která interaguje se systémem přímo pomocí pomocí uživatelského rozhraní.
@@ -119,14 +120,14 @@ Z protokolů pro komunikaci je dnes neojoblíběnější HTTP, který ale nativn
     \includegraphics[width=0.7\textwidth]{img/mqtt-communication.jpeg}
     \caption{Ukázka komunikace MQTT \cite{img-mqtt-communication}}
 \end{figure}
-
+\label{mqtt-description}
 MQTT se vyvýjí již od roku 1999 a momentálně nejpoužívanější verzí je 3.1.1 pro kterou vznikla specifikace v roce 2014. Protokol primárně běží nad TCP/IP, ale lze využít v jakékoliv síti kde je zaručeno správné pořadí dat, beztrátovost a obousměrnost komunikace. Protokol definuje 2 typy entit: \uv{message broker} a klient. MQTT broker je server, který přijímá všechny zprávy od připojených klientů a přeposílá je příjemncům (klientům). MQTT klient je jakékoliv zařízení (od embeded až po server), které komunikuje s brokerem přes síť. \cite{mqtt}
 
 Posílaná data jsou hierarchicky rozdělena do tzv. topiců (česky témat). Topic je textový řetězec o maximální délce 65536 Bytů s oddělovačem "/" - ukázka "/house/bedroom/light". Pokud klient chce odeslat (publish) data, tak pošle zprávu brokeru s daty a topicem do kterého zpráva patří. Broker potom zprávu odešle všem klientům, kteří jsou přihlášení k odběru (subscribe) z daného tématu. O odběr se klient musí přihlásit a to buď přímo specifikuje plný název topicu nebo částečný s použitím zástupných znaků. MQTT počítá s případnou nespolehlivostí ať koncových zařízení nebo sítě a proto umožňuje klientovy při přihlášení definovat \uv{Last Will and Testament} (\hypertarget{LWT}{LWT}). Při přihlášení klient oznámí téma a zprávu, která se odešla v případě nesprávně odpojeného klienta (výpadek sítě / chyba zařízení). Takto lze notifikovat, že došlo je ztráně spojení s daným klientem. \cite{mqtt}
 
 Broker podporuje 3 třídy QoS (Quality of service), kterou lze specifikovat pro každou zprávu jednotlivě v závisloti na její důležitosti. Seřazeny jsou vzestupně dle náročnosti na systém (overhead) \cite{mqtt}:
 \begin{itemize}
-    \item \textbf{0 - Maximálně jednou} - zpráva je odeslána pouze jednou a klient ani broker nijak napotvrzují její přjetí
+    \item \textbf{0 - Maximálně jednou} - zpráva je odeslána pouze jednou a klient ani broker nijak nepotvrzují její přjetí
     \item \textbf{1 - Alespoň jednou} - zpráva je odeslaná několikanásobně, dokud není potvrzené její přijetí
     \item \textbf{2 - Právě jednou} - odesílatel a příjemnce navazují dvoucestný hand-shake, aby bylo zaručeno přijmutí zprávy právě jednou
 \end{itemize}
