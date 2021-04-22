@@ -15,15 +15,18 @@
 \usepackage[utf8]{inputenc} % LaTeX source encoded as UTF-8
 \usepackage{adjustbox}   
 \usepackage{listings}
-\usepackage{dirtree} 
+\usepackage{dirtree}   
 \usepackage{graphicx}
-\usepackage{pdfpages}
+\usepackage{pdfpages}   
+\usepackage{subcaption}
+\usepackage{rotating}
 
-% \usepackage{amsmath} %advanced maths
+% \usepackage{amsmath} %advanced maths 
 % \usepackage{amssymb} %additional math symbols
  
 \usepackage{dirtree} %directory tree visualisation
 \usepackage{hyperref}   
+\usepackage{minted}   
     
 % % list of acronyms
 % \usepackage[acronym,nonumberlist,toc,numberedsection=autolabel]{glossaries}
@@ -67,7 +70,7 @@
 
     Na trhu již dnes existují hotová řešení, ale je velmi problematické se mezi nimi zorientovat a často bývají velmi drahá. Důvod vzniku této práce pochází z osobní negativní zkušenosti s komerční platformou s cílem vytvoření dostupné otevřené Platformy pro technické entuziasty a bastlíře, kteří si chtějí jako já vytvářet levná zařízení a jednoduše je spravovat/ovládat.
 
-    Teoretická část práce se věnuje analýze aktulních řešení na trhu se závěrečným porovnáním. Praktická část se zaměřuje na návrh, implementaci a nasazení vlastního řešení.
+    Teoretická část práce se věnuje rešerži aktualních řešení na trhu, jejich vzájemným porovnáním a návrhem vlastního. Praktická část se zaměřuje na implementaci a nasazení vlastního řešení.
 
     %představit koncepci koncovích zařízení
     %využití - sledování vláhy, zalévání, udírna, ovládání hlasem
@@ -108,11 +111,49 @@ Vzhledem k rozsahu Bakalářské práce není cílem nahradit existující řeš
 \chapter{Seznam použitých zkratek}
 % \printglossaries
 \begin{description}
-    \item[GUI] Graphical user interface
-    \item[XML] Extensible markup language
+    \item[ACL]
+    \item[DIY]
+    \item[SPA]
+    \item[RESTful]
 \end{description}
 
+\chapter{Obrázky}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{img/architecture.pdf}
+    \caption{Náhled fyzické architektury}
+\end{figure}
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{img/screens/deviceManagement2.png}
+    \caption{Ukázka rozhraní - správa zařízení}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=.7\linewidth]{img/screens/editDevice.png}
+        \caption{Zobrazení místností}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=.7\linewidth]{img/screens/generic.png}
+        \caption{Zobrazení místnosti}
+    \end{subfigure}
+    \caption{Ukázka rozhraní}
+\end{figure}
+
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/screens/led.png}
+    \caption{Ukázka rozhraní - věc typu switch}
+\end{figure}
+
+\input{user_guide.tex}
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 % % Tuto kapitolu z výsledné práce ODSTRAŇTE.
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
@@ -220,7 +261,7 @@ Vzhledem k rozsahu Bakalářské práce není cílem nahradit existující řeš
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 
 \chapter{Obsah přiloženého CD}
-
+\label{medium}
 %upravte podle skutecnosti
 
 \begin{figure}
