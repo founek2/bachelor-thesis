@@ -11,12 +11,12 @@ Prvně je vytvořen příslušný počet uživatelů a všechna virtuální zař
     \item konfigurace zařízení - 2 senzory (teplota, vlhkost) a přepínač, data ze všech tří vlastností jsou odesíláná paralelně
     \item počet paralelních API požadavků 10
 \end{itemize}
-Pro sledování zátěže databáze byl využit \uv{Free monitoring} \cite{free-monitoring}, který sleduje dobu provádění operací, jejich počet a vytížení disku. Pro sledování zátěze cpu jednotlivých procesů byl použit linuxový nástroj \textit{htop} a pro vykreslení grafu celkové zátěže cpu \textit{Kibana}. Protože se jedná o více jádrový stroj, tak vytížení cpu nemá maximum 100\,\% ale pro každé jádro 100\,\% tedy celkem 500\,\%. Test byl proveden celkově 3x pro ověření správnosti naměřených dat.
+Pro sledování zátěže databáze byl využit \uv{Free monitoring} \cite{free-monitoring}, který sleduje dobu provádění operací, jejich počet a vytížení disku. Pro sledování zátěze cpu jednotlivých procesů byl použit linuxový nástroj \textit{htop} a pro vykreslení grafu celkové zátěže cpu \textit{Kibana}. Protože se jedná o více jádrový stroj, tak vytížení cpu nemá maximum 100\,\% ale pro každé jádro 100\,\% tedy celkem 500\,\%. Test byl proveden celkově 3x pro ověření správnosti naměřených dat. Tabulka dat, ze kterých byl sestaven graf na obrázku \ref{cpu-usage} je umístěna na přiloženém médiu viz. příloha \ref{medium}.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{img/cpu_usage.png}
-    \caption{Zátěž CPU během testu}
+    \caption{\label{cpu-usage}Zátěž CPU během testu}
 \end{figure}
 
 První zvýšení trvající minutu je způsobeno zařízeními ohlašovujícími svoje vlastnosti, což způsobilo velký počet zápisů do databáze. Druhé zvýšení ve 13:15:40 trvající 20 vteřin způsobilo přidání jednotlivých zařízení uživatelům (a jejich spárování). Následující 10 min trvající zatížení bylo způsobeno tím, že zařízení odesílájí data ze svých vlasností. Závěrečná několika vteřinová zvýšená zátěž ve 13:25:50 je dána odesláním informace o odpojení ze všech zařízení. V průběhu testu byla průměrná doba vyřízení databázové operace 0,24 ms, zátěž cpu databází 8 \%, procesem Platformy 6 \% a zátěž disku přibližně 2 \%. V průběhu celého testu byla Platforma aktivně využívána uživatelem přes webové rozhraní k ovládání fyzických zařízení a po celou dobu vše reagovalo ihned bez jakéhokoliv zpoždění, ani průměrná doba zpracování RESTful požadavku nebyla významně ovlivněna. Z výsledku testu tedy vyplývá, že Platforma zvládne bez jakýhkoli problému obsloužit stovky zařízení bez negativního dopadu na výkon.
@@ -39,6 +39,29 @@ První zvýšení trvající minutu je způsobeno zařízeními ohlašovujícím
 \section{Uživatelské testování}
 Za pomoci uživatelského testování byla ověřena intuitivnost uživatelského prostředí. Cílem bylo zjistit zda uživatelé zvládnou vykonat základní úkony bez pomoci a zjistit jejich náročnost.
 
-Každý uživatel dostal uživatelskou příručku (příloha \ref{user-guide}), přístup k již naprogramovanému zařízení, které ovládalo led světla a měřilo teplotu a nakonec seznam úkonů, které mají vykonat a zpětně je ohodnotit na stupnici od jedné do pěti (pět je nejhorší). Před testem bylo vždy zařízení vyresetováno.
+Každý uživatel dostal uživatelskou příručku (příloha \ref{user-guide}), přístup k již naprogramovanému zařízení, které ovládalo led světla a měřilo teplotu, a nakonec seznam úkonů, které mají vykonat a zpětně je ohodnotit na stupnici od jedné do pěti (pět je nejhorší). Před testem bylo vždy zařízení uvedeno do výchozího stavu.
 
 
+\begin{figure}
+    \centering
+    % \begin{adjustbox}{angle=-90}
+    % \begin{center} % pro addony přidat poznámku 324 obsahuje 2585 věcí
+    \begin{tabular}{ | l | c | }
+        \hline
+        Úkon                           & Hodnocení \\
+        \hline
+        Připojte nové zařízení         & 3         \\
+        \hline
+        Zapněte led světla             & 1         \\
+        \hline
+        Podívejte se na průběh teplotu & 2         \\
+        \hline
+        Změňte umístění zařízení       & 1         \\
+        \hline
+        Zařízení odstraňte             & 1         \\
+        \hline
+    \end{tabular}
+    \caption{Hodnocení jednotlivých testerů}
+\end{figure}
+
+V průběhu testování se ukázal jako nejvíce problematický první krok, ve kterém uživatel zadává v kaptivním portále údaje k připojení na domácí wifi a své uživatelské jméno k Platformě. Zařízení občas ohlásilo chybu připojení k wifi i při správně zadaných údajích. Po bližším zkoumání byl zjišten problém s knihovnoou \textit{WifiManager}, která má nastarosti vytvoření kaptivního portálu a následné připojení na wifi. Aktuální verzi této knihovny prochází rapidním vývojem s nedostatečnou dokumentací aktuálních funkcní. Nepodařilo se identifikovat jestli je problém se špatným využitím této knihovny či v implementaci knihovny samotné. Ostatní částí testu již probíhaly bez jakýhkoliv problému. Dle závěrečného hodnocení se rozhraní ukázalo jako uživatelsky velmi přívětivé a zařízení po prvotním úspěšném připojení k wifi pracovalo již naprosto spolehlivě.
