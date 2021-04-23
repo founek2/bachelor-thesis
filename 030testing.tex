@@ -39,29 +39,29 @@ První zvýšení trvající minutu je způsobeno zařízeními ohlašovujícím
 \section{Uživatelské testování}
 Za pomoci uživatelského testování byla ověřena intuitivnost uživatelského prostředí. Cílem bylo zjistit zda uživatelé zvládnou vykonat základní úkony bez pomoci a zjistit jejich náročnost.
 
-Každý uživatel dostal uživatelskou příručku (příloha \ref{user-guide}), přístup k již naprogramovanému zařízení, které ovládalo led světla a měřilo teplotu, a nakonec seznam úkonů, které mají vykonat a zpětně je ohodnotit na stupnici od jedné do pěti (pět je nejhorší). Před testem bylo vždy zařízení uvedeno do výchozího stavu.
+Každý uživatel dostal uživatelskou příručku (příloha \ref{user-guide}), přístup k již naprogramovanému zařízení, které ovládalo led světla a měřilo teplotu, a nakonec seznam úkonů, které mají vykonat a zpětně je ohodnotit na stupnici od jedné do pěti (pět je nejhorší). První tester byl muž, věk 49 se zájmem o techniku. Druhý byl také můž, věk 30 s ekonoickým vzděláním.
 
 
 \begin{figure}
     \centering
     % \begin{adjustbox}{angle=-90}
     % \begin{center} % pro addony přidat poznámku 324 obsahuje 2585 věcí
-    \begin{tabular}{ | l | c | }
+    \begin{tabular}{ | l | c | c | }
         \hline
-        Úkon                           & Hodnocení \\
+        Úkon                           & Uživatel 1 & Uživatel 2 \\
         \hline
-        Připojte nové zařízení         & 3         \\
+        Připojte nové zařízení         & 4          & 3          \\
         \hline
-        Zapněte led světla             & 1         \\
+        Zapněte led světla             & 1          & 1          \\
         \hline
-        Podívejte se na průběh teplotu & 2         \\
+        Podívejte se na průběh teplotu & 2          & 2          \\
         \hline
-        Změňte umístění zařízení       & 1         \\
+        Změňte umístění zařízení       & 1          & 1          \\
         \hline
-        Zařízení odstraňte             & 1         \\
+        Zařízení odstraňte             & 1          & 1          \\
         \hline
     \end{tabular}
     \caption{Hodnocení jednotlivých testerů}
 \end{figure}
 
-V průběhu testování se ukázal jako nejvíce problematický první krok, ve kterém uživatel zadává v kaptivním portále údaje k připojení na domácí wifi a své uživatelské jméno k Platformě. Zařízení občas ohlásilo chybu připojení k wifi i při správně zadaných údajích. Po bližším zkoumání byl zjišten problém s knihovnoou \textit{WifiManager}, která má nastarosti vytvoření kaptivního portálu a následné připojení na wifi. Aktuální verzi této knihovny prochází rapidním vývojem s nedostatečnou dokumentací aktuálních funkcní. Nepodařilo se identifikovat jestli je problém se špatným využitím této knihovny či v implementaci knihovny samotné. Ostatní částí testu již probíhaly bez jakýhkoliv problému. Dle závěrečného hodnocení se rozhraní ukázalo jako uživatelsky velmi přívětivé a zařízení po prvotním úspěšném připojení k wifi pracovalo již naprosto spolehlivě.
+V průběhu testování se ukázal jako nejvíce problematický první krok, ve kterém uživatel zadává v kaptivním portále údaje k připojení na domácí wifi a své uživatelské jméno k Platformě. Zařízení občas ohlásilo chybu připojení k wifi i při správně zadaných údajích. Po bližším zkoumání byl zjišten problém s knihovnoou \textit{WifiManager}, která má nastarosti vytvoření kaptivního portálu a následné připojení na wifi. Aktuální verzi této knihovny prochází rapidním vývojem s nedostatečnou dokumentací aktuálních funkcní. Nepodařilo se identifikovat jestli je problém se špatným využitím této knihovny či v implementaci knihovny samotné. Ostatní částí testu již probíhaly bez jakýhkoliv problému. Dle závěrečného hodnocení se rozhraní ukázalo jako uživatelsky velmi přívětivé a zařízení po úspěšném připojení k wifi pracovalo již naprosto spolehlivě. Po ukončení testu byly uživatelé v nezávazném rozhovoru dotázáni na možná vylepšení. Z rozhovoru vyplynulo doporučení do budoucna k vytvoření interaktivního průvodce, který by při první návštěvě vysvětlil pokročilejší funkce.
