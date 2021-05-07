@@ -57,7 +57,7 @@
 \placeForDeclarationOfAuthenticity{V~Praze}
 \declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
 \keywordsCS{IoT Platforma, OpenSource, implementace IoT Platformy, PWA, MQTT, ESP8266}
-\keywordsEN{Nahraďte seznamem klíčových slov v angličtině oddělených čárkou.}
+\keywordsEN{IoT Platform, OpenSource, implementation of IoT Platform, PWA, MQTT, ESP8266}
 % \website{http://v3.iotplatforma.cloud} %volitelná URL práce, objeví se v tiráži - úplně odstraňte, nemáte-li URL práce
 
 \begin{document}
@@ -68,11 +68,11 @@
 \begin{introduction}
     %sdělit že téma je nové, aktuální, je ho potřeba řešit, komu to bude prospěšné, proč jsme si ho zvolili - vypadá dobře oborová motivace -> vyřešení daného problému někomu pomůže (ideálně nějaké komunitě), sdělit povrchově čím se zabývá práce ->rozvedení v kapitole Cíl, pak na konci úvodu stručné představení práce, aby si čtenář udělal představu jak budu postupovat
 
-    Internet věcí je velmi diskutovaným tématem posledních několika let, ale jeho vývoji předcházela spousta trnitých cest a slepých uliček. Pod kouzelnou zkratkou IoT se pro mnohé skrývá příslib pokroku od chytré domácnosti až po revoluci v průmyslu. Internet věcí je označení pro síť fyzických zařízení, která spolu dokáží komunikovat ať už napřímo nebo pomocí prostředníka. Pro efektivní správu se zařízení připojují k centrální Platformě, která sbírá data z jednolivých zařízení a dle definovaných pravidel zařízením posílá příkazy. Například v domácnosti čidlo pohybu zaregistruje příchod majitele domů a Platforma v reakce zapne vytápějí. Současně poskytuje uživatelské rozhraní, pomocí kterého lze jednotlivá zařízení přímo ovládat a definovat scénáře, na základě kterých se vykonává automatizace jako uvedené automatické zapnutí vytápějí. Platforma je tedy nedílnou součástí světa IoT a od jejích funkcí se odvíjí možnost využití plného potenciálu.
+    Internet věcí je velmi diskutovaným tématem posledních několika let, ale jeho vývoji předcházela spousta trnitých cest a slepých uliček. Pod kouzelnou zkratkou IoT se pro mnohé skrývá příslib pokroku od chytré domácnosti až po revoluci v průmyslu. Internet věcí je označení pro síť fyzických zařízení, která spolu dokáží komunikovat ať už napřímo nebo pomocí prostředníka. Pro efektivní správu se zařízení připojují k centrální Platformě, která sbírá data z jednolivých zařízení a dle definovaných pravidel zařízením posílá příkazy. Například v domácnosti čidlo pohybu zaregistruje příchod majitele domů a Platforma v reakci zapne vytápění. Současně poskytuje uživatelské rozhraní, pomocí kterého lze jednotlivá zařízení přímo ovládat a definovat scénáře, na základě kterých vykonává automatizaci jako uvedené automatické zapnutí vytápějí. Platforma je tedy nedílnou součástí světa IoT a od jejích funkcí se odvíjí možnost využití plného potenciálu.
 
     Na trhu již dnes existují hotová řešení, ale je velmi problematické se mezi nimi zorientovat a často bývají velmi drahá. Důvodem vzniku této práce je negativní osobní zkušenost a vysoké poplatky komerčních řešení s cílem vytvoření dostupné otevřené Platformy pro technické entuziasty a bastlíře, kteří si chtějí jako já vytvářet levná zařízení a jednoduše je spravovat/ovládat.
 
-    Teoretická část práce se věnuje rešerži aktuálních řešení na trhu, jejich vzájemným porovnáním a návrhem vlastního. Praktická část se zaměřuje na implementaci a nasazení vlastního řešení.
+    Teoretická část práce se věnuje rešerši aktuálních řešení na trhu, jejich vzájemným porovnáním a návrhem vlastního. Praktická část se zaměřuje na implementaci a nasazení vlastního řešení.
 
     %představit koncepci koncovích zařízení
     %využití - sledování vláhy, zalévání, udírna, ovládání hlasem
@@ -85,7 +85,7 @@
 
 \chapter{Cíl práce}
 % návrh vlastní platformy, cíleno pro kutily, bezpečnost pochybná u komerčních řešení -> já chci mít velkou, moje řešení bude více decentralizované
-Cílem této práce je navrhnout a implementovat řešení IoT platformy, která bude primárně určena pro domácí kutily, kteří mohou k platformě připojit tzv. DIY (\uv{Udělěj si sám}) zařízení. Platforma tedy bude muset být univerzální, tak aby umožnila připojení různorodých zařízení. Uživatelské rozhraní bude realizováno formou webové aplikace, která umožní sledování a ovládání jednotlivých zařízení.
+Cílem této práce je navrhnout a implementovat řešení IoT platformy, která bude primárně určena pro domácí kutily, kteří mohou k platformě připojit tzv. DIY (\uv{Udělěj si sám}) zařízení. Platforma tedy bude muset být univerzální tak, aby umožnila připojení různorodých zařízení. Uživatelské rozhraní bude realizováno formou webové aplikace, která umožní sledování a ovládání jednotlivých zařízení.
 
 Hlavním přínosem bude vytvoření alternativy k již existujícím řešením pro ty, kteří hledají vyšší bezpečnost a nižší cenu než často nabízí komerční řešení. Platforma bude koncipována tak, aby si uživatel přidal zařízení na jedno kliknutí a mohl ho ihned ovládat bez nutnosti často zdlouhavých konfigurací, ke kterým zpravidla potřebuje hlubší znalosti. Výsledná platforma bude uvolněna pod OpenSource licencí s možností vlastního hostingu.
 

@@ -1,12 +1,12 @@
 \section{Vlastní řešení}
-
-\subsection{Koncepce}
+% TODO popis
+\subsection{Cíl}
 Vytvoření otevřené IoT Platformy, která bude určena pro nejrůznější elektrotechnické kutily a technické nadšence. K dispozici bude zdarma veřejná instance sloužící primárně pro uživatele, kteří si chtějí Platformu jednoduše a rychle vyzkoušet a nebo chtějí provozovat pouze pár zařízení. Pro ty, kteří chtějí mít plnou kontrolu nad svými daty a být nezávislí na připojení k internetu, bude k dispozici možnost hostingu celého řešení na vlastním hardwaru. K Platformě půjde připojit různorodá zařízení a bude vytvořeno schéma, pomocí kterého zařízení popíší Platformě vlastní funkčnost/schopnosti. Na základě těchto informací se automaticky uživateli vygeneruje webové rozhraní ke sledování a ovládání jeho zařízení.
 
 Na bezpečnost bude kladený vysoký důraz. Primárně bude založená na uživatelských účtech, které budou mít oprávnění pouze ke svým zařízením, případně těm, ke kterým dostali oprávnění od jiných uživatelů. Každý uživatel by měl mít k dispozici vlastní izolované prostředí, v rámci kterého budou jeho zařízení komunikovat. Uživateli bude umožněno sledovat všechny zprávy posílané mezí jeho zařízeními a Platformou.
 
 
-\subsection{Popis domény} % nativní podpora pro switch, sensor, generic - jednolivé popsat, abych se mohl na ně odkázat v UC
+\subsection{Popis domény}
 Tato kapitola obsahuje popis jednotlivých entit, se kterými Platforma pracuje.
 \begin{figure}[htbp]
     \centering
@@ -51,7 +51,7 @@ Součástí přihlašovacího formuláře bude odkaz na stránku pro obnovení z
 Zařízení, pokud ještě není spárované s Platformou, po zapnutí vyzve uživatele k zadání svého uživ. jména k platformě. Toto zadání bude umožněno vytvořením Wifi přístupového bodu, na kterém poběží kaptivní portál - po připojení telefonem/počítačem se automaticky zobrazí webová stránka s formulářem pro zadání údajů. Následně se zařízení připojí k Platformě, ohlásí jaké má věci, popíše jejich vlastnosti, a bude ji informovat, kterému uživateli (podle zadaného uživ. jména) má zobrazit možnost přidání nového zařízení. Pokud si uživatel dané zařízení přidá (viz. \hyperref[UC5]{UC5}), Platforma následně odešle zařízení API klíč, které si ho uloží a přihlásí se pomocí toho klíče k Platformě (nyní je spárované).
 
 \paragraph{UC4 Popis věcí}
-Zařízení při ohlašování definice věcí a jejich vlastností musí oznámit mimo jiné typ věci. Platforma bude podporovat kromně generického (generic) typu další 3 typy věcí, pro které bude speciální zobrazení v uživatelském rozhraním:
+Zařízení při ohlašování definice věcí a jejich vlastností musí oznámit mimo jiné typ věci. Platforma bude podporovat kromně generického (generic) typu další 3 typy věcí, pro které bude speciální zobrazení v uživatelském rozhraní:
 \begin{itemize}
     \item \textbf{Switch} - přepínač, který se nachází ve stavu on/off. V rozhraní bude věc reprezentována dvoustavovým přepínačem, který při kliknutí odešle změnu o stavu na druhý, než ve kterém se aktuálně nachází. (využití např. vypínač světla)
     \item \textbf{Activator} - spínač, který má pouze jeden stav. V rozhraní bude věc reprezentována tlačítkem, které na stisk odešle aktivaci zařízení. (využití např. ovladač pojízdné brány)
@@ -59,7 +59,7 @@ Zařízení při ohlašování definice věcí a jejich vlastností musí oznám
     \item \textbf{Generic} - obecný typ, u kterého zařízení popíše strukturu, datové typy a názvy příslušných vlastností. V uživatelském rozhraní bude věc reprezentována jako Widget, který po kliknutí zobrazí Dialogové okno umožňující zobrazení a ovládání všech vlastností dle konfigurace.
 \end{itemize}
 
-
+% TODO split na dva UC - na oprávnění je hodně kladen důraz -> separatní UC
 \paragraph{UC5 Správa zařízení}
 \label{UC5}
 Uživatel na stránce \uv{Správa zařízení} bude mít tyto dvě sekce:
@@ -69,13 +69,14 @@ Uživatel na stránce \uv{Správa zařízení} bude mít tyto dvě sekce:
           \begin{itemize}
               \item Read - uživatel může si zobrazit veškeré údaje o zařízení.
               \item Control - uživatel může zařízení ovládat.
-              \item Write - uživatel může editovat veškeré informace o zařízení (včetně oprávnění).
+              \item Admin - uživatel může editovat veškeré informace o zařízení (včetně oprávnění).
           \end{itemize}
 \end{itemize}
 
 \paragraph{UC6 Správa uživatelů}
-Administrátor má k dispozici stránku \uv{Správa uživatelů}, kde se mu zobrazí seznam všech registrovaných uživatelů. Jednotlivé uživatele může smazat a pomocí formuláře editovat všechny jejich osobní údaje včetně hesla.
+Administrátor má k dispozici stránku \uv{Správa uživatelů}, kde se mu zobrazí seznam všech registrovaných uživatelů. Jednotlivé uživatele může smazat a pomocí formuláře editovat všechny jejich osobní údaje a změnit heslo pro přihlášení.
 
+% TODO popis Web push notifikace
 \paragraph{UC7 Notifikace}
 Rozhraní umožní uživateli nastavit pravidlo pro libovolnou věc, při kterém se odešle Web Push notifikace na jeho zařízení. Pro nastavení bude zobrazený formulář umožňující výběr z vlastností dané věci, po vybrání se zobrazí výběr akce, při jejímž splnění chce uživatel obdržet notifikaci (překročení hodnoty / vždy / hodnota bude rovna) a případné pole pro zadání limitní hodnoty. Dále půjde zobrazit rozšířené nastavení pro konkrétní notifikační pravidlo umožňující nastavení času a konkrétních dnů v týdnu, kdy bude pravidlo platné (ve výchozím stavu bude vždy). Těchto pravidel si bude moci nastavit libovolný počet pro každé zařízení, ke kterému má oprávnění pro čtení.
 
