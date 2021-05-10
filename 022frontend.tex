@@ -3,7 +3,7 @@
 % Popis PWA, SPA, struktura složek, webSocket, no cookie (local storage)
 Tato sekce se zabývá architekturou a implementací uživatelského rozhraní formou webové stránky. Implementace je rozdělena do dvou balíčků:
 \begin{itemize}
-    \item Framework-ui - obsahuje komplexní řešení pro validace formulářů včetně integrace s Redux (napojení na state, definice akcí a reducerů), implementuje znovu použitelné React komponenty, včetně komponenty řešící přímé napojení formulářového pole na state a obsluhu jeho validací (FieldConnector). Dále jazykovou lokalizaci pro systémové hlášky a nádstavbu nad fetch (api pro odesílání HTTP požadavků), která řeší zobrazení chybových hlášek a definuje flexibilnější rozhraní.
+    \item Framework-ui - obsahuje komplexní řešení pro validace formulářů včetně integrace s Redux (napojení na state, definice akcí a reducerů), implementuje znovu použitelné React komponenty, včetně komponenty řešící přímé napojení formulářového pole na state a obsluhu jeho validací (FieldConnector). Dále jazykovou lokalizaci pro systémové hlášky a nádstavbu nad základní rozhraní pro odesílání HTTP požadavků, která řeší zobrazení chybových hlášek a definuje flexibilnější rozhraní.
     \item Frontend - implementace samotné aplikace
 \end{itemize}
 
@@ -60,7 +60,6 @@ Pro vykreslení formulářového pole jsem připravil komponentu \textit{FielCon
 \end{itemize}
 
 \subsection{Rozhraní}
-% TODO jaké obrazovky tam jsou, ukázka z rozhraní
 Aplikace nabízí jednoduché uživatelské rozhraní s jedním menu pro navigaci mezi jednotlivými stránkami a tlačítko pro přihlášení, které otevře přihlašovací dialog.
 
 Nepřihlášenému uživateli je k dispozici stránka pro registraci obsahující formulář. Po registraci je automaticky přihlášen a má k dispozici stránku pro správu zařízení a stránku pro ovládání a sledování jednotlivých věcí. Správa zařízení je rozdělena na dvě sekce, první obsahuje tabulku s detekovanými zařízeními, které lze přidat na dvě kliknutí. Druhá část obsahuje tabulku se zařízeními, ke kterým má uživatel oprávnění pro čtení a v případě oprávnění pro zápis, může editovat jejich informace, měnit oprávnění pro jednotlivé uživatele, odeslat příkaz pro restart nebo zařízení odstranit.

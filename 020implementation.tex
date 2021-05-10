@@ -1,5 +1,5 @@
-\chapter{Realizace}
-Tato kapitola podrobně popisuje implementaci. Nejprve se věnuje popisu architektury serverové části a implementovaným bezpečnostním mechanizmům. Dále definicí MQTT schématu, který Platforma používá pro komunikaci se zařízeními, následované popisem implementace uživatelského rozhraní. Závěr kapitoly je věnován zamyšlení nad automatizací, nasazení celého řešení a tvorbě knihovny pro koncová zařízení a její následné demostraci při výrobě ukázkového zařízení.
+\chapter{Návrh a realizace}
+Tato kapitola podrobně popisuje návrh celého řešení a jeho realizaci. Nejprve se věnuje popisu architektury serverové části včetně implementovaným bezpečnostním mechanismům. Dále definicí MQTT schématu, který Platforma používá pro komunikaci se zařízeními, následované popisem implementace uživatelského rozhraní. Závěr kapitoly je věnován zamyšlení nad automatizací, nasazení celého řešení a tvorbě knihovny pro koncová zařízení a její následné demostraci při výrobě ukázkového zařízení.
 
 \input{021server.tex}
 
@@ -20,27 +20,11 @@ Pro využití hlasového ovládání pomocí současných asistentek jako \texti
 
 
 \section{Nasazení}
-Celé řešení jsem nasadil na Linuxový server s operačním systémem Debian. Pro zjednodušení jsem se rozhodl celý proces automatizovat. Využil jsem OpenSource automatizační nástroj \textbf{Jenkins} \cite{jenkins}, který umožňuje psaní skriptů, které automaticky spouští při změně kódu (pro jeho verzování jsem využil nástroj GIT). Toto řešení mi umožňilo plně automatizovat sestavení celé aplikace a její následné nasazení na server pouhým uložení nové verze kódu. V případě výskytu chyby při sestavování jsem na ni byl ihned upozorněn a mohl ji opravit. Důvod využití právně nástroje Jenkins oproti alternativám např. \textit{GitLab CI/CD} či \textit{CruiseControl} spočívá v možnosti provozování nástroje zcela zdarma na vlastní infrastruktuře a také kvůli rozsáhlému systému pluginů, kterých má velký výběr na rozdíl od mladších konkurentů.
+Celé řešení jsem nasadil na Linuxový server s operačním systémem Debian. Pro zjednodušení jsem se rozhodl celý proces automatizovat. Využil jsem OpenSource automatizační nástroj \textbf{Jenkins} \cite{jenkins}, který umožňuje psaní skriptů, které automaticky spouští při změně kódu (pro jeho verzování jsem využil nástroj GIT). Toto řešení mi umožňilo plně automatizovat sestavení celé aplikace a její následné nasazení na server pouhým uložení nové verze kódu. V případě výskytu chyby při sestavování jsem na ni byl ihned upozorněn a mohl ji opravit. Důvod využití právě nástroje Jenkins oproti alternativám např. \textit{GitLab CI/CD} či \textit{CruiseControl} spočívá primárně v rozsáhlému systému pluginů, kterých má obrovské množtví na rozdíl od mladších konkurentů a lze provozovat zcela zdarma na vlastní infrastruktuře.
 
-Pro spuštění platformy v systému Linux je připravena instalační příručka, která je umístěna na médiu (viz. příloha \ref{medium}). Pro případnou distribuci celého řešení uživatelům, by byla možnost využít nástroj \textbf{Docker}, který umožňuje spouštět virtualizované kontejnery. Takové řešení umožní všem zájemcům spuštění celého serveru jedním příkazem. Již mám funkční automatizované sestavení s nástrojem Jenkins a s minimální úpravou lze připravit obraz pro Docker, který by spustil celé řešení. Pro podrobnější popis problematiky kontejnerů doporučuji \cite{containers}.
+Pro spuštění platformy na systému Linux je připravena instalační příručka, která je umístěna na médiu (viz. příloha \ref{medium}). Pro případnou distribuci celého řešení uživatelům, by byla možnost využít nástroj \textbf{Docker}, který umožňuje spouštět virtualizované kontejnery. Takové řešení umožní spuštění celého serveru jedním příkazem. Automatizované sestavení s nástrojem Jenkins je již funkční a s minimální úpravou lze připravit obraz pro Docker, který by spustil celé řešení. Podrobnější popis problematiky kontejnerů naleznete v \cite{containers}.
 
 
-\section{Knihovna pro ESP8266}
-\label{library}
-% Platformio, C++, pubsubclient, OTA
-Pro čip ESP8266 lze programovat s využitím oficiálního sdk (Espressif SDK) nebo prostředí Arduino, které se těší obrovské oblibě mezi kutily. Rozhodl jsem se využít prostředí Arduino, protože kolem něho existuje obrovská komunita a stovky již předpřipravených knihoven pro různorodé moduly. Díky tomu není potřeba tolik řešit nízkoúrovňové problémy jako např. implementaci protokolu pro komunikace se senzorem teploty, ale stačí si stáhnout příslušnou knihovnu a následně se plně soustředit na aplikační logiku.
-
-Mým cílem je vytvoření Platformy, ke které si bude moci kdokoliv připojit vlastní zařízení. Abych proces připojení co možná nejvíce zjednodušil, vytvořil jsem knihovnu pro prostředí Arduino, která bude řešit veškerou komunikaci s Platformou a nabídne programátorovi přehledná rozhraní pro definici zařízení, jeho věcí, vlastností a reakcí na změny.
-
-Knihovna implementuje následující funkce:
-\begin{itemize}
-    \item Kaptivní portál - vytvoření wifi přístupového bodu, které po připojení např. telefonu zobrazí webovou stránku na které uživatel zadá přístupové údaje k místní wifi síťi, své uživatelské jméno a případně ip adresu instance Platformy (pouze pokud provozuje vlastní).
-    \item Připojení k MQTT brokeru - pro připojení je využita knihovna \textit{pubsubclient}.
-    \item Objevení zařízení - programátor deklarativním způsobem definuje věci a vlastnosti zařízení. Knihovna následně všechny tyto funkce ohlásí Platformě.
-    \item Spárování - po přidání zařízení uživatelem ve webovém rozhraní obdrží zařízení párovací klíč, který se perzistentně uloží.
-    \item Definice reakcí - ke každé vlastnosti (v případě, že je nastavitelná) může programátor definovat funkci (callback), který se zavolá v případě, že došlo ke změně dané vlastnosti.
-    \item OTA - možnost tvz. \uv{aktualizace vzduchem} místo nutnosti fyzického připojení k pc. Podporováno je nahrání firmwaru v rámci lokální sítě a zabezpečeno pouze heslem, kvůli malé paměti a nízkému výkonu pro využití ověření pomocí certifikátů.
-\end{itemize}
 
 \section{Chytrá udírna} % ukážka deklarace vlastností
 Pro demonstraci vytvoření zařízení jsem si zvolil jedno, které jsem vytvořil pro svého otce a mělo velmi pozitivní přínos, jak po stránce úspory času, tak i chuťových buněk. Dal jsem si za cíl vyřešit vzdálené monitorování teploty udírny v průběhu uzení, protože u udíren se používá klasický ručičkový teploměr, který se musí každých 15 minut kontrolovat kvůli správnému udržení teploty v rozmezí přibližně deseti stupňů. Naše udírna je umístěna v rohu velké zahrady a v zimním období je velice nepříjemné neustále kontrolovat teplotu v celém průběhu uzení, které trvá i deset hodin.
@@ -57,11 +41,11 @@ Jako hlavní řídící desku s čipem ESP8266 jsem zvolil \textit{Wemos D1 mini
 \end{figure}
 
 \subsection{Výroba} % fotky 
-Jednotlivé součástky byly zapojeny dle diagramu na obrázku \ref{img-wiring}. Pro zařízení jsem navrhl krabičku na míru a následně ji vytiskl na 3D tiskárně. Výsledné zařízení je napájené pomocí micro usb, tedy stačí běžná nabíječka na telefon a teplotní senzor se připojuje pomocí konektoru kvůli jednodušší manipulaci. Dále bylo potřeba vytvořit program, který poběží na zařízení pro odesílání teploty do Platformy a bude zobrazovat informace (teplotu, čas) na displeji. Ukázka kódu \ref{code} obsahuje využití vytvořené knihovny v sekci \ref{library} pro napojení chytré udírny na Platformu. Výsledný program obsahuje tento kód obohacený o komunikaci s displejem a načtení času z internetu. Model krabičky a finální zdrojový kód naleznete na přiloženém médiu viz. příloha \ref{medium}.
+Jednotlivé součástky byly zapojeny dle diagramu na obrázku \ref{img-wiring}. Pro zařízení jsem navrhl krabičku na míru a následně ji vytiskl na 3D tiskárně. Výsledné zařízení je napájené pomocí micro usb, tedy stačí běžná nabíječka na telefon a teplotní senzor se připojuje pomocí konektoru kvůli jednodušší manipulaci. Dále bylo potřeba vytvořit program, který poběží na zařízení pro odesílání teploty do Platformy a bude zobrazovat informace (teplotu, čas) na displeji. Ukázka kódu \ref{code} obsahuje využití vytvořené knihovny v sekci \ref{library} pro napojení chytré udírny na Platformu. Výsledný program obsahuje tento kód obohacený o komunikaci s displejem a načtení času z internetu. Model krabičky a finální zdrojový kód lze nalézt na přiloženém médiu viz. příloha \ref{medium}.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.5\textwidth]{img/smokehouse.png}
+    \includegraphics[width=0.3\textwidth]{img/smokehouse.png}
     \caption{\label{smokehouse}Finální verze výrobku}
 \end{figure}
 
@@ -97,8 +81,25 @@ void loop() {
     \caption{\label{code}Kód pro odesílání teploty}
 \end{figure}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/notification_edit.png}
-    \caption{Nastavení pravidel notifikací}
-\end{figure}
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=0.5\textwidth]{img/notification_edit.png}
+%     \caption{Nastavení pravidel notifikací}
+% \end{figure}
+
+\section{Knihovna pro ESP8266}
+\label{library}
+% Platformio, C++, pubsubclient, OTA
+Pro čip ESP8266 lze programovat s využitím oficiálního sdk (Espressif SDK) nebo prostředí Arduino, které se těší obrovské oblibě mezi kutily. Rozhodl jsem se využít prostředí Arduino, protože kolem něho existuje obrovská komunita a stovky již předpřipravených knihoven pro různorodé moduly. Díky tomu není potřeba tolik řešit nízkoúrovňové problémy jako např. implementaci protokolu pro komunikace se senzorem teploty, ale stačí si stáhnout příslušnou knihovnu a následně se plně soustředit na aplikační logiku.
+
+Mým cílem je vytvoření Platformy, ke které si bude moci kdokoliv připojit vlastní zařízení - abych proces připojení co možná nejvíce zjednodušil, vytvořil jsem knihovnu pro prostředí Arduino, která bude řešit veškerou komunikaci s Platformou a nabídne programátorovi přehledná rozhraní pro definici zařízení, jeho věcí, vlastností a reakcí na změny.
+
+Knihovna implementuje následující funkce:
+\begin{itemize}
+    \item Kaptivní portál - vytvoření wifi přístupového bodu, které po připojení např. telefonu zobrazí webovou stránku na které uživatel zadá přístupové údaje k místní wifi síťi, své uživatelské jméno a případně ip adresu instance Platformy (pouze pokud provozuje vlastní).
+    \item Připojení k MQTT brokeru - pro připojení je využita knihovna \textit{pubsubclient}.
+    \item Objevení zařízení - programátor deklarativním způsobem definuje věci a vlastnosti zařízení. Knihovna následně všechny tyto funkce ohlásí Platformě.
+    \item Spárování - po přidání zařízení uživatelem ve webovém rozhraní obdrží zařízení párovací klíč, který se perzistentně uloží.
+    \item Definice reakcí - ke každé vlastnosti (v případě, že je nastavitelná) může programátor definovat funkci (callback), který se zavolá v případě, že došlo ke změně dané vlastnosti.
+    \item OTA - možnost tvz. \uv{aktualizace vzduchem} místo nutnosti fyzického připojení k pc. Podporováno je nahrání firmwaru v rámci lokální sítě a zabezpečeno pouze heslem, kvůli malé paměti a nízkému výkonu pro využití ověření pomocí certifikátů.
+\end{itemize}

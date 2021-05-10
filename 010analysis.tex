@@ -1,5 +1,5 @@
 \chapter{Analýza}
-Tato kapitola se zabývá definicí IOT Platformy, analýzou již existujících řešení a jejich vzájemným porovnáním, v závěru kapitoly následně návrhem vlastního řešení.
+Tato kapitola se zabývá definicí IOT Platformy, analýzou již existujících řešení a následně stanovením požadavků na řešení vlastní.
 
 
 \section{Definice IOT Platformy}
@@ -16,10 +16,10 @@ V této sekci jsou vysvětleny pojmy, které budou použity v následujících k
 
 
 \section{Vlastnosti}
-% TODO úvod
+Tato sekce se věnuje definice klíčových vlastností IoT platformy: způsobu komunikace se zařízeními, možnostmi automatizace, bezpečností a cílovou skupinou.
 
 \subsection{Komunikace}
-Komunikaci mezi zařízeními lze realizovat propojením kabely či bezdrátově. Drátové propojení je finančně nákladnější a především znamená obrovský zásah do stávající infrastrukturu domu. Proto se pro komunikaci mezi zařízeními nejčastěji využívá bezdrátová komunikace, která umožňuje snadnou instalaci i ve starších domech. Bezdrátový přenos lze rozdělit do dvou kategorií:
+Komunikaci mezi zařízeními lze realizovat fyzickým propojením či bezdrátově. Drátové propojení je finančně nákladnější a především znamená obrovský zásah do stávající infrastrukturu domu, využívá se nejčastěji v nové výstavbě, protože nabízí vyšší spolehlivost a odolnost. Bezdrátová komunikace se naopak používá při instalace do stávajících domů nebo z důvodů ušetření nákladu a v této práci se ji budeme věnovat blíže. Lze ji rozdělit do dvou základních kategorií:
 \begin{itemize}
     \item \textbf{Centralizované} - Každé zařízení komunikuje pouze s jedním centrálním prvkem, přes který jde veškerá komunikace. Mezi nejznámější technologii tohoto typu patří Wifi.
     \item \textbf{Decentralizované} - V této síti komunikují zařízení přímo s ostatními bez jakéholiv prostředníka. Pokud nelze s cílovým zařízením komunikovat přímo, tak využijí ostatní pro předání zprávy. Síť je díky tomu mnohem odolnější vůči výpadkům, protože zde není tzv. \uv{jediný bod selhání} (single point of failure). Zpravidla mívá nižší datovou propustnost a je složitější pro nasazení a následnou správu. Velkou výhodou je snadnější rozšiřitelnost pokrytí, protože každé přidané zařízení rozšiřuje signál a tímto způsobem lze zařízení řetězit. Pro podrobější popis doporučuji \cite{mesh}.
@@ -120,7 +120,6 @@ Prvotní instalace je stejně jednoduchá jako u Home Assistentu. Rozdíl přich
 Dokumentace projektu je na velmi vysoké úrovni s velmi detailním popisem. Pravděpodobně díky tomu, že projekt existuje již 10 let a má silnou základnu v komunitě i přes to, že dle porovnání aktivity na GitHubu v počtu přispěvatelů (86 vs. 2 444) je oproti té, kterou má Home Assistant mnohonásobně menší.
 
 \subsection{Porovnání}
-% TODO závěrečné porovnání - Blynk více orientované na koncová zařízení, ThingSpeaks primárně pro analýzu dat s Matlabem, HA a openHab jsou HUBy pro domácí automatizaci 
 Jednotlivé Platformy se některými funkcemi překrývají a v jiných jsou zase jedinečné. Při výběru je důležité si stanovit na co Platformu chceme využívat a jaké funkce vyžadujeme. Tabulka \ref{compare-table} obsahuje přehledné porovnání analyzovaných platforem v sedmi kategoriích:
 \begin{itemize}
     \item Podpora komerčních produktů - zda lze k platformě připojit zakoupené zařízení od výrobcl jako Philips, Xiaomi a jiných.
@@ -146,15 +145,15 @@ OpenHab je projekt s dlouho historií. Funkčně se velmi podobá Home Assistant
     % \begin{center} % pro addony přidat poznámku 324 obsahuje 2585 věcí
     \begin{tabular}{ |c| m{5em}| m{5em}|m{5em}|m{4em}| m{5em}| m{4em}| m{4em}| }
         \hline
-        Platforma      & Podpora komerčních produktů & Vlastní zařízení   & Hosting            & ACL              & Nativní aplikace         & Správa zařízení & Cena              \\
+        Platforma      & Podpora komerčních produktů  & Vlastní zařízení   & Hosting            & ACL              & Nativní aplikace                   & Správa zařízení & Cena              \\
         \hline
-        Blynk          & Ne                          & Ano                & self-hosted, cloud & Pouze Enterprise & iOS, android                      & Ano             & Omezený Free plan \\
+        Blynk          & Ne                           & Ano                & self-hosted, cloud & Pouze Enterprise & iOS, android                       & Ano             & Omezený Free plan \\
         \hline
-        ThingSpeaks    & 6 dodavatelů (primárně LoRa)   & Ano                & cloud              & Ano              & Pouze pro náhled na data (android) & Ne              & Omezený Free plan \\
+        ThingSpeaks    & 6 dodavatelů (primárně LoRa) & Ano                & cloud              & Ano              & Pouze pro náhled na data (android) & Ne              & Omezený Free plan \\
         \hline
-        Home Assistant & pomocí pluginů (1743)       & 3rd party knihovny & self-hosted        & Ano              & iOS, android                      & Ne              & Zdarma            \\
+        Home Assistant & pomocí pluginů (1743)        & 3rd party knihovny & self-hosted        & Ano              & iOS, android                       & Ne              & Zdarma            \\
         \hline
-        openHab        & pomocí doplňků (324)        & 3rd party knihovny & self-hosted, cloud & Ne               & iOS, android                      & Ne              & Zdarma            \\
+        openHab        & pomocí doplňků (324)         & 3rd party knihovny & self-hosted, cloud & Ne               & iOS, android                       & Ne              & Zdarma            \\
         \hline
     \end{tabular}
     % \end{center}

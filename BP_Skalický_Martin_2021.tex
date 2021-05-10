@@ -50,13 +50,14 @@
 \author{Martin Skalický} %jméno autora bez akademických titulů
 \supervisor{Ing. Jiří Mlejnek}
 %\acknowledgements{Doplňte, máte-li komu a za co děkovat. V~opačném případě úplně odstraňte tento příkaz.}
-\abstractCS{Tato práce se zabývá porovnáním aktuálních IoT platforem na trhu pro domácnosti a následným návrhem vlastního řešení včetně implementace. Základním pilířem celého řešení je definice schématu, dle kterého každé zařízení popíše své schopnosti a uživateli se následně zobrazní příslušné rozhraní vygenerované ná základě jeho dovedností. Platforma je určena pro domácí kutily a technické entuziasty, kteří chtějí mít svá zařízení pod jednotným rozhraním. Uživatelské rozhraní je realizováno progresivní webovou aplikací. Součásti práce je také tvorba zařízení založeného na čipu ESP8266 pro měření teploty v udírně, na kterém je demonstrováno jeho zapojení do Platformy.}
-\newpage
+\abstractCS{Tato práce se zabývá porovnáním aktuálních IoT platforem na trhu pro domácnost a následným návrhem vlastního řešení včetně implementace. Základním pilířem celého řešení je definice schématu, dle kterého každé zařízení popíše své schopnosti a uživateli se následně zobrazní příslušné rozhraní vygenerované ná základě jeho dovedností. Platforma je určena pro domácí kutily a technické entuziasty, kteří chtějí mít svá zařízení pod jednotným rozhraním. Uživatelské rozhraní je realizováno progresivní webovou aplikací. Součásti práce je také tvorba zařízení založeného na čipu ESP8266 pro měření teploty v udírně, na kterém je demonstrováno jeho zapojení do Platformy.}
+
+
 \abstractEN{This thesis focuses on a comparison of existing IoT platforms available on the market for smart homes and subsequent design of a custom solution including its implementation. The backbone of whole solution is definition of a scheme that will be used by every connected device to describe its capabilities. User is presented to a generated interface based on the description of connected devices. Platform is designed for use by technical enthusiasts, who want to control all their devices through single interface. The user interface is realized as progressive web app. Part of the thesis also deals with a design and manufacturing of smart device based on chip ESP8266 with purpose of measuring a temperature in a smokehouse. On this smart device the thesis also demonstrates a connection of a device to the platform.}
 
 \placeForDeclarationOfAuthenticity{V~Praze}
 \declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
-\keywordsCS{IoT Platforma, OpenSource, implementace IoT Platformy, PWA, MQTT, ESP8266}
+\keywordsCS{IoT Platforma, OpenSource, implementace IoT Platformy, PWA, MQTT, ESP8266\newpage}
 \keywordsEN{IoT Platform, OpenSource, implementation of IoT Platform, PWA, MQTT, ESP8266}
 % \website{http://v3.iotplatforma.cloud} %volitelná URL práce, objeví se v tiráži - úplně odstraňte, nemáte-li URL práce
 
@@ -100,11 +101,11 @@ Vzhledem k rozsahu Bakalářské práce není cílem nahradit existující řeš
 \input{030testing.tex}
 
 \begin{conclusion}
-    Cílem této práce bylo navrhnout a implementovat vlastní IoT Platformu. Byla provedena rešerže a porovnání čtyř Platforem: Bynk, ThingSpeak, Home Assistant a OpenHab. Pro návrh vlastního řešení byla vytvořena koncepce, kterou měla být otevřená více uživatelská Platforma pro připojení různorodých zařízení vyrobených kutily a technickými entuziasty. Základním pilířem celého řešení mělo být vytvoření schématu, dle kterého každé zařízení popíše své schopnosti a uživateli se následně zobrazní příslušné rozhraní vygenerované ná základě jeho dovedností. Každý uživatel měl mít k dispozici vlastní sféru v rámci, které jeho zařízení komunikují.
+    Cílem této práce bylo navrhnout a implementovat vlastní IoT Platformu. Všech vytyčených cílů bylo dosaženo. Byla provedena rešerše a porovnání čtyř Platforem: Bynk, ThingSpeak, Home Assistant a OpenHab. Pro návrh vlastního řešení byla vytvořena koncepce, kterou je otevřená více uživatelská Platforma pro připojení různorodých zařízení vyrobených kutily a technickými entuziasty. Základním pilířem celého řešení je vytvořené schéma na protokolu MQTT, které umožňuje zařízením přesně popsat své dovednosti, na jejichž základě je vykresleno uživatelské rozhraní. Jsou podporovány různé kombinace vlasnosti od úzce specifických prvků jako přepínač až po obecné odeslání textu. Každý uživatel má k dispozici vlastní sféru, v rámci které jeho zařízení komunikují.
 
-    Všech definovaných cílů bylo dosaženo. Bylo vytvořené schéma na protokolu MQTT, které umožňuje zařízením přesně popsat své dovednosti, na jejichž základě je vykresleno uživatelské rozhraní. Jsou podporovány různé kombinace vlasnosti od úzce specifických prvků jako přepínač až po obecné odeslání textu. Bylo vytvořeno intuitivní webové rozhraní, které umožňuje interakci se zařízeními, vizualizaci některých dat a nastavení push notifikací. Byla vytvořena knihovna pro koncová zařízení, umožňující snadné napojení na Platformu a vzniklo zařízení, na kterém bylo demonstrováno její použití. Řešení bylo nasazeno a podrobeno zátěžovému a uživatelskému testování, ve kterém se prokázala schopnost obsloužit stovky zařízení a intuitivnost celého rozhraní.
+    Bylo vytvořeno intuitivní webové rozhraní, které umožňuje interakci se zařízeními, vizualizaci některých dat a nastavení push notifikací. Byla vytvořena knihovna pro koncová zařízení, umožňující snadné napojení na Platformu a vzniklo zařízení, na kterém bylo demonstrováno její použití. Řešení bylo nasazeno a podrobeno zátěžovému a uživatelskému testování, ve kterém se prokázala schopnost obsloužit stovky zařízení a intuitivnost celého rozhraní.
 
-    Celé řešení bude zveřejněno a uvolněno pod licencí GPLv3 na stránce \url{https://github.com/founek2/IOT-Platforma}.
+    Celé řešení je zveřejněno a uvolněno pod licencí GPLv3 na stránce \url{https://github.com/founek2/IOT-Platforma}. Platformu již aktivně využívám pro svá chytrá zařízení a jejímu vývoji se i nadále budu věnovat ve svém volném čase, případně v rámci diplomové práce. Věřím, že se jedná o zajímavou alternativu ke stávajícím řešení a uvidíme zda se mi podaří do jejího budoucího vývoje zapojit i komunitu.
 \end{conclusion}
 
 \bibliographystyle{csn690}
@@ -151,10 +152,23 @@ Vzhledem k rozsahu Bakalářské práce není cílem nahradit existující řeš
 
 
 
-\begin{figure}[htbp]
+
+\begin{figure}
     \centering
-    \includegraphics[width=0.5\textwidth]{img/screens/led.png}
-    \caption{Ukázka rozhraní - věc typu switch}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.75\linewidth]{img/screens/led.png}
+        \caption{Věc typu switch}
+    \end{subfigure}
+
+
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.7\linewidth]{img/screens/notify.png}
+        \caption{Nastavení pravidel notifikací}
+    \end{subfigure}
+
+    \caption{Ukázka rozhraní}
 \end{figure}
 
 \input{user_guide.tex}
