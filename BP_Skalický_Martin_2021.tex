@@ -1,15 +1,3 @@
-% arara: pdflatex
-% arara: pdflatex
-% arara: pdflatex
-
-% options: 
-% thesis=B bachelor's thesis 
-% thesis=M master's thesis
-% czech thesis in Czech language 
-% slovak thesis in Slovak language
-% english thesis in English language 
-% hidelinks remove colour boxes around hyperlinks  
- 
 \documentclass[thesis=B,czech]{FITthesis}[2019/12/23]
   
 \usepackage[utf8]{inputenc} % LaTeX source encoded as UTF-8
@@ -38,9 +26,6 @@
 \newcommand\tstrut{\rule{0pt}{2.4ex}}
 \newcommand\bstrut{\rule[-1.0ex]{0pt}{0pt}}
 
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
-% ODTUD DAL VSE ZMENTE
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 
 \department{Katedra softwarového inženýrství}
 \title{IoT platforma s webovým rozhraním}
@@ -49,8 +34,7 @@
 \authorWithDegrees{Martin Skalický} %jméno autora včetně současných akademických titulů
 \author{Martin Skalický} %jméno autora bez akademických titulů
 \supervisor{Ing. Jiří Mlejnek}
-%\acknowledgements{Doplňte, máte-li komu a za co děkovat. V~opačném případě úplně odstraňte tento příkaz.}
-\abstractCS{Tato práce se zabývá porovnáním aktuálních IoT platforem na trhu pro domácí použití a následným návrhem vlastního řešení včetně implementace. Základním pilířem celého řešení je definice schématu, dle kterého každé zařízení popíše své schopnosti a uživateli se následně zobrazní příslušné rozhraní vygenerované ná základě jeho dovedností. platforma je určena pro domácí kutily a technické entuziasty, kteří chtějí mít svá zařízení pod jednotným rozhraním. Uživatelské rozhraní je realizováno progresivní webovou aplikací. Součásti práce je také tvorba zařízení založeného na čipu ESP8266 pro měření teploty v udírně, na kterém je demonstrováno jeho zapojení do platformy.}
+\abstractCS{Tato práce se zabývá porovnáním aktuálních IoT platforem na trhu pro domácí použití a následným návrhem vlastního řešení včetně implementace. Základním pilířem celého řešení je definice schématu, dle kterého každé zařízení popíše své schopnosti a uživateli se následně zobrazí příslušné rozhraní vygenerované na základě jeho dovedností. Platforma je určena pro domácí kutily a technické entuziasty, kteří chtějí mít svá zařízení pod jednotným rozhraním. Uživatelské rozhraní je realizováno progresivní webovou aplikací. Součástí práce je také tvorba zařízení založeného na čipu ESP8266 pro měření teploty v udírně, na kterém je demonstrováno jeho zapojení do platformy.}
 
 
 \abstractEN{This thesis focuses on a comparison of existing IoT platforms available on the market for smart homes and subsequent design of a custom solution including its implementation. The backbone of whole solution is definition of a scheme that will be used by every connected device to describe its capabilities. User is presented to a generated interface based on the description of connected devices. Platform is designed for use by technical enthusiasts, who want to control all their devices through single interface. The user interface is realized as progressive web app. Part of the thesis also deals with a design and manufacturing of smart device based on chip ESP8266 with purpose of measuring a temperature in a smokehouse. On this smart device the thesis also demonstrates a connection of a device to the platform.}
@@ -59,33 +43,18 @@
 \declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
 \keywordsCS{IoT platforma, OpenSource, implementace IoT platformy, PWA, MQTT, ESP8266\newpage}
 \keywordsEN{IoT platform, OpenSource, implementation of IoT platform, PWA, MQTT, ESP8266}
-% \website{http://v3.iotplatforma.cloud} %volitelná URL práce, objeví se v tiráži - úplně odstraňte, nemáte-li URL práce
 
 \begin{document}
 
-% \newacronym{CVUT}{{\v C}VUT}{{\v C}esk{\' e} vysok{\' e} u{\v c}en{\' i} technick{\' e} v Praze}
-% \newacronym{FIT}{FIT}{Fakulta informa{\v c}n{\' i}ch technologi{\' i}}
-
 \begin{introduction}
-    %sdělit že téma je nové, aktuální, je ho potřeba řešit, komu to bude prospěšné, proč jsme si ho zvolili - vypadá dobře oborová motivace -> vyřešení daného problému někomu pomůže (ideálně nějaké komunitě), sdělit povrchově čím se zabývá práce ->rozvedení v kapitole Cíl, pak na konci úvodu stručné představení práce, aby si čtenář udělal představu jak budu postupovat
-
     Internet věcí je velmi diskutovaným tématem posledních několika let, ale jeho vývoji předcházela spousta trnitých cest a slepých uliček. Pod kouzelnou zkratkou IoT se pro mnohé skrývá příslib pokroku od chytré domácnosti až po revoluci v průmyslu. Internet věcí je označení pro síť fyzických zařízení, která spolu dokáží komunikovat ať už napřímo nebo pomocí prostředníka. Pro efektivní správu se zařízení připojují k centrální platformě, která sbírá data z jednolivých zařízení a dle definovaných pravidel zařízením posílá příkazy. Například v domácnosti čidlo pohybu zaregistruje příchod majitele domů a platforma v reakci zapne vytápění. Současně poskytuje uživatelské rozhraní, pomocí kterého lze jednotlivá zařízení přímo ovládat a definovat scénáře, na základě kterých vykonává automatizaci jako uvedené automatické zapnutí vytápějí. Platforma je tedy nedílnou součástí světa IoT a od jejích funkcí se odvíjí možnost využití plného potenciálu.
 
     Na trhu již dnes existují hotová řešení, ale je velmi problematické se mezi nimi zorientovat a často bývají velmi drahá. Důvodem vzniku této práce je negativní osobní zkušenost a vysoké poplatky komerčních řešení s cílem vytvoření dostupné otevřené platformy pro technické entuziasty a bastlíře, kteří si chtějí jako já vytvářet levná zařízení a jednoduše je spravovat/ovládat.
 
     Teoretická část práce se věnuje rešerši aktuálních řešení na trhu, jejich vzájemným porovnáním a návrhem vlastního. Praktická část se zaměřuje na implementaci a nasazení vlastního řešení.
-
-    %představit koncepci koncovích zařízení
-    %využití - sledování vláhy, zalévání, udírna, ovládání hlasem
-
-    % Takovýchto řešení již dnes existuje celá řada a podíváme se na výhody a nevýhody těch nejznámějších řešení jak z komerčního, tak i OpenSource světa.
-    % Následně se budeme věnovat návrhu vlastního řešení s důrazem na bezpečnost, kterou stále spousta výrobců opomíjí. Moje řešení bude mít webové rozhraní, které umožní ovládání ze všech běžných zařízení bez nutnosti vytvářet nativní aplikace.
-
-
 \end{introduction}
 
 \chapter{Cíl práce}
-% návrh vlastní platformy, cíleno pro kutily, bezpečnost pochybná u komerčních řešení -> já chci mít velkou, moje řešení bude více decentralizované
 Cílem této práce je navrhnout a implementovat řešení IoT platformy, která bude primárně určena pro domácí kutily, kteří mohou k platformě připojit tzv. DIY (\uv{Udělěj si sám}) zařízení. Platforma tedy bude muset být univerzální tak, aby umožnila připojení různorodých zařízení. Uživatelské rozhraní bude realizováno formou webové aplikace, která umožní sledování a ovládání jednotlivých zařízení.
 
 Hlavním přínosem bude vytvoření alternativy k již existujícím řešením pro ty, kteří hledají vyšší bezpečnost a nižší cenu než často nabízí komerční řešení. Platforma bude koncipována tak, aby si uživatel přidal zařízení na jedno kliknutí a mohl ho ihned ovládat bez nutnosti často zdlouhavých konfigurací, ke kterým zpravidla potřebuje hlubší znalosti. Výsledná platforma bude uvolněna pod OpenSource licencí s možností vlastního hostingu.
@@ -101,11 +70,11 @@ Vzhledem k rozsahu Bakalářské práce není cílem nahradit existující řeš
 \input{030testing.tex}
 
 \begin{conclusion}
-    Cílem této práce bylo navrhnout a implementovat vlastní IoT platformu. Všech vytyčených cílů bylo dosaženo. Byla provedena rešerše a porovnání čtyř Platforem: Bynk, ThingSpeak, Home Assistant a OpenHab. Pro návrh vlastního řešení byla vytvořena koncepce, kterou je otevřená více uživatelská platforma pro připojení různorodých zařízení vyrobených kutily a technickými entuziasty. Základním pilířem celého řešení je vytvořené schéma na protokolu MQTT, které umožňuje zařízením přesně popsat své dovednosti, na jejichž základě je vykresleno uživatelské rozhraní. Jsou podporovány různé kombinace vlasnosti od úzce specifických prvků jako přepínač až po obecné odeslání textu. Každý uživatel má k dispozici vlastní sféru, v rámci které jeho zařízení komunikují.
+    Cílem této práce bylo navrhnout a implementovat vlastní IoT platformu. Všech vytyčených cílů bylo dosaženo. Byla provedena rešerše a porovnání čtyř Platforem: Bynk, ThingSpeak, Home Assistant a OpenHab. Pro návrh vlastního řešení byla vytvořena koncepce, kterou je otevřená více uživatelská platforma pro připojení různorodých zařízení vyrobených kutily a technickými entuziasty. Základním pilířem celého řešení je vytvořené schéma na protokolu MQTT, které umožňuje zařízením přesně popsat své dovednosti, na jejichž základě je vykresleno uživatelské rozhraní. Jsou podporovány různé kombinace vlasností od úzce specifických prvků jako přepínač až po obecné odeslání textu. Každý uživatel má k dispozici vlastní sféru, v rámci které jeho zařízení komunikují.
 
     Bylo vytvořeno intuitivní webové rozhraní, které umožňuje interakci se zařízeními, vizualizaci některých dat a nastavení push notifikací. Byla vytvořena knihovna pro koncová zařízení, umožňující snadné napojení na platformu a vzniklo zařízení, na kterém bylo demonstrováno její použití. Řešení bylo nasazeno a podrobeno zátěžovému a uživatelskému testování, ve kterém se prokázala schopnost obsloužit stovky zařízení a intuitivnost celého rozhraní.
 
-    Celé řešení je zveřejněno a uvolněno pod licencí GPLv3 na stránce \url{https://github.com/founek2/IOT-Platforma}. Platformu již aktivně využívám pro svá chytrá zařízení a jejímu vývoji se i nadále budu věnovat ve svém volném čase, případně v rámci diplomové práce. Věřím, že se jedná o zajímavou alternativu ke stávajícím řešení a uvidíme zda se mi podaří do jejího budoucího vývoje zapojit i komunitu.
+    Řešení je zveřejněno a uvolněno pod licencí GPLv3 na stránce \url{https://github.com/founek2/IOT-Platforma}. Platformu již aktivně využívám pro svá chytrá zařízení a jejímu vývoji se i nadále budu věnovat ve svém volném čase, případně v rámci diplomové práce. Věřím, že se jedná o zajímavou alternativu ke stávajícím řešení a uvidím, zda se mi podaří do jejího budoucího vývoje zapojit i komunitu.
 \end{conclusion}
 
 \bibliographystyle{csn690}
@@ -114,7 +83,6 @@ Vzhledem k rozsahu Bakalářské práce není cílem nahradit existující řeš
 \appendix
 
 \chapter{Seznam použitých zkratek}
-% \printglossaries
 \begin{description}
     \item[ACL]
     \item[DIY]
