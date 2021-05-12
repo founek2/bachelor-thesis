@@ -16,7 +16,7 @@ Implementované řešení umožňuje automatizaci ze strany zařízení, která 
 
 Momentální řešení uživatelům umožňuje napojení vlastního nástroje, který bude přihlášen k odběru MQTT zpráv z jejich zařízení a mohou si tedy vytvářet datové toky v něm. Pro integrování řešení přímo do platformy by bylo nutné analyzovat možnost použití Node-Red v tomto více uživatelském prostředí. Současně s tímto řešením by šlo podmiňovat notifikace složitějšími výrazy než pouze v závislosti na aktuální hodnotě dané vlastnosti, ale i v závislosti na jiných složitějších podmínkách.
 
-Pro využití hlasového ovládání pomocí současných asistentek jako \textit{Siri} nebo \textit{Google Assistent} by bylo potřeba doimplementovat možnost vytváření tokenů pro přístup k API rozhraní pro jednotlivé uživatele a jejich správou. Následně by bylo možné využít v asistentkách možnosti definovat akci na hlasový povel, která by odeslala zadefinovaný požadavek na změnu jehož součástí by byl přístupový token pro autorizaci. Takto by bylo možné realizovat jednoduché povely pro změnu jedné vlastnosti. Pro definici složitější akce na hlasový povel by bylo možné využít webovou službu \textbf{IFTTT} \cite{ifttt} v kombinaci s asistentkou, která umožňuje vytvářet podmíněné příkazy a obsahuje integraci s velkým množství služeb třetích stran.
+Pro využití hlasového ovládání pomocí současných asistentek jako \textit{Siri} nebo \textit{Google Assistent} by bylo potřeba doimplementovat možnost vytváření tokenů pro přístup k API rozhraní pro jednotlivé uživatele a jejich správu. Následně by bylo možné využít v asistentkách možnosti definovat akci na hlasový povel, která by odeslala zadefinovaný požadavek na změnu jehož součástí by byl přístupový token pro autorizaci. Takto by bylo možné realizovat jednoduché povely pro změnu jedné vlastnosti. Pro definici složitější akce na hlasový povel by bylo možné využít webovou službu \textbf{IFTTT} \cite{ifttt} v kombinaci s asistentkou, která umožňuje vytvářet podmíněné příkazy a obsahuje integraci s velkým množství služeb třetích stran.
 
 
 \section{Nasazení}
@@ -26,12 +26,12 @@ Pro spuštění platformy na systému Linux je připravena instalační příru�
 
 
 
-\section{Chytrá udírna} % ukážka deklarace vlastností
+\section{Chytrá udírna}
 Pro demonstraci vytvoření zařízení jsem si zvolil jedno, které jsem vytvořil pro svého otce a mělo velmi pozitivní přínos, jak po stránce úspory času, tak i chuťových buněk. Dal jsem si za cíl vyřešit vzdálené monitorování teploty udírny v průběhu uzení, protože u udíren se používá klasický ručičkový teploměr, který se musí každých 15 minut kontrolovat kvůli správnému udržení teploty v rozmezí přibližně deseti stupňů. Naše udírna je umístěna v rohu velké zahrady a v zimním období je velice nepříjemné neustále kontrolovat teplotu v celém průběhu uzení, které trvá i deset hodin.
 
 Proto jsem se rozhodl vytvořit zařízení, které bude měřit teplotu, zobrazí ji na displeji a současně ji odešle do platformy pro možnost sledování z pohodlí domova. Tímto se celý proces uzení zpříjemní a s nastavenými notifikacemi nebude potřeba ani teplotu aktivně sledovat, protože platforma sama upozorní na problematickou teplotu.
 
-\subsection{Zapojení} % zapojení HW
+\subsection{Zapojení} 
 Jako hlavní řídící desku s čipem ESP8266 jsem zvolil \textit{Wemos D1 mini}, se kterou mám dobré osobní zkušenosti, ale vyhovovala by jakákoli jiná s dostatkem vyvedených pinů. Pro monitorování teploty použiji senzor DS18B20 (maximální teplota 110 °C pro uzení plně dostačuje), který využívá digitální komunikaci a umožňuje sdílení datového kabelu s více senzory, vhodné pro jednoduché přidání dalších senzorů v případě potřeby pro monitoring různých segmentů udírny. Pro zobrazení informací použiji displej \uv{2.2" 240x320 SPI TFT - ILI9341}, který je i dotykový (do budoucna počítám s možností jeho využití pro další funkce). Na zapojení může vypadat zvláštně zapojení rezistoru mezi datový a napájecí pin, ale toto je vyžadováno komunikační sběrnicí \uv{1-Wire} \cite{1-wire}, kterou zvolený senzor využívá. Danou hodnotu rezistoru jsem převzal z datasheetu pro DS18B20 \cite{1-wire-ds}.
 
 \begin{figure}[htbp]
@@ -40,7 +40,7 @@ Jako hlavní řídící desku s čipem ESP8266 jsem zvolil \textit{Wemos D1 mini
     \caption{\label{img-wiring}Zapojení řídící desky, displeje a senzoru teploty \cite{esp-wiring}}
 \end{figure}
 
-\subsection{Výroba} % fotky 
+\subsection{Výroba} 
 Jednotlivé součástky byly zapojeny dle diagramu na obrázku \ref{img-wiring}. Pro zařízení jsem navrhl krabičku na míru a následně ji vytiskl na 3D tiskárně. Výsledné zařízení je napájené pomocí micro usb, tedy stačí běžná nabíječka na telefon a teplotní senzor se připojuje pomocí konektoru kvůli jednodušší manipulaci. Dále bylo potřeba vytvořit program, který poběží na zařízení pro odesílání teploty do platformy a bude zobrazovat informace (teplotu, čas) na displeji. Ukázka kódu \ref{code} obsahuje využití vytvořené knihovny v sekci \ref{library} pro napojení chytré udírny na platformu. Výsledný program obsahuje tento kód obohacený o komunikaci s displejem a načtení času z internetu. Model krabičky a finální zdrojový kód lze nalézt na přiloženém médiu viz. příloha \ref{medium}.
 
 \begin{figure}[htbp]
@@ -81,15 +81,8 @@ void loop() {
     \caption{\label{code}Kód pro odesílání teploty}
 \end{figure}
 
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=0.5\textwidth]{img/notification_edit.png}
-%     \caption{Nastavení pravidel notifikací}
-% \end{figure}
-
 \section{Knihovna pro ESP8266}
 \label{library}
-% Platformio, C++, pubsubclient, OTA
 Pro čip ESP8266 lze programovat s využitím oficiálního sdk (Espressif SDK) nebo prostředí Arduino, které se těší obrovské oblibě mezi kutily. Rozhodl jsem se využít prostředí Arduino, protože kolem něho existuje obrovská komunita a stovky již předpřipravených knihoven pro různorodé moduly. Díky tomu není potřeba tolik řešit nízkoúrovňové problémy jako např. implementaci protokolu pro komunikace se senzorem teploty, ale stačí si stáhnout příslušnou knihovnu a následně se plně soustředit na aplikační logiku.
 
 Mým cílem je vytvoření platformy, ke které si bude moci kdokoliv připojit vlastní zařízení - abych proces připojení co možná nejvíce zjednodušil, vytvořil jsem knihovnu pro prostředí Arduino, která bude řešit veškerou komunikaci s platformou a nabídne programátorovi přehledná rozhraní pro definici zařízení, jeho věcí, vlastností a reakcí na změny.
