@@ -136,7 +136,7 @@ Broker podporuje 3 třídy QoS (Quality of service), kterou lze specifikovat pro
 
 
 \subsubsection{Programovací jazyk}
-Programovacích jazyků je dnes na trhu dostupných stovky a každý má své specifické pozitivní i negativní vlastnosti. Při výběru je tedy vždy potřeba zohlednit jeho přínos pro použití na daném projektu. Kromě jazyka samotného je příhodné analyzovat dostupné knihovny a frameworky, které lze v projektu použít a značně tak urychlit celkový vývoj. Pro implementaci této práce byl zvolen jazyk JavaScript konkrétně jeho nadmnožina TypeScript a to z několika důvodů.
+Programovacích jazyků jsou dnes na trhu stovky a každý má své specifické pozitivní i negativní vlastnosti. Při výběru je tedy vždy potřeba zohlednit jeho přínos pro použití na daném projektu. Kromě jazyka samotného je příhodné analyzovat dostupné knihovny a frameworky, které lze v projektu použít a značně tak urychlit celkový vývoj. Pro implementaci této práce byl zvolen jazyk JavaScript konkrétně jeho nadmnožina TypeScript a to z několika důvodů.
 
 Vzhledem k povaze zvoleného protokolu pro komunikaci se zařízeními, jenž je založený na asynchronních zprávách, je JavaScript velmi vhodný, protože je založený na asynchronní event-driven \cite{nodejs} architektuře. Tato architektura nabízí velice elegantní přístup pro zpracování akcí, kde se musí čekat na výsledek jako např. u síťové komunikace či právě asynchronních zpráv. V tradičním jazyce jako Java nebo C++ se toto čekání musí řešit pracným vytvořením nového vlákna, které čeká na výsledek a následným zpracováním. V NodeJS je programátor od této problematiky odstíněn a může se tak plně věnovat tvorbě aplikační logiky, aniž by měl znalosti a zkušenosti s vícevláknovým programováním.
 
@@ -154,7 +154,7 @@ Pro běh JavaScript na straně serveru existuje několik prostředí např. Spid
 
 \paragraph{AgendaJS} Knihovna pro perzistentní plánování úkolů pro NodeJS \cite{agendajs}. Umožňuje zpracování/plánování/perzistenci úkolů a jejich opětovné spouštění v případě chyby \cite{agendajs}. Tato knihovna bude primárně využita pro zajištění odeslání emailů a pro spouštění případných plánovaných akcí. Proč v souvislosti s odesláním emailů? Jejich zpracování je závislé na třetí straně - emailovém serveru, který nemusí být vždy dostupný. Pokud systém bude mět odeslat email, tak tímto způsobem bude zajištěno, že i v případě selhání bude email opětovně odeslán, jakmile to bude možné.
 
-\paragraph{Socket.IO}\label{socketio} Pro zajištění aktualizace rozhraní v reálném čase bude využita knihovna SocketIO umožnující navázání obousměrného spojení pro real-time komunikaci. Jedná se o velice populární a časem ověřené řešení, které zajišťuje kompatibilitu i s prohlížeči nepodporující moderní technologii WebSocket.
+\paragraph{Socket.IO}\label{socketio} Pro zajištění aktualizace rozhraní v reálném čase bude využita knihovna SocketIO umožnující navázání obousměrného spojení pro real-time komunikaci. Jedná se o velice populární a časem ověřené řešení, které zajišťuje kompatibilitu i s prohlížeči nepodporujícími moderní technologii WebSocket.
 
 
 \subsubsection{Uživatelské rozhraní}

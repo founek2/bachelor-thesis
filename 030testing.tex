@@ -4,7 +4,7 @@ Tato kapitola se zabývá testováním implemetovaného řešení nasazeného v 
 \section{Zátěžové testování}
 Obsloužit desítky připojených zařízení není s dnešním výkonným hardwarem žádný problém. Pro ověření chování řešení pod opravdu velkou zátěží - desítky paralelních požadavků a stovky připojených zařízení - jsem vytvořil automatizovaný test, kterému se definuje počet uživatelů a počet zařízení, které mezi uživatele má rozprostřít a o vše ostatní se test postará sám (pomocí HTTP požadavků stejně jako by uživatel interagoval přes webové rozhraní).
 
-Prvně je vytvořen příslušný počet uživatelů a všechna virtuální zařízení (komunikující přes MQTT protokol stejně jako reálná). Všem uživatelům jsou načtena objevená zařízení, která jsou následně spárována a začínají odesílat data ze senzorů a jiných vlastností simulující reálný provoz. Data se odesílají v náhodném rozmezí 50 - 60 vteřin, aby se provoz rozložil v čase. Test probíhal v následující konfiguraci:
+Prvně je vytvořen příslušný počet uživatelů a všechna virtuální zařízení (komunikující přes MQTT protokol stejně jako reálná). Všem uživatelům jsou načtena objevená zařízení, která jsou následně spárována a začínají odesílat data ze senzorů a jiných vlastností simulujících reálný provoz. Data se odesílají v náhodném rozmezí 50 - 60 vteřin, aby se provoz rozložil v čase. Test probíhal v následující konfiguraci:
 \begin{itemize}
     \item počet uživatelů 25
     \item počet zařízení 250
