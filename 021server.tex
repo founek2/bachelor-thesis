@@ -16,7 +16,7 @@ Vzor \textbf{Publish subscribe} přidává navíc asynchronní zpracování udá
 
 Servrová část je rozdělena na dva separátní procesy kvůli zvýšení odolnosti, aby v případě pádu jedné z části buď fungovalo uživatelské rozhraní nebo část obsluhující komunikaci se zařízeními.
 \begin{itemize}
-    \item \textbf{Backend} - dává k dispozici RESTful rozhraní pro kompletní ovládání Platformy, dále vykonává naplánová akce jako odesílání emailů.
+    \item \textbf{Backend} - dává k dispozici RESTful rozhraní pro kompletní ovládání platformy, dále vykonává naplánová akce jako odesílání emailů.
     \item \textbf{Backend-mqtt} - interaguje se zařízeními přes MQTT broker a odesílá real-time změny na frontend.
 \end{itemize}
 
@@ -70,7 +70,7 @@ Oba procesy jsou rozděleny do separátních balíčků \textit{backend} a \text
 
 
 \subsection{Proces Backend}
-Tento proces s využitím frameworku \hyperref[expressjs]{ExpressJS} implementuje webový server nabízející RESTful rozhraní pro vytváření, editaci a mazání všech entit Platformy. Data se odesílají a konzumují ve formátu JSON. Proces dále implementuje odesílání emailů.
+Tento proces s využitím frameworku \hyperref[expressjs]{ExpressJS} implementuje webový server nabízející RESTful rozhraní pro vytváření, editaci a mazání všech entit platformy. Data se odesílají a konzumují ve formátu JSON. Proces dále implementuje odesílání emailů.
 
 \subsubsection{Popis rozhraní}
 Všechny endpointy, až na přihlášení a registraci uživatele, vyžadují autentizační token v hlavičce požadavku. Odpověď se potom liší podle oprávnění daného uživatele. Ukázka rozhraní:
@@ -111,7 +111,7 @@ Do systému mohou přistupovat klienti pod různými uživatelskými účty, kte
 %https://news.netcraft.com/archives/category/web-server-survey/
 Použití HTTPS (HTTP spolu se šifrováním SSL nebo TLS) je dnes samozřejmností v případě, že se na stránce zadávají jakékoli údaje. NodeJS přímo podporuje šifrované HTTP, ale správa certifikátu i nastavení není úplně přímočaré. Proto jsem NodeJS použil jako HTTP server s reverzním proxy serverem Nginx, který s klienty již komunikuje pomocí zabezpečeného spojení. Nginx je široce podporován různými nástroji pro správu webů mimo jiné nástrojem \uv{Certbot}, který umožňuje automatické získání bezplatného certifikátu nutného pro provoz HTTPS. Lze velmi snadno konfigurovat a nabízí pokročilé funkce jako \textit{load balancing}.
 
-Veškerá komunikace mezi koncovými zařízeními a Platformou probíhá přes protokol MQTT a proto zabezpečení tohoto kanálu je nezbytné. Není žádoucí, aby třetí strana mohla posílat požadavky pro změnu stavu zařízením, i odposlouchávání zpráv je bezpečnostní riziko (z odposlechu pohybových čidel lze zjistit, zda je někdo doma, zlatý důl pro zloděje). Šifrování MQTT dokáže zajistit využitím protokolu nižší vrstvy TLS (označováno jako \textit{mqtts} nebo \textit{mqtt over tls}). Toto řešení zamezí odposlechnutí komunikace mezi Brokerem a zařízením. Většina existujících řešení pro domácnost další bezpečností prvky neimplementují a následkem toho sice nelze odposlechnout komunikace, ale lze se jednoduše přihlásit k Brokeru k odběru všech zpráv. Já však považuji toto řešení jako nedostatečné a proto implementuji systém pro autentizaci (ověření identity) i autorizaci (kontrola oprávnění pro přístup k danému zdroji). MQTT specifikace umožňuje přihlášení pomocí uživ. jména a hesla nebo certifikátu. Vzhledem k omezenému výpočetnímu výkonu ESP8266 jsem nucen využít kombinaci jména a hesla, protože rozumný výpočet asymetrických šifer je za hranicí jeho možností. Jako MQTT Broker využívám RabbitMQ, který podporuje definici vlastního backendu pro kontrolu oprávnění přes RESTful rozhraní. Toto řešení mi umožňuje kontrolovat přihlášení jednotlivých zařízení a i následně jednotlivé požadavky k publikaci a odběru zpráv. Součástí dat, které předává RabbitMQ autentizačnímu serveru je i název tématu do kterého chce zařízení zapisovat nebo z něho číst. Mohu tak přesně specifikovat, jestli danému zařízení bude umožněn přístup do daného tématu či nikoliv.
+Veškerá komunikace mezi koncovými zařízeními a platformou probíhá přes protokol MQTT a proto zabezpečení tohoto kanálu je nezbytné. Není žádoucí, aby třetí strana mohla posílat požadavky pro změnu stavu zařízením, i odposlouchávání zpráv je bezpečnostní riziko (z odposlechu pohybových čidel lze zjistit, zda je někdo doma, zlatý důl pro zloděje). Šifrování MQTT dokáže zajistit využitím protokolu nižší vrstvy TLS (označováno jako \textit{mqtts} nebo \textit{mqtt over tls}). Toto řešení zamezí odposlechnutí komunikace mezi Brokerem a zařízením. Většina existujících řešení pro domácnost další bezpečností prvky neimplementují a následkem toho sice nelze odposlechnout komunikace, ale lze se jednoduše přihlásit k Brokeru k odběru všech zpráv. Já však považuji toto řešení jako nedostatečné a proto implementuji systém pro autentizaci (ověření identity) i autorizaci (kontrola oprávnění pro přístup k danému zdroji). MQTT specifikace umožňuje přihlášení pomocí uživ. jména a hesla nebo certifikátu. Vzhledem k omezenému výpočetnímu výkonu ESP8266 jsem nucen využít kombinaci jména a hesla, protože rozumný výpočet asymetrických šifer je za hranicí jeho možností. Jako MQTT Broker využívám RabbitMQ, který podporuje definici vlastního backendu pro kontrolu oprávnění přes RESTful rozhraní. Toto řešení mi umožňuje kontrolovat přihlášení jednotlivých zařízení a i následně jednotlivé požadavky k publikaci a odběru zpráv. Součástí dat, které předává RabbitMQ autentizačnímu serveru je i název tématu do kterého chce zařízení zapisovat nebo z něho číst. Mohu tak přesně specifikovat, jestli danému zařízení bude umožněn přístup do daného tématu či nikoliv.
 
 \subsection{Validace}
 \label{BE:Validace}
@@ -149,9 +149,9 @@ Deskriptor se definuje pro každé formulářové pole, společně tvořící de
 
 \subsection{MQTT schéma}
 % popis Homie komunikace + vlastní modifikace, ukázka na diagramu
-MQTT je zvolený komunikační protokol umožňující odesílání a přijímání asynchronních zpráv identifikovaných tématem (popsáno v \ref{mqtt-description}). Jedná se tedy o definici obecné komunikace a pro účely této Platformy je potřeba vytvořit specifikaci, podle které se budou jednotlivá zařízení řídit při odesílání zpráv. Tímto bude jasně zadefinované, jak Platforma bude reagovat na jednotlivé zprávy a půjde implementovat bezpečnostní mechanizmy.
+MQTT je zvolený komunikační protokol umožňující odesílání a přijímání asynchronních zpráv identifikovaných tématem (popsáno v \ref{mqtt-description}). Jedná se tedy o definici obecné komunikace a pro účely této platformy je potřeba vytvořit specifikaci, podle které se budou jednotlivá zařízení řídit při odesílání zpráv. Tímto bude jasně zadefinované, jak platforma bude reagovat na jednotlivé zprávy a půjde implementovat bezpečnostní mechanizmy.
 
-První prototyp jsem založil na vlastní struktuře témat na MQTT protokolu, na kterém zařízení oznamovala v jakém stavu se nachází a naslouchala pro případné požadavky na změnu. Uživatel při vytváření zařízení musel nadefinovat veškeré jeho vlastnosti pomocí poměrně rozsáhlých formulářů, následně byl vygenerován api klíč, který bylo nutné zadat do zařízení pro jeho úspěšné přihlášení k platformě. Toto řešení se ukázalo jako nešťastné, protože uživatel pro přidání zařízení musel mít rozsáhlé znalosti dané problematiky a tento proces byl velice časově náročný. Proto jsem se rozhodl, že místo aby uživatel definoval ručně každé zařízení, zavedu automatickou detekci (auto discovery) nových zařízení, které budou sama propagovat Platformě jaké věci a vlastnosti podporují.
+První prototyp jsem založil na vlastní struktuře témat na MQTT protokolu, na kterém zařízení oznamovala v jakém stavu se nachází a naslouchala pro případné požadavky na změnu. Uživatel při vytváření zařízení musel nadefinovat veškeré jeho vlastnosti pomocí poměrně rozsáhlých formulářů, následně byl vygenerován api klíč, který bylo nutné zadat do zařízení pro jeho úspěšné přihlášení k platformě. Toto řešení se ukázalo jako nešťastné, protože uživatel pro přidání zařízení musel mít rozsáhlé znalosti dané problematiky a tento proces byl velice časově náročný. Proto jsem se rozhodl, že místo aby uživatel definoval ručně každé zařízení, zavedu automatickou detekci (auto discovery) nových zařízení, které budou sama propagovat platformě jaké věci a vlastnosti podporují.
 
 Po mnohých experimentech jsem nakonec své řešení založil na konvenci \textbf{Homie} \cite{homie} specifikující strukturu MQTT témat pro automatickou detekci, konfiguraci a používání zařízení. Tento základ jsem obohatil mimo jiné o výměnu párovacího klíče a z důvodu, že konvence počítá s globálním unikátním identifikátorem pro každé zařízení, tak jsem přidal navíc unikátní prefix pro MQTT téma, které označuji jako \uv{realm} - tento prefix je unikátní pro každého uživatele a všechny jeho zařízení komunikují v tomto realmu. Toto mi umožňilo přesunout restrikci identifikátoru z globální na úroveň uživatele a zároveň dává každému uživateli vlastní prefix témat pro jeho zařízení či jiné využití a pro monitoring komunikace mu stačí se přihlásit k odběru všech zpráv z daného tématu. Moje řešení neimplementuje kompletní konvenci, ale pouze následující část.
 
@@ -208,8 +208,8 @@ Pro prefix tématu \uv{homie/deviceId/nodeId/propertyId} lze odeslat atributy:
 Rozdíl v mém řešení oproti \uv{Homie} konvenci primárně spočívá v použití dvou rozdílným prefixů témat v závislosti, jestli zařízení již bylo spárováno (uživatel si dané zařízení přidal) či nikoliv. Toto opatření je z důvodu vyšší bezpečnosti, abych mohl oddělit již spárovaná zařízení od ostatních. Při prvním připojení se zařízení ohlásí v prefixu \uv{prefix/} následovaný identifikátorem zařízení stejně jako v případě \textit{homie} konvence. Oznámí svůj status, název a všechny své schopnosti (věci a vlastnosti). Toto téma je veřejně přístupné pro všechny zařízení, která se k MQTT brokeru přihlásí uživatelským jménem shodujícím se s identifikátorem zařízení na rozdíl od druhého prefixu \uv{v2/{realm}}, který je přístupný pouze zařízení, která se přihlásí pomocí platného api klíče s přístupem do daného realmu. Přidané atributy:
 \begin{itemize}
     \item \$realm - do kterého realmu zařízení chce patřit (uživ. jméno uživatele)
-    \item \$config/apiKey/set - tento atribut využívá Platforma pro odeslání api klíče. Zařízení je zodpovědně za přihlášení odběřu daného tématu.
-    \item \$cmd/set - využívá Platforma pro odeslání příkazů, jmenovitě restart a reset.
+    \item \$config/apiKey/set - tento atribut využívá platforma pro odeslání api klíče. Zařízení je zodpovědně za přihlášení odběřu daného tématu.
+    \item \$cmd/set - využívá platforma pro odeslání příkazů, jmenovitě restart a reset.
 \end{itemize}
 
 Restrikce na typ věci:
@@ -247,11 +247,11 @@ prefix/light/sensor/power/$datatype -> boolean
 prefix/light/$status    -> ready
 \end{verbatim}
 
-Pokud se detekované zařízení nachází ve stavu \uv{ready}, tak je zobrazeno příslušnému uživateli pro přidání. Pokud si ho uživatel přidá, tak Platforma odešle api klíč danému zařízení, který jeho přijetí potvrdí, klíč si uloží a následně se přepne do prefixu témat \uv{v2/{realm}/}. Pokračování ukázky:
+Pokud se detekované zařízení nachází ve stavu \uv{ready}, tak je zobrazeno příslušnému uživateli pro přidání. Pokud si ho uživatel přidá, tak platforma odešle api klíč danému zařízení, který jeho přijetí potvrdí, klíč si uloží a následně se přepne do prefixu témat \uv{v2/{realm}/}. Pokračování ukázky:
 
 \begin{verbatim}
 prefix/light/$apiKey/set
-    -> XXXXXXXXXXXXXXXX (odesláno Platformou)
+    -> XXXXXXXXXXXXXXXX (odesláno platformou)
 
 prefix/light/$status    -> paired
 v2/pepa/light/$status   -> ready

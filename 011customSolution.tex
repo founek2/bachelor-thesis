@@ -2,13 +2,13 @@
 Tato sekce se věnouje definici požadavků na vlastní řešení a výběru vhodných technologií.
 
 \subsection{Záměr}
-Vytvoření otevřené IoT Platformy, která bude určena pro nejrůznější elektrotechnické kutily a technické nadšence. K dispozici bude zdarma veřejná instance sloužící primárně pro uživatele, kteří si chtějí Platformu jednoduše a rychle vyzkoušet a nebo chtějí provozovat pouze pár zařízení. Pro ty, kteří chtějí mít plnou kontrolu nad svými daty a být nezávislí na připojení k internetu, bude k dispozici možnost hostingu celého řešení na vlastním hardwaru. K Platformě půjde připojit různorodá zařízení a bude vytvořeno schéma, pomocí kterého zařízení popíší Platformě vlastní funkčnost/schopnosti. Na základě těchto informací se automaticky uživateli vygeneruje webové rozhraní ke sledování a ovládání jeho zařízení.
+Vytvoření otevřené IoT platformy, která bude určena pro nejrůznější elektrotechnické kutily a technické nadšence. K dispozici bude zdarma veřejná instance sloužící primárně pro uživatele, kteří si chtějí platformu jednoduše a rychle vyzkoušet a nebo chtějí provozovat pouze pár zařízení. Pro ty, kteří chtějí mít plnou kontrolu nad svými daty a být nezávislí na připojení k internetu, bude k dispozici možnost hostingu celého řešení na vlastním hardwaru. K platformě půjde připojit různorodá zařízení a bude vytvořeno schéma, pomocí kterého zařízení popíší platformě vlastní funkčnost/schopnosti. Na základě těchto informací se automaticky uživateli vygeneruje webové rozhraní ke sledování a ovládání jeho zařízení.
 
-Na bezpečnost bude kladený vysoký důraz. Primárně bude založená na uživatelských účtech, které budou mít oprávnění pouze ke svým zařízením, případně těm, ke kterým dostali oprávnění od jiných uživatelů. Každý uživatel by měl mít k dispozici vlastní izolované prostředí, v rámci kterého budou jeho zařízení komunikovat. Uživateli bude umožněno sledovat všechny zprávy posílané mezí jeho zařízeními a Platformou.
+Na bezpečnost bude kladený vysoký důraz. Primárně bude založená na uživatelských účtech, které budou mít oprávnění pouze ke svým zařízením, případně těm, ke kterým dostali oprávnění od jiných uživatelů. Každý uživatel by měl mít k dispozici vlastní izolované prostředí, v rámci kterého budou jeho zařízení komunikovat. Uživateli bude umožněno sledovat všechny zprávy posílané mezí jeho zařízeními a platformou.
 
 
 \subsection{Popis domény}
-Tato kapitola obsahuje popis jednotlivých entit, se kterými Platforma pracuje.
+Tato kapitola obsahuje popis jednotlivých entit, se kterými platforma pracuje.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{img/domain.pdf}
@@ -16,10 +16,10 @@ Tato kapitola obsahuje popis jednotlivých entit, se kterými Platforma pracuje.
 \end{figure}
 \begin{itemize}
     \item \textbf{Uživatel (User)} - osoba, která interaguje se systémem pomocí uživatelského rozhraní.
-    \item \textbf{Zařízení (Device)} - fyzické zařízení, které komunikuje s Platformou a dále se děli na věci.
+    \item \textbf{Zařízení (Device)} - fyzické zařízení, které komunikuje s platformou a dále se děli na věci.
     \item \textbf{Stav (Status)} - v jakém stavu se zařízení nachází (např. odpojeno).
     \item \textbf{Věc (Thing)} - logické uskupení vlastností, např. meteostanice.
-    \item \textbf{Vlastnost (Property)} - určitá veličina, jejíž hodnota se odesílá na Platformu (např. teplota), která případně umožňuje být Platformou změněna/nastavena.
+    \item \textbf{Vlastnost (Property)} - určitá veličina, jejíž hodnota se odesílá na platformu (např. teplota), která případně umožňuje být platformou změněna/nastavena.
     \item \textbf{Hodnota vlastnosti} - hodnota v určitém časovém okamžiku.
     \item \textbf{Budova (Building)} - místo, které se dále dělí na místnosti.,
     \item \textbf{Místnost (Room)} - uskupení více zařízení.
@@ -33,7 +33,7 @@ Tato kapitola popisuje identifikované případy užití, které současně slou
     \item Neautorizovaný uživatel - představuje nepřihlášeného uživatele webového rozhraní.
     \item Uživatel - přihlášený uživatel webového rozhraní.
     \item Administrátor - autentizovaný uživatele s vyšším stupněm oprávnění.
-    \item Zařízení - koncové zařízení komunikující s Platformou
+    \item Zařízení - koncové zařízení komunikující s platformou
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -49,7 +49,7 @@ Neautentizovaný uživatel vyplní registrační formulář obsahující jméno,
 Součástí přihlašovacího formuláře bude odkaz na stránku pro obnovení zapomenutého hesla, kde bude uživatel dotázán na emailovou adresu, kterou použil při registraci. Po zadání, pokud daná emailová adresa je součástí některého uživatelské účtu, bude odeslán email s odkazem pro obnovu hesla. Na tomto odkazu bude uživatel vyzván k zadání hesla nového.
 
 \paragraph{UC3 Objevení a spárování nového zařízení}
-Zařízení, pokud ještě není spárované s Platformou, po zapnutí vyzve uživatele k zadání svého uživ. jména k platformě. Toto zadání bude umožněno vytvořením Wifi přístupového bodu, na kterém poběží kaptivní portál - po připojení telefonem/počítačem se automaticky zobrazí webová stránka s formulářem pro zadání údajů. Následně se zařízení připojí k Platformě, ohlásí jaké má věci, popíše jejich vlastnosti, a bude ji informovat, kterému uživateli (podle zadaného uživ. jména) má zobrazit možnost přidání nového zařízení. Pokud si uživatel dané zařízení přidá (viz. \hyperref[UC5]{UC5}), Platforma následně odešle zařízení API klíč, které si ho uloží a přihlásí se pomocí toho klíče k Platformě (nyní je spárované).
+Zařízení, pokud ještě není spárované s platformou, po zapnutí vyzve uživatele k zadání svého uživ. jména k platformě. Toto zadání bude umožněno vytvořením Wifi přístupového bodu, na kterém poběží kaptivní portál - po připojení telefonem/počítačem se automaticky zobrazí webová stránka s formulářem pro zadání údajů. Následně se zařízení připojí k platformě, ohlásí jaké má věci, popíše jejich vlastnosti, a bude ji informovat, kterému uživateli (podle zadaného uživ. jména) má zobrazit možnost přidání nového zařízení. Pokud si uživatel dané zařízení přidá (viz. \hyperref[UC5]{UC5}), platforma následně odešle zařízení API klíč, které si ho uloží a přihlásí se pomocí toho klíče k platformě (nyní je spárované).
 
 \paragraph{UC4 Popis věcí}
 Zařízení při ohlašování definice věcí a jejich vlastností musí oznámit mimo jiné typ věci. Platforma bude podporovat kromně generického (generic) typu další 3 typy věcí, pro které bude speciální zobrazení v uživatelském rozhraní:
