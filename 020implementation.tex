@@ -31,7 +31,7 @@ Pro demonstraci vytvoření zařízení jsem si zvolil jedno, které jsem vytvo�
 
 Proto jsem se rozhodl vytvořit zařízení, které bude měřit teplotu, zobrazí ji na displeji a současně ji odešle do platformy pro možnost sledování z pohodlí domova. Tímto se celý proces uzení zpříjemní a s nastavenými notifikacemi nebude potřeba ani teplotu aktivně sledovat, protože platforma sama upozorní na problematickou teplotu.
 
-\subsection{Zapojení} 
+\subsection{Zapojení}
 Jako hlavní řídící desku s čipem ESP8266 jsem zvolil \textit{Wemos D1 mini}, se kterou mám dobré osobní zkušenosti, ale vyhovovala by jakákoli jiná s dostatkem vyvedených pinů. Pro monitorování teploty použiji senzor DS18B20 (maximální teplota 110 °C pro uzení plně dostačuje), který využívá digitální komunikaci a umožňuje sdílení datového kabelu s více senzory, vhodné pro jednoduché přidání dalších senzorů v případě potřeby pro monitoring různých segmentů udírny. Pro zobrazení informací použiji displej \uv{2.2" 240x320 SPI TFT - ILI9341}, který je i dotykový (do budoucna počítám s možností jeho využití pro další funkce). Na zapojení může vypadat zvláštně zapojení rezistoru mezi datový a napájecí pin, ale toto je vyžadováno komunikační sběrnicí \uv{1-Wire} \cite{1-wire}, kterou zvolený senzor využívá. Danou hodnotu rezistoru jsem převzal z datasheetu pro DS18B20 \cite{1-wire-ds}.
 
 \begin{figure}[htbp]
@@ -40,7 +40,7 @@ Jako hlavní řídící desku s čipem ESP8266 jsem zvolil \textit{Wemos D1 mini
     \caption{\label{img-wiring}Zapojení řídící desky, displeje a senzoru teploty \cite{esp-wiring}}
 \end{figure}
 
-\subsection{Výroba} 
+\subsection{Výroba}
 Jednotlivé součástky byly zapojeny dle diagramu na obrázku \ref{img-wiring}. Pro zařízení jsem navrhl krabičku na míru a následně ji vytiskl na 3D tiskárně. Výsledné zařízení je napájené pomocí micro usb, tedy stačí běžná nabíječka na telefon a teplotní senzor se připojuje pomocí konektoru kvůli jednodušší manipulaci. Dále bylo potřeba vytvořit program, který poběží na zařízení pro odesílání teploty do platformy a bude zobrazovat informace (teplotu, čas) na displeji. Ukázka kódu \ref{code} obsahuje využití vytvořené knihovny v sekci \ref{library} pro napojení chytré udírny na platformu. Výsledný program obsahuje tento kód obohacený o komunikaci s displejem a načtení času z internetu. Model krabičky a finální zdrojový kód lze nalézt na přiloženém médiu viz. příloha \ref{medium}.
 
 \begin{figure}[htbp]
@@ -61,8 +61,10 @@ DallasTemperature sensors(&oneWire);
 Property * propTemp;
 
 void setup() {
-    Node *node = plat.NewNode("sensor0", "Senzor", NodeType::SENSOR);
-    propTemp = node->NewProperty("temperature", "Teplota", DataType::FLOAT);
+    Node *node = plat.NewNode("sensor0", "Senzor", 
+                                    NodeType::SENSOR);
+    propTemp = node->NewProperty("temperature", "Teplota", 
+                                    DataType::FLOAT);
     propTemp->setClass(PropertyClass::TEMPERATURE);
     propTemp->setUnit("°C");
 

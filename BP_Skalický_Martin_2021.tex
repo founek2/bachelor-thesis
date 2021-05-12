@@ -32,13 +32,13 @@
 \authorGN{Martin} %(křestní) jméno (jména) autora
 \authorFN{Skalický} %příjmení autora
 \authorWithDegrees{Martin Skalický} %jméno autora včetně současných akademických titulů
-\author{Martin Skalický} %jméno autora bez akademických titulů
+\author{Martin Skalický} %jméno autora bez akademických titulů 
 \supervisor{Ing. Jiří Mlejnek}
-\abstractCS{Tato práce se zabývá porovnáním aktuálních IoT platforem na trhu pro domácí použití a následným návrhem vlastního řešení včetně implementace. Základním pilířem celého řešení je definice schématu, dle kterého každé zařízení popíše své schopnosti a uživateli se následně zobrazí příslušné rozhraní vygenerované na základě jeho dovedností. Platforma je určena pro domácí kutily a technické entuziasty, kteří chtějí mít svá zařízení pod jednotným rozhraním. Uživatelské rozhraní je realizováno progresivní webovou aplikací. Součástí práce je také tvorba zařízení založeného na čipu ESP8266 pro měření teploty v udírně, na kterém je demonstrováno jeho zapojení do platformy.}
+\abstractCS{Tato práce se zabývá porovnáním aktuálních IoT platforem na trhu pro domácí použití a následným návrhem a implementací platformy vlastní. Základním pilířem celého řešení je definice schématu, dle kterého každé zařízení popíše své schopnosti a uživateli se následně zobrazí příslušné rozhraní vygenerované na základě jeho dovedností. Platforma je určena pro domácí kutily a technické entuziasty, kteří chtějí mít svá zařízení pod jednotným rozhraním. Uživatelské rozhraní je realizováno progresivní webovou aplikací. Součástí práce je také tvorba zařízení založeného na čipu ESP8266 pro měření teploty v udírně, na kterém je demonstrováno jeho zapojení do platformy.}
 
 
 \abstractEN{This thesis focuses on a comparison of existing IoT platforms available on the market for smart homes and subsequent design of a custom solution including its implementation. The backbone of whole solution is definition of a scheme that will be used by every connected device to describe its capabilities. User is presented to a generated interface based on the description of connected devices. Platform is designed for use by technical enthusiasts, who want to control all their devices through single interface. The user interface is realized as progressive web app. Part of the thesis also deals with a design and manufacturing of smart device based on chip ESP8266 with purpose of measuring a temperature in a smokehouse. On this smart device the thesis also demonstrates a connection of a device to the platform.}
-
+ 
 \placeForDeclarationOfAuthenticity{V~Praze}
 \declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
 \keywordsCS{IoT platforma, OpenSource, implementace IoT platformy, PWA, MQTT, ESP8266\newpage}
@@ -84,10 +84,11 @@ Vzhledem k rozsahu Bakalářské práce není cílem nahradit existující řeš
 
 \chapter{Seznam použitých zkratek}
 \begin{description}
-    \item[ACL]
-    \item[DIY]
-    \item[SPA]
-    \item[RESTful]
+    \item[ACL] - seznam oprávnění vázaný k zařízení, který specifikuje, kdo k němu může přistupovat a jaké operace provádět
+    \item[DIY] - udělěj si sám
+    \item[MQTT] -  protokol pro publikování a odběr zpráv
+    \item[RESTful] - REST je architektura rozhraní pro jednotný a snadným přístum ke zdrojům. Zdroje mohou být data nebo stavy aplikace. Pokud rozhraní splňuje definovanou architekturu, potom se nazývá RESTful.
+    \item[SPA] - jednostránková webová aplikace, která interaguje s uživatelem dynamickým přepisováním aktuální webové stránky novými daty z webového serveru namísto načítání celé stránky
 \end{description}
 
 \chapter{Obrázky}
@@ -126,7 +127,7 @@ Vzhledem k rozsahu Bakalářské práce není cílem nahradit existující řeš
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=0.75\linewidth]{img/screens/led.png}
-        \caption{Věc typu switch}
+        \caption{Dialog pro věc typu switch}
     \end{subfigure}
 
 
@@ -146,17 +147,20 @@ Vzhledem k rozsahu Bakalářské práce není cílem nahradit existující řeš
 \label{medium}
 \begin{figure}
     \dirtree{%
-        .1 readme.md\DTcomment{stručný popis obsahu CD}.
-        .1 smokehouse\DTcomment{adresář se spustitelnou formou implementace}.
+        .1 platforma\DTcomment{implementovaná platforma}.
+        .2 docs\DTcomment{stručná dokumentace platformy}.
+        .3 deploy.md\DTcomment{návod pro nasazení platformy}.
+        .3 quickstart.md\DTcomment{návod pro spuštění lokálního vývoje}.
+        .3 README.md\DTcomment{popis projektu a ukázka rozhraní}.
+        .2 packages\DTcomment{zdrojové kódy implementace}.
+        .1 smokehouse\DTcomment{soubory pro chytrou udírnu}.
         .2 library.
         .3 IOT\_platforma\_v3\DTcomment{implementovaná knihovna}.
-        .2 models\DTcomment{stl modely pro 3D tisk}.
+        .2 models\DTcomment{model krabičky pro 3D tisk}.
         .2 src.
         .3 main.cpp\DTcomment{zdrojový kód pro chytrou udírnu}.
-        .1 platforma\DTcomment{implementovaná platforma}.
-        .2 packages\DTcomment{zdrojové kódy implementace}.
-        .2 readme.md\DTcomment{instalační příručka}.
         .1 thesis\DTcomment{zdrojová forma práce ve formátu \LaTeX{}}.
+        .1 readme.md\DTcomment{stručný popis obsahu CD}.
         .1 thesis.pdf\DTcomment{text práce ve formátu PDF}.
     }
 \end{figure}
