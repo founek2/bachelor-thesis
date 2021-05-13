@@ -16,6 +16,6 @@ Toto médium obsahuje přílohu k bakalářské práci zabývající se implemen
 │       └─── main.cpp                   # zdrojový kód pro chytrou udírnu
 └─── performance_test_cpu_usage.ods     # zátěž cpu během testu
 └─── thesis                             # zdrojová forma práce ve formátu \LaTeX{}
-└─── readme.md                          # stručný popis obsahu CD
+└─── readme.md                          # stručný popis obsahu tohoto média
 └─── thesis.pdf                         # text práce ve formátu PDF
 ```
