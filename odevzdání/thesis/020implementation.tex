@@ -1,0 +1,100 @@
+\chapter{Návrh a realizace}
+Tato kapitola podrobně popisuje návrh celého řešení a jeho realizaci. Nejprve se věnuje popisu architektury serverové části včetně implementovaným bezpečnostním mechanismům. Dále definicí MQTT schématu, který platforma používá pro komunikaci se zařízeními, následované popisem implementace uživatelského rozhraní. Závěr kapitoly je věnován zamyšlení nad automatizací, nasazení celého řešení a tvorbě knihovny pro koncová zařízení a její následné demostraci při výrobě ukázkového zařízení.
+
+\input{021server.tex}
+
+\input{022frontend.tex}
+
+\section{Automatizace a hlasové ovládání}
+Implementované řešení umožňuje automatizaci ze strany zařízení, která se mohou přihlásit k odběru zpráv z ostatních zařízení a příslušně reagovat. Možnost flexibilní automatizace ze strany platformy vyžaduje nasazení velmi komplexního řešení, které z důvodu náročnosti nebylo implementováno. Nabízí se však využití nástroje \textbf{Node-Red}, který umožňuje vytvářet rozsáhlé datové toky pomocí vizuálního programování \cite{node-red}. Obsahuje intuitivní grafický nástroj pro vytváření složitých podmínek a následných akcí.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{img/homie-node-node.png}
+    \caption{Node-Red ukázka definice akce \cite{node-red-homie}}
+\end{figure}
+
+Momentální řešení uživatelům umožňuje napojení vlastního nástroje, který bude přihlášen k odběru MQTT zpráv z jejich zařízení a mohou si tedy vytvářet datové toky v něm. Pro integrování řešení přímo do platformy by bylo nutné analyzovat možnost použití Node-Red v tomto více uživatelském prostředí. Současně s tímto řešením by šlo podmiňovat notifikace složitějšími výrazy než pouze v závislosti na aktuální hodnotě dané vlastnosti, ale i v závislosti na jiných složitějších podmínkách.
+
+Pro využití hlasového ovládání pomocí současných asistentek jako \textit{Siri} nebo \textit{Google Assistent} by bylo potřeba doimplementovat možnost vytváření tokenů pro přístup k API rozhraní pro jednotlivé uživatele a jejich správu. Následně by bylo možné využít v asistentkách možnosti definovat akci na hlasový povel, která by odeslala zadefinovaný požadavek na změnu jehož součástí by byl přístupový token pro autorizaci. Takto by bylo možné realizovat jednoduché povely pro změnu jedné vlastnosti. Pro definici složitější akce na hlasový povel by bylo možné využít webovou službu \textbf{IFTTT} \cite{ifttt} v kombinaci s asistentkou, která umožňuje vytvářet podmíněné příkazy a obsahuje integraci s velkým množství služeb třetích stran.
+
+
+\section{Nasazení}
+Celé řešení jsem nasadil na Linuxový server s operačním systémem Debian. Pro zjednodušení jsem se rozhodl celý proces automatizovat. Využil jsem OpenSource automatizační nástroj \textbf{Jenkins} \cite{jenkins}, který umožňuje psaní skriptů, které automaticky spouští při změně kódu (pro jeho verzování jsem využil nástroj GIT). Toto řešení mi umožňilo plně automatizovat sestavení celé aplikace a její následné nasazení na server pouhým uložením nové verze kódu. V případě výskytu chyby při sestavování jsem na ni byl ihned upozorněn a mohl ji opravit. Důvod využití právě nástroje Jenkins oproti alternativám např. \textit{GitLab CI/CD} či \textit{CruiseControl} spočívá primárně v rozsáhlému systému pluginů, kterých má obrovské množtví na rozdíl od mladších konkurentů a lze provozovat zcela zdarma na vlastní infrastruktuře.
+
+Pro spuštění platformy na systému Linux je připravena instalační příručka, která je umístěna na médiu (viz. příloha \ref{medium}). Pro případnou distribuci celého řešení uživatelům, by byla možnost využít nástroj \textbf{Docker}, který umožňuje spouštět virtualizované kontejnery. Takové řešení umožní spuštění celého serveru jedním příkazem. Automatizované sestavení s nástrojem Jenkins je již funkční a s minimální úpravou lze připravit obraz pro Docker, který by spustil celé řešení. Podrobnější popis problematiky kontejnerů naleznete v \cite{containers}.
+
+
+
+\section{Chytrá udírna}
+Pro demonstraci vytvoření zařízení jsem si zvolil jedno, které jsem vytvořil pro svého otce a mělo velmi pozitivní přínos, jak po stránce úspory času, tak i chuťových buněk. Dal jsem si za cíl vyřešit vzdálené monitorování teploty udírny v průběhu uzení, protože u udíren se používá klasický ručičkový teploměr, který se musí každých 15 minut kontrolovat kvůli správnému udržení teploty v rozmezí přibližně deseti stupňů. Naše udírna je umístěna v rohu velké zahrady a v zimním období je velice nepříjemné neustále kontrolovat teplotu v celém průběhu uzení, které trvá i deset hodin.
+
+Proto jsem se rozhodl vytvořit zařízení, které bude měřit teplotu, zobrazí ji na displeji a současně ji odešle do platformy pro možnost sledování z pohodlí domova. Tímto se celý proces uzení zpříjemní a s nastavenými notifikacemi nebude potřeba ani teplotu aktivně sledovat, protože platforma sama upozorní na problematickou teplotu.
+
+\subsection{Zapojení}
+Jako hlavní řídící desku s čipem ESP8266 jsem zvolil \textit{Wemos D1 mini}, se kterou mám dobré osobní zkušenosti, ale vyhovovala by jakákoli jiná s dostatkem vyvedených pinů. Pro monitorování teploty použiji senzor DS18B20 (maximální teplota 110 °C pro uzení plně dostačuje), který využívá digitální komunikaci a umožňuje sdílení datového kabelu s více senzory, vhodné pro jednoduché přidání dalších senzorů v případě potřeby pro monitoring různých segmentů udírny. Pro zobrazení informací použiji displej \uv{2.2" 240x320 SPI TFT - ILI9341}, který je i dotykový (do budoucna počítám s možností jeho využití pro další funkce). Na zapojení může vypadat zvláštně zapojení rezistoru mezi datový a napájecí pin, ale toto je vyžadováno komunikační sběrnicí \uv{1-Wire} \cite{1-wire}, kterou zvolený senzor využívá. Danou hodnotu rezistoru jsem převzal z datasheetu pro DS18B20 \cite{1-wire-ds}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/wiring.pdf}
+    \caption{\label{img-wiring}Zapojení řídící desky, displeje a senzoru teploty \cite{esp-wiring}}
+\end{figure}
+
+\subsection{Výroba}
+Jednotlivé součástky byly zapojeny dle diagramu na obrázku \ref{img-wiring}. Pro zařízení jsem navrhl krabičku na míru a následně ji vytiskl na 3D tiskárně. Výsledné zařízení je napájené pomocí micro usb, tedy stačí běžná nabíječka na telefon a teplotní senzor se připojuje pomocí konektoru kvůli jednodušší manipulaci. Dále bylo potřeba vytvořit program, který poběží na zařízení pro odesílání teploty do platformy a bude zobrazovat informace (teplotu, čas) na displeji. Ukázka kódu \ref{code} obsahuje využití vytvořené knihovny v sekci \ref{library} pro napojení chytré udírny na platformu. Výsledný program obsahuje tento kód obohacený o komunikaci s displejem a načtení času z internetu. Model krabičky a finální zdrojový kód lze nalézt na přiloženém médiu viz. příloha \ref{medium}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.3\textwidth]{img/smokehouse.png}
+    \caption{\label{smokehouse}Finální verze výrobku}
+\end{figure}
+
+\begin{figure}[h!tb]
+    \begin{minted}[linenos=true]{Arduino}
+#include <IOTPlatforma.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+IOTPlatforma plat("Udírna");
+OneWire oneWire(D3);
+DallasTemperature sensors(&oneWire);
+Property * propTemp;
+
+void setup() {
+    Node *node = plat.NewNode("sensor0", "Senzor", 
+                                    NodeType::SENSOR);
+    propTemp = node->NewProperty("temperature", "Teplota", 
+                                    DataType::FLOAT);
+    propTemp->setClass(PropertyClass::TEMPERATURE);
+    propTemp->setUnit("°C");
+
+    plat.start();
+}
+
+void loop() {
+    plat.loop();
+
+    sensors.requestTemperatures();
+    float temp = sensors.getTempCByIndex(0);
+    propTemp->setValue(String(temperature, 2).c_str());
+    delay(1000);
+}
+\end{minted}
+    \caption{\label{code}Kód pro odesílání teploty}
+\end{figure}
+
+\section{Knihovna pro ESP8266}
+\label{library}
+Pro čip ESP8266 lze programovat s využitím oficiálního sdk (Espressif SDK) nebo prostředí Arduino, které se těší obrovské oblibě mezi kutily. Rozhodl jsem se využít prostředí Arduino, protože kolem něho existuje obrovská komunita a stovky již předpřipravených knihoven pro různorodé moduly. Díky tomu není potřeba tolik řešit nízkoúrovňové problémy jako např. implementaci protokolu pro komunikace se senzorem teploty, ale stačí si stáhnout příslušnou knihovnu a následně se plně soustředit na aplikační logiku.
+
+Mým cílem je vytvoření platformy, ke které si bude moci kdokoliv připojit vlastní zařízení - abych proces připojení co možná nejvíce zjednodušil, vytvořil jsem knihovnu pro prostředí Arduino, která bude řešit veškerou komunikaci s platformou a nabídne programátorovi přehledná rozhraní pro definici zařízení, jeho věcí, vlastností a reakcí na změny.
+
+Knihovna implementuje následující funkce:
+\begin{itemize}
+    \item Kaptivní portál - vytvoření wifi přístupového bodu, které po připojení např. telefonu zobrazí webovou stránku na které uživatel zadá přístupové údaje k místní wifi síťi, své uživatelské jméno a případně ip adresu instance platformy (pouze pokud provozuje vlastní).
+    \item Připojení k MQTT brokeru - pro připojení je využita knihovna \textit{pubsubclient}.
+    \item Objevení zařízení - programátor deklarativním způsobem definuje věci a vlastnosti zařízení. Knihovna následně všechny tyto funkce ohlásí platformě.
+    \item Spárování - po přidání zařízení uživatelem ve webovém rozhraní obdrží zařízení párovací klíč, který se perzistentně uloží.
+    \item Definice reakcí - ke každé vlastnosti (v případě, že je nastavitelná) může programátor definovat funkci (callback), který se zavolá v případě, že došlo ke změně dané vlastnosti.
+    \item OTA - možnost tvz. \uv{aktualizace vzduchem} místo nutnosti fyzického připojení k pc. Podporováno je nahrání firmwaru v rámci lokální sítě a zabezpečeno pouze heslem, kvůli malé paměti a nízkému výkonu pro využití ověření pomocí certifikátů.
+\end{itemize}

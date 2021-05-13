@@ -1,0 +1,169 @@
+\documentclass[thesis=B,czech]{FITthesis}[2019/12/23]
+  
+\usepackage[utf8]{inputenc} % LaTeX source encoded as UTF-8
+\usepackage{adjustbox}   
+\usepackage{listings}
+\usepackage{dirtree}   
+\usepackage{graphicx}
+\usepackage{pdfpages}   
+\usepackage{subcaption}
+\usepackage{rotating}
+
+% \usepackage{amsmath} %advanced maths 
+% \usepackage{amssymb} %additional math symbols
+ 
+\usepackage{dirtree} %directory tree visualisation
+\usepackage{hyperref}   
+\usepackage{minted}   
+    
+% % list of acronyms
+% \usepackage[acronym,nonumberlist,toc,numberedsection=autolabel]{glossaries}
+% \iflanguage{czech}{\renewcommand*{\acronymname}{Seznam pou{\v z}it{\' y}ch zkratek}}{}
+% \makeglossaries
+
+\newcommand{\tg}{\mathop{\mathrm{tg}}} %cesky tangens
+\newcommand{\cotg}{\mathop{\mathrm{cotg}}} %cesky cotangens
+\newcommand\tstrut{\rule{0pt}{2.4ex}}
+\newcommand\bstrut{\rule[-1.0ex]{0pt}{0pt}}
+
+
+\department{Katedra softwarového inženýrství}
+\title{IoT platforma s webovým rozhraním}
+\authorGN{Martin} %(křestní) jméno (jména) autora
+\authorFN{Skalický} %příjmení autora
+\authorWithDegrees{Martin Skalický} %jméno autora včetně současných akademických titulů
+\author{Martin Skalický} %jméno autora bez akademických titulů 
+\supervisor{Ing. Jiří Mlejnek}
+\abstractCS{Tato práce se zabývá porovnáním aktuálních IoT platforem na trhu pro domácí použití a následným návrhem a implementací platformy vlastní. Základním pilířem celého řešení je definice schématu, dle kterého každé zařízení popíše své schopnosti a uživateli se následně zobrazí příslušné rozhraní vygenerované na základě jeho dovedností. Platforma je určena pro domácí kutily a technické entuziasty, kteří chtějí mít svá zařízení pod jednotným rozhraním. Uživatelské rozhraní je realizováno progresivní webovou aplikací. Součástí práce je také tvorba zařízení založeného na čipu ESP8266 pro měření teploty v udírně, na kterém je demonstrováno jeho zapojení do platformy.}
+
+
+\abstractEN{This thesis focuses on a comparison of existing IoT platforms available on the market for smart homes and subsequent design of a custom solution including its implementation. The backbone of whole solution is definition of a scheme that will be used by every connected device to describe its capabilities. User is presented to a generated interface based on the description of connected devices. Platform is designed for use by technical enthusiasts, who want to control all their devices through single interface. The user interface is realized as progressive web app. Part of the thesis also deals with a design and manufacturing of smart device based on chip ESP8266 with purpose of measuring a temperature in a smokehouse. On this smart device the thesis also demonstrates a connection of a device to the platform.}
+ 
+\placeForDeclarationOfAuthenticity{V~Praze}
+\declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
+\keywordsCS{IoT platforma, OpenSource, implementace IoT platformy, PWA, MQTT, ESP8266\newpage}
+\keywordsEN{IoT platform, OpenSource, implementation of IoT platform, PWA, MQTT, ESP8266}
+
+\begin{document}
+
+\begin{introduction}
+    Internet věcí je velmi diskutovaným tématem posledních několika let, ale jeho vývoji předcházela spousta trnitých cest a slepých uliček. Pod kouzelnou zkratkou IoT se pro mnohé skrývá příslib pokroku od chytré domácnosti až po revoluci v průmyslu. Internet věcí je označení pro síť fyzických zařízení, která spolu dokáží komunikovat ať už napřímo nebo pomocí prostředníka. Pro efektivní správu se zařízení připojují k centrální platformě, která sbírá data z jednolivých zařízení a dle definovaných pravidel zařízením posílá příkazy. Například v domácnosti čidlo pohybu zaregistruje příchod majitele domů a platforma v reakci zapne vytápění. Současně poskytuje uživatelské rozhraní, pomocí kterého lze jednotlivá zařízení přímo ovládat a definovat scénáře, na základě kterých vykonává automatizaci jako uvedené automatické zapnutí vytápějí. Platforma je tedy nedílnou součástí světa IoT a od jejích funkcí se odvíjí možnost využití plného potenciálu.
+
+    Na trhu již dnes existují hotová řešení, ale je velmi problematické se mezi nimi zorientovat a často bývají velmi drahá. Důvodem vzniku této práce je negativní osobní zkušenost a vysoké poplatky komerčních řešení s cílem vytvoření dostupné otevřené platformy pro technické entuziasty a bastlíře, kteří si chtějí jako já vytvářet levná zařízení a jednoduše je spravovat/ovládat.
+
+    Teoretická část práce se věnuje rešerši aktuálních řešení na trhu, jejich vzájemným porovnáním a návrhem vlastního. Praktická část se zaměřuje na implementaci a nasazení vlastního řešení.
+\end{introduction}
+
+\chapter{Cíl práce}
+Cílem této práce je navrhnout a implementovat řešení IoT platformy, která bude primárně určena pro domácí kutily, kteří mohou k platformě připojit tzv. DIY (\uv{Udělěj si sám}) zařízení. Platforma tedy bude muset být univerzální tak, aby umožnila připojení různorodých zařízení. Uživatelské rozhraní bude realizováno formou webové aplikace, která umožní sledování a ovládání jednotlivých zařízení.
+
+Hlavním přínosem bude vytvoření alternativy k již existujícím řešením pro ty, kteří hledají vyšší bezpečnost a nižší cenu než často nabízí komerční řešení. Platforma bude koncipována tak, aby si uživatel přidal zařízení na jedno kliknutí a mohl ho ihned ovládat bez nutnosti často zdlouhavých konfigurací, ke kterým zpravidla potřebuje hlubší znalosti. Výsledná platforma bude uvolněna pod OpenSource licencí s možností vlastního hostingu.
+
+Vzhledem k rozsahu Bakalářské práce není cílem nahradit existující řešení, která již obsahují velké množství funkcí, ale vytvořit možnou alternativu a demonstrovat složitost vytvoření celého řešení za použití moderních technologií.
+
+
+
+\input{010analysis.tex}
+
+\input{020implementation.tex}
+
+\input{030testing.tex}
+
+\begin{conclusion}
+    Cílem této práce bylo navrhnout a implementovat vlastní IoT platformu. Všech vytyčených cílů bylo dosaženo. Byla provedena rešerše a porovnání čtyř Platforem: Bynk, ThingSpeak, Home Assistant a OpenHab. Pro návrh vlastního řešení byla vytvořena koncepce, kterou je otevřená více uživatelská platforma pro připojení různorodých zařízení vyrobených kutily a technickými entuziasty. Základním pilířem celého řešení je vytvořené schéma na protokolu MQTT, které umožňuje zařízením přesně popsat své dovednosti, na jejichž základě je vykresleno uživatelské rozhraní. Jsou podporovány různé kombinace vlasností od úzce specifických prvků jako přepínač až po obecné odeslání textu. Každý uživatel má k dispozici vlastní sféru, v rámci které jeho zařízení komunikují.
+
+    Bylo vytvořeno intuitivní webové rozhraní, které umožňuje interakci se zařízeními, vizualizaci některých dat a nastavení push notifikací. Byla vytvořena knihovna pro koncová zařízení, umožňující snadné napojení na platformu a vzniklo zařízení, na kterém bylo demonstrováno její použití. Řešení bylo nasazeno a podrobeno zátěžovému a uživatelskému testování, ve kterém se prokázala schopnost obsloužit stovky zařízení a intuitivnost celého rozhraní.
+
+    Řešení je zveřejněno a uvolněno pod licencí GPLv3 na stránce \url{https://github.com/founek2/IOT-Platforma}. Platformu již aktivně využívám pro svá chytrá zařízení a jejímu vývoji se i nadále budu věnovat ve svém volném čase, případně v rámci diplomové práce. Věřím, že se jedná o zajímavou alternativu ke stávajícím řešení a uvidím, zda se mi podaří do jejího budoucího vývoje zapojit i komunitu.
+\end{conclusion}
+
+\bibliographystyle{csn690}
+\bibliography{mybibliographyfile}
+
+\appendix
+
+\chapter{Seznam použitých zkratek}
+\begin{description}
+    \item[ACL] - seznam oprávnění vázaný k zařízení, který specifikuje, kdo k němu může přistupovat a jaké operace provádět
+    \item[DIY] - udělěj si sám
+    \item[MQTT] -  protokol pro publikování a odběr zpráv
+    \item[RESTful] - REST je architektura rozhraní pro jednotný a snadným přístum ke zdrojům. Zdroje mohou být data nebo stavy aplikace. Pokud rozhraní splňuje definovanou architekturu, potom se nazývá RESTful.
+    \item[SPA] - jednostránková webová aplikace, která interaguje s uživatelem dynamickým přepisováním aktuální webové stránky novými daty z webového serveru namísto načítání celé stránky
+\end{description}
+
+\chapter{Obrázky}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{img/architecture.pdf}
+    \caption{Náhled fyzické architektury}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{img/screens/deviceManagement2.png}
+    \caption{Ukázka rozhraní - správa zařízení}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=.7\linewidth]{img/screens/editDevice.png}
+        \caption{Zobrazení místností}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=.7\linewidth]{img/screens/generic.png}
+        \caption{Zobrazení místnosti}
+    \end{subfigure}
+    \caption{Ukázka rozhraní}
+\end{figure}
+
+
+
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.75\linewidth]{img/screens/led.png}
+        \caption{Dialog pro věc typu switch}
+    \end{subfigure}
+
+
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.7\linewidth]{img/screens/notify.png}
+        \caption{Nastavení pravidel notifikací}
+    \end{subfigure}
+
+    \caption{Ukázka rozhraní}
+\end{figure}
+
+\input{user_guide.tex}
+
+
+\chapter{Obsah přiloženého média}
+\label{medium}
+\begin{figure}
+    \dirtree{%
+        .1 platforma\DTcomment{implementovaná platforma}.
+        .2 docs\DTcomment{stručná dokumentace platformy}.
+        .3 deploy.md\DTcomment{návod pro nasazení platformy}.
+        .3 quickstart.md\DTcomment{návod pro spuštění lokálního vývoje}.
+        .3 README.md\DTcomment{popis projektu a ukázka rozhraní}.
+        .2 packages\DTcomment{zdrojové kódy implementace}.
+        .1 smokehouse\DTcomment{soubory pro chytrou udírnu}.
+        .2 library.
+        .3 IOT\_platforma\_v3\DTcomment{implementovaná knihovna}.
+        .2 models\DTcomment{model krabičky pro 3D tisk}.
+        .2 src.
+        .3 main.cpp\DTcomment{zdrojový kód pro chytrou udírnu}.
+        .1 performance\_test\_cpu\_usage.ods\DTcomment{zátěž cpu během testu}.
+        .1 thesis\DTcomment{zdrojová forma práce ve formátu \LaTeX{}}.
+        .1 readme.md\DTcomment{stručný popis obsahu média}.
+        .1 thesis.pdf\DTcomment{text práce ve formátu PDF}.
+    }
+\end{figure}
+
+\end{document}
