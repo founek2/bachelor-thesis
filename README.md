@@ -1,4 +1,4 @@
-# Bakalářská práce
+# IoT Platform with Web Interface
 
 Cílem této práce je navrhnout a implementovat vlastní řešení IoT platformy, která bude primárně
 určena pro domácí kutily, kteří mohou k platformě připojit libovolné své zařízení. Prostřednictvím
