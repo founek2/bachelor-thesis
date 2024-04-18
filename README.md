@@ -1,5 +1,7 @@
 # IoT Platform with Web Interface
 
+[Bachelor thesis pdf](./thesis.pdf)
+
 Cílem této práce je navrhnout a implementovat vlastní řešení IoT platformy, která bude primárně
 určena pro domácí kutily, kteří mohou k platformě připojit libovolné své zařízení. Prostřednictvím
 webového rozhraní budou moci sledovat naměřené hodnoty nebo zařízení ovládat.
